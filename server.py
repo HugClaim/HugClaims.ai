@@ -54,6 +54,7 @@ SYSTEM_PROMPT = (HERE / "system_prompt.md").read_text()
 RATER_MODEL = os.environ.get("HUG_RATER_MODEL", "claude-haiku-4-5")
 SUGGEST_MODEL = os.environ.get("HUG_SUGGEST_MODEL", "claude-haiku-4-5")
 DETECT_MODEL = os.environ.get("HUG_DETECT_MODEL", "claude-haiku-4-5")
+SEGMENT_MODEL = os.environ.get("HUG_SEGMENT_MODEL", "claude-haiku-4-5")
 SUGGEST_SYSTEM = """You are a fact-checker reviewing an AI assistant's reply for potential errors. \
 A user is considering filing a claim that this reply was wrong. Your job: produce a corrected \
 version of the target reply, fixing factual, logical, or significant errors so the user can \
@@ -77,6 +78,24 @@ GPT-5.1, GPT-4o, GPT-4.1, Claude Opus 4.6, Claude Sonnet 4.5, Claude Haiku 4.5, 
 Use explicit labels in the transcript first. If there is no clear evidence, return Other/Unknown.
 Output ONLY JSON on one line:
 {"llm":"<label>","confidence":0.0-1.0,"reason":"<short reason>"}"""
+
+SEGMENT_SYSTEM = """You segment pasted chat transcripts into ordered turns.
+Your output is used to render user vs assistant bubbles in a UI.
+
+Rules:
+- Return ONLY JSON on one line, no markdown or code fences.
+- Extract conversation turns in original order.
+- Each turn must have:
+  - role: exactly "user" or "assistant"
+  - text: non-empty message content
+  - marker: short speaker label if visible (e.g., "User", "Claude Opus 4.7"), else ""
+- Ignore metadata sections and headers (e.g., "Conversation", "Options", IDs, timestamps, endpoint, title).
+- Keep the message text faithful; do not paraphrase.
+- If uncertain, prefer "assistant" for non-user speakers.
+- If no clear segmentation exists, return one turn as role "user" with the full text.
+
+Output schema:
+{"format":"History transcript|JSON export|Generic chat|LLM segmented","turns":[{"role":"user|assistant","text":"...","marker":"..."}]}"""
 
 
 VERIFIER_MODEL = os.environ.get("HUG_VERIFIER_MODEL", "claude-haiku-4-5")
@@ -223,6 +242,12 @@ class SuggestRequest(BaseModel):
 
 class DetectLLMRequest(BaseModel):
     conversation: str
+    session_id: Optional[str] = None
+
+
+class SegmentTranscriptRequest(BaseModel):
+    transcript: str
+    source_ai: Optional[str] = None
     session_id: Optional[str] = None
 
 
@@ -556,6 +581,91 @@ async def detect_llm(req: DetectLLMRequest, request: Request):
     if error == "invalid Foundry API key":
         raise HTTPException(401, error)
     if error and error.startswith("detect API error"):
+        raise HTTPException(502, error)
+    return result
+
+
+@app.post("/segment_transcript")
+async def segment_transcript(req: SegmentTranscriptRequest, request: Request):
+    """Best-effort LLM segmentation for messy pasted transcripts."""
+    if not foundry_api_key():
+        raise HTTPException(500, "Foundry API key not set on server")
+
+    raw = (req.transcript or "").strip()
+    if not raw:
+        return {"format": "Generic chat", "turns": []}
+
+    clipped = raw[:50000]
+    result: dict[str, Any] = {
+        "format": "LLM segmented",
+        "turns": [{"role": "user", "text": clipped, "marker": ""}],
+    }
+    error: Optional[str] = None
+
+    user_prompt = (
+        f"SOURCE_AI_HINT: {req.source_ai or 'Unknown'}\n\n"
+        f"TRANSCRIPT:\n{clipped}\n\n"
+        "Return the JSON now."
+    )
+    try:
+        resp = await get_client().messages.create(
+            model=SEGMENT_MODEL,
+            max_tokens=2400,
+            system=SEGMENT_SYSTEM,
+            messages=[{"role": "user", "content": user_prompt}],
+        )
+        text = next((b.text for b in resp.content if b.type == "text"), "").strip()
+        if text.startswith("```"):
+            text = text.strip("`").replace("json", "", 1).strip()
+        start = text.find("{")
+        end = text.rfind("}")
+        payload = json.loads(text[start : end + 1] if start >= 0 and end > start else text)
+
+        turns_in = payload.get("turns") if isinstance(payload, dict) else None
+        turns_out: list[dict[str, str]] = []
+        if isinstance(turns_in, list):
+            for t in turns_in:
+                if not isinstance(t, dict):
+                    continue
+                role = str(t.get("role") or "").strip().lower()
+                role = "user" if role == "user" else "assistant"
+                txt = str(t.get("text") or "").strip()
+                if not txt:
+                    continue
+                marker = str(t.get("marker") or "").strip()[:120]
+                turns_out.append({"role": role, "text": txt, "marker": marker})
+
+        fmt = str((payload.get("format") if isinstance(payload, dict) else "") or "").strip()[:40]
+        if turns_out:
+            result = {
+                "format": fmt or "LLM segmented",
+                "turns": turns_out,
+            }
+    except anthropic.AuthenticationError:
+        error = "invalid Foundry API key"
+    except anthropic.APIStatusError as e:
+        error = f"segment API error {e.status_code}"
+    except Exception as e:
+        error = f"{type(e).__name__}: {e}"
+        print(f"[hug] segment transcript error: {error}", flush=True)
+
+    await log_event(
+        "transcript_segmented",
+        page="chat.html",
+        session_id=req.session_id,
+        payload={
+            "transcript_length": len(raw),
+            "turn_count": len(result.get("turns") or []),
+            "format": result.get("format"),
+            "model": SEGMENT_MODEL,
+            "error": error,
+        },
+        request=request,
+    )
+
+    if error == "invalid Foundry API key":
+        raise HTTPException(401, error)
+    if error and error.startswith("segment API error"):
         raise HTTPException(502, error)
     return result
 

@@ -1269,11 +1269,18 @@
       text-decoration-thickness: 1.5px;
       background: #f6dfda;
     }
-    .print-report ins.correction {
+    .print-report .print-del {
+      color: #7d231e;
+      background: #f6dfda;
+      padding: 0 2px;
+      border-radius: 2px;
+    }
+    .print-report .print-add {
       color: #111;
       text-decoration: none;
       background: #f2ddb0;
       padding: 0 2px;
+      border-radius: 2px;
     }
     .print-report .print-attachments {
       display: grid;
@@ -2308,6 +2315,22 @@
   }
 
   function buildPrintReport({ ref, brand, edits, evidenceItems, expectedPayout, overrodeVerifier }) {
+    const renderOriginalWithDeletes = (original, edited) => {
+      const parts = diffWords(original || '', edited || '');
+      return parts.map((part) => {
+        if (part.type === 'ins') return '';
+        if (part.type === 'del') return `<span class="print-del">${escapeHtml(part.text)}</span>`;
+        return escapeHtml(part.text);
+      }).join('');
+    };
+    const renderCorrectionWithAdds = (original, edited) => {
+      const parts = diffWords(original || '', edited || '');
+      return parts.map((part) => {
+        if (part.type === 'del') return '';
+        if (part.type === 'ins') return `<span class="print-add">${escapeHtml(part.text)}</span>`;
+        return escapeHtml(part.text);
+      }).join('');
+    };
     const today = new Date().toLocaleDateString(undefined, {
       year: 'numeric', month: 'short', day: 'numeric'
     });
@@ -2318,15 +2341,13 @@
         <div class="print-columns">
           <div>
             <h3>Original AI response</h3>
-            <div class="print-box">${escapeHtml(edit.original)}</div>
+            <div class="print-box">${renderOriginalWithDeletes(edit.original, edit.edited)}</div>
           </div>
           <div>
             <h3>Submitted correction</h3>
-            <div class="print-box">${escapeHtml(edit.edited)}</div>
+            <div class="print-box">${renderCorrectionWithAdds(edit.original, edit.edited)}</div>
           </div>
         </div>
-        <h3>Changes marked</h3>
-        <div class="print-diff">${renderDiff(diffWords(edit.original, edit.edited))}</div>
       </section>
     `).join('');
     const evidenceBlock = evidenceItems && evidenceItems.length ? `
@@ -2352,7 +2373,7 @@
         ${editBlocks || '<section class="print-edit"><h2>No edits submitted</h2></section>'}
         ${evidenceBlock}
         <p class="print-note">
-          This printout records the claim as submitted. Strikethrough text marks deleted original wording; highlighted text marks additions in the submitted correction.${overrodeVerifier ? ' The claim was flagged for human review because the verifier disagreed.' : ''}
+          This printout records the claim as submitted. Red highlights in Original AI response mark deleted wording; gold highlights in Submitted correction mark added wording.${overrodeVerifier ? ' The claim was flagged for human review because the verifier disagreed.' : ''}
         </p>
       </article>
     `;
@@ -2478,6 +2499,27 @@
     `;
   }
 
+  function prettyVerifierError(resp, bodyText) {
+    const status = resp && Number.isFinite(resp.status) ? resp.status : 0;
+    const text = String(bodyText || '').trim();
+    const lower = text.toLowerCase();
+    const contentType = String(resp && resp.headers ? (resp.headers.get('content-type') || '') : '').toLowerCase();
+    const isHtml = contentType.includes('text/html') || /<!doctype html>|<html\b/.test(lower);
+    const isStaticServer = /simplehttp\/|unsupported method \('post'\)|error code:\s*501/.test(lower);
+
+    if (isHtml && (status === 501 || isStaticServer)) {
+      return `Backend not running (got HTML/${status || 501} from static server). Start FastAPI server (./run.sh) instead of python -m http.server.`;
+    }
+    if (isHtml) {
+      return `Backend returned HTML/${status || 'error'} instead of JSON. Check API base and server route.`;
+    }
+    if (status === 401) return 'Verifier auth error (401): check ANTHROPIC_API_KEY on backend.';
+    if (status === 404) return 'Verifier endpoint not found (404): backend route /verify_claim is unavailable.';
+    if (status >= 500) return `Verifier backend error (${status}).`;
+    if (text) return `Verifier API error (${status || 'unknown'}): ${text.slice(0, 220)}`;
+    return `Verifier API error (${status || 'unknown'}).`;
+  }
+
   const verifyBtn = document.getElementById('verifyBtn');
   if (verifyBtn) {
     verifyBtn.addEventListener('click', async () => {
@@ -2507,7 +2549,7 @@
         });
         if (!resp.ok) {
           const txt = await resp.text();
-          showVerdict({ verdict: 'uncertain', confidence: 0, reasoning: `verifier API error: ${txt}` });
+          showVerdict({ verdict: 'uncertain', confidence: 0, reasoning: prettyVerifierError(resp, txt) });
           return;
         }
         const data = await resp.json();

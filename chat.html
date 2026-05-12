@@ -2192,6 +2192,31 @@
     return turns;
   }
 
+  function turnsFromDoubleAngleMarkers(text) {
+    const t = String(text || '').trim();
+    if (!t) return [];
+    const markerRe = /(?:^|[\r\n]|\s)>>\s*([^:\n]{1,120})\s*:\s*/gim;
+    const matches = [];
+    let m;
+    while ((m = markerRe.exec(t)) !== null) matches.push(m);
+    if (matches.length < 2) return [];
+
+    const turns = [];
+    for (let i = 0; i < matches.length; i++) {
+      const cur = matches[i];
+      const marker = String(cur[1] || '').trim();
+      const markerNorm = marker.toLowerCase().replace(/\s+/g, '');
+      const role = USER_TAGS.has(markerNorm) || /\b(user|you|me|human)\b/i.test(marker)
+        ? 'user'
+        : 'assistant';
+      const start = cur.index + cur[0].length;
+      const end = (i + 1 < matches.length) ? matches[i + 1].index : t.length;
+      const content = t.slice(start, end).trim();
+      if (content) turns.push({ role, text: content, marker });
+    }
+    return turns;
+  }
+
   function turnsFromExportData(data) {
     const out = [];
     const visit = (nodes) => {
@@ -2233,16 +2258,56 @@
     const historyMatch = /\bHistory\b[\s#-]*/i.exec(t);
     if (historyMatch) {
       const historyText = t.slice(historyMatch.index + historyMatch[0].length).trim();
+      const historyDoubleAngleTurns = turnsFromDoubleAngleMarkers(historyText);
+      if (historyDoubleAngleTurns.length) return { turns: historyDoubleAngleTurns, format: 'History transcript' };
       const historyTurns = turnsFromRoleMarkers(historyText);
       if (historyTurns.length) return { turns: historyTurns, format: 'History transcript' };
     }
 
     // 3) Generic marker-based transcripts (User:/Assistant:, >> User:, Claude:, etc.)
+    const doubleAngleTurns = turnsFromDoubleAngleMarkers(t);
+    if (doubleAngleTurns.length) return { turns: doubleAngleTurns, format: 'Generic chat' };
     const turns = turnsFromRoleMarkers(t);
     if (turns.length) return { turns, format: 'Generic chat' };
 
     // 4) Fallback: treat as single user prompt.
     return { turns: [{ role: 'user', text: t, marker: null }], format: 'Generic chat' };
+  }
+
+  function shouldUseLLMSegmentation(raw, parsed) {
+    const t = String(raw || '').trim();
+    const turnCount = (parsed && Array.isArray(parsed.turns)) ? parsed.turns.length : 0;
+    if (!t || turnCount >= 2) return false;
+    const looksStructured = /\bHistory\b/i.test(t)
+      || />>\s*[^:\n]{1,120}:\s*/i.test(t)
+      || /(?:^|[\r\n])\s*(user|assistant|human|ai|bot|model)\s*:/im.test(t);
+    return looksStructured || t.length >= 900;
+  }
+
+  async function segmentImportedWithLLM(raw, sourceName) {
+    const resp = await fetch(hugApiUrl('/segment_transcript'), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        transcript: raw,
+        source_ai: sourceName || (sourceAI ? sourceAI.value : ''),
+        session_id: window.HUG_SESSION_ID || null
+      }),
+    });
+    if (!resp.ok) throw new Error(`segment HTTP ${resp.status}`);
+    const data = await resp.json();
+    const turns = Array.isArray(data && data.turns) ? data.turns : [];
+    const cleaned = turns
+      .map((t) => ({
+        role: t && t.role === 'user' ? 'user' : 'assistant',
+        text: String(t && t.text || '').trim(),
+        marker: String(t && t.marker || '').trim()
+      }))
+      .filter((t) => t.text);
+    return {
+      turns: cleaned,
+      format: String(data && data.format || 'LLM segmented').trim() || 'LLM segmented'
+    };
   }
 
   // ---- Share-URL detection: nudge instead of pretending to fetch ----
@@ -2400,7 +2465,7 @@
       setSourceAI(inferredAI);
       importText.value = transcript;
       importText.dispatchEvent(new Event('input', { bubbles: true }));
-      loadImportedTranscript(transcript, { sourceName: inferredAI, sampleTitle: data.title || 'Sample Chat' });
+      await loadImportedTranscript(transcript, { sourceName: inferredAI, sampleTitle: data.title || 'Sample Chat' });
       if (window.hugEvent) hugEvent('sample_import_loaded', {
         title: data.title || null,
         chars: transcript.length,
@@ -2418,8 +2483,8 @@
   if (sampleData) sampleData.addEventListener('click', loadSampleData);
 
   // ---- Long-import trimming: keep first/last turns; mark the elided middle.
-  // Roughly 80K chars ≈ 20K tokens, enough for a readable evidence preview.
-  const MAX_TRANSCRIPT_CHARS = 80000;
+  // Roughly 200K chars keeps more full transcripts before eliding.
+  const MAX_TRANSCRIPT_CHARS = 200000;
   function trimToContext(turns, budget) {
     let total = 0;
     for (const t of turns) total += t.text.length;
@@ -2482,7 +2547,7 @@
     convo.appendChild(el);
   }
 
-  function loadImportedTranscript(raw, opts = {}) {
+  async function loadImportedTranscript(raw, opts = {}) {
     const trimmedRaw = raw.trim();
     // Don't try to parse a bare share URL — re-show the nudge and bail.
     if (SHARE_URL_RE.test(trimmedRaw)) {
@@ -2491,9 +2556,28 @@
       importText.focus();
       return false;
     }
-    const parsedImport = parseImported(raw);
-    const turns = parsedImport.turns;
-    const detectedFormat = parsedImport.format || 'Generic chat';
+    let parsedImport = parseImported(raw);
+    let turns = parsedImport.turns;
+    let detectedFormat = parsedImport.format || 'Generic chat';
+    if (shouldUseLLMSegmentation(raw, parsedImport)) {
+      const oldHint = importHint.innerHTML;
+      importHint.classList.remove('is-url-nudge');
+      importHint.innerHTML = 'Parsing transcript format with AI...';
+      try {
+        const llmParsed = await segmentImportedWithLLM(raw, opts.sourceName || (sourceAI ? sourceAI.value : ''));
+        if (llmParsed.turns.length >= 2) {
+          turns = llmParsed.turns;
+          detectedFormat = llmParsed.format || 'LLM segmented';
+        }
+      } catch (e) {
+        if (window.hugEvent) hugEvent('import_segmentation_fallback_error', {
+          error: String(e && e.message ? e.message : e),
+          raw_chars: raw.length
+        });
+      } finally {
+        importHint.innerHTML = oldHint;
+      }
+    }
     if (turns.length === 0) {
       importHint.classList.remove('is-url-nudge');
       importHint.innerHTML = 'Nothing to load &mdash; paste a chat first.';
@@ -2531,8 +2615,17 @@
     return true;
   }
 
-  loadImport.addEventListener('click', () => {
-    loadImportedTranscript(importText.value);
+  loadImport.addEventListener('click', async () => {
+    if (!loadImport) return;
+    const oldText = loadImport.textContent;
+    loadImport.disabled = true;
+    loadImport.textContent = 'Loading...';
+    try {
+      await loadImportedTranscript(importText.value);
+    } finally {
+      loadImport.disabled = false;
+      loadImport.textContent = oldText;
+    }
   });
 
   /* ---------- one-time fast cycling sweep on first load ----------
