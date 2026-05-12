@@ -2165,20 +2165,19 @@
 
   // Universal role-marker regex — covers virtually any LLM transcript.
   // Captured group 1 is the original marker text (used to label turns in the review prompt).
-  const ROLE_MARKER_RE = /^[ \t]*(User|You|Me|Human|H|Assistant|A|System|(?:ChatGPT|GPT-?\d?o?|GPT|Claude|Gemini|Bard|Grok|DeepSeek|Perplexity|Copilot|Mistral|Llama|Qwen|Kimi|Pi|Yi|Character(?:\.AI)?|Replika|Meta\s*AI|Meta|Model|AI|Bot)(?:\s+[A-Za-z0-9._-]+)*)\s*:\s*/gim;
+  // Accepts optional ">>" prefixes from exports like:
+  // "History ... >> User: ... >> Claude Opus 4.7: ..."
+  const ROLE_MARKER_RE = /(?:^|[\r\n]+|>>\s*)(User|You|Me|Human|H|Assistant|A|System|(?:ChatGPT|GPT-?\d?o?|GPT|Claude|Gemini|Bard|Grok|DeepSeek|Perplexity|Copilot|Mistral|Llama|Qwen|Kimi|Pi|Yi|Character(?:\.AI)?|Replika|Meta\s*AI|Meta|Model|AI|Bot)(?:\s+[A-Za-z0-9._-]+)*)\s*:\s*/gim;
   const USER_TAGS = new Set(['user', 'you', 'me', 'human', 'h']);
 
-  function parseImported(raw) {
-    const t = String(raw || '').trim();
+  function turnsFromRoleMarkers(text) {
+    const t = String(text || '').trim();
     if (!t) return [];
     ROLE_MARKER_RE.lastIndex = 0;
     const matches = [];
     let m;
     while ((m = ROLE_MARKER_RE.exec(t)) !== null) matches.push(m);
-
-    if (matches.length < 2) {
-      return [{ role: 'user', text: t, marker: null }];
-    }
+    if (matches.length < 2) return [];
 
     const turns = [];
     for (let i = 0; i < matches.length; i++) {
@@ -2191,6 +2190,59 @@
       if (content) turns.push({ role, text: content, marker: cur[1].trim() });
     }
     return turns;
+  }
+
+  function turnsFromExportData(data) {
+    const out = [];
+    const visit = (nodes) => {
+      if (!Array.isArray(nodes)) return;
+      nodes.forEach((msg) => {
+        const text = exportedMessageText(msg);
+        if (text) {
+          const sender = String(msg && msg.sender || '').trim();
+          const isUser = msg && (msg.isCreatedByUser === true || /^user$/i.test(sender));
+          out.push({
+            role: isUser ? 'user' : 'assistant',
+            text,
+            marker: sender || (isUser ? 'User' : 'Assistant')
+          });
+        }
+        visit(msg && msg.children);
+      });
+    };
+    visit(data && data.messages);
+    return out;
+  }
+
+  function parseImported(raw) {
+    const t = String(raw || '').trim();
+    if (!t) return { turns: [], format: null };
+
+    // 1) Structured JSON export (messages tree)
+    if ((t.startsWith('{') || t.startsWith('['))) {
+      try {
+        const parsed = JSON.parse(t);
+        const exportTurns = turnsFromExportData(parsed);
+        if (exportTurns.length) return { turns: exportTurns, format: 'JSON export' };
+      } catch (e) {
+        // Keep falling through to text-based parsing.
+      }
+    }
+
+    // 2) "Conversation / Options / History" dumps: parse the History section first.
+    const historyMatch = /\bHistory\b[\s#-]*/i.exec(t);
+    if (historyMatch) {
+      const historyText = t.slice(historyMatch.index + historyMatch[0].length).trim();
+      const historyTurns = turnsFromRoleMarkers(historyText);
+      if (historyTurns.length) return { turns: historyTurns, format: 'History transcript' };
+    }
+
+    // 3) Generic marker-based transcripts (User:/Assistant:, >> User:, Claude:, etc.)
+    const turns = turnsFromRoleMarkers(t);
+    if (turns.length) return { turns, format: 'Generic chat' };
+
+    // 4) Fallback: treat as single user prompt.
+    return { turns: [{ role: 'user', text: t, marker: null }], format: 'Generic chat' };
   }
 
   // ---- Share-URL detection: nudge instead of pretending to fetch ----
@@ -2439,7 +2491,9 @@
       importText.focus();
       return false;
     }
-    const turns = parseImported(raw);
+    const parsedImport = parseImported(raw);
+    const turns = parsedImport.turns;
+    const detectedFormat = parsedImport.format || 'Generic chat';
     if (turns.length === 0) {
       importHint.classList.remove('is-url-nudge');
       importHint.innerHTML = 'Nothing to load &mdash; paste a chat first.';
@@ -2463,14 +2517,15 @@
       elided_count: elided,
       raw_chars: raw.length,
       source_ai: sourceName,
+      detected_format: detectedFormat,
       sample_title: opts.sampleTitle || null,
     });
 
     importText.value = '';
     importHint.classList.remove('is-url-nudge');
     importHint.innerHTML = elided > 0
-      ? `Loaded ${turns.length - elided} of ${turns.length} turns &mdash; ${elided} elided. Ready to submit a claim.`
-      : `Loaded ${turns.length} turn${turns.length === 1 ? '' : 's'} from ${sourceName} &mdash; ready to submit a claim.`;
+      ? `Loaded ${turns.length - elided} of ${turns.length} turns &mdash; ${elided} elided. Detected format: ${detectedFormat}. Ready to submit a claim.`
+      : `Loaded ${turns.length} turn${turns.length === 1 ? '' : 's'} from ${sourceName} &mdash; Detected format: ${detectedFormat}. Ready to submit a claim.`;
     renderScore(6, `${sourceName} chat loaded as claim evidence; submit the exact error on the claim page.`);
     queueConversationSave();
     return true;
