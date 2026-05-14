@@ -14,6 +14,14 @@ if [ ! -f .venv/.deps_installed ]; then
   touch .venv/.deps_installed
 fi
 
+# Auto-load local env vars when available.
+if [ -f .env ]; then
+  set -a
+  # shellcheck disable=SC1091
+  source .env
+  set +a
+fi
+
 if [ -z "${ANTHROPIC_API_KEY:-}" ]; then
   echo "error: ANTHROPIC_API_KEY not set"
   echo "run: export ANTHROPIC_API_KEY=... && ./run.sh"

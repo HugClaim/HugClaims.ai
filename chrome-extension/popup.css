@@ -1,0 +1,240 @@
+:root {
+  --paper: #f1edf6;
+  --paper-2: #e5ddee;
+  --card: #fffdf8;
+  --ink: #1a1612;
+  --muted: #5f5868;
+  --line: #d3c8da;
+  --violet: #635bff;
+  --violet-2: #4f47e6;
+  --violet-soft: rgba(99, 91, 255, 0.14);
+  --ok: #2f6b40;
+  --ok-soft: rgba(107, 142, 110, 0.14);
+  --err: #a23a31;
+  --err-soft: rgba(196, 74, 63, 0.12);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 360px;
+  background: var(--paper);
+  background-image:
+    radial-gradient(ellipse 65% 50% at 90% -10%, rgba(132, 102, 178, 0.16) 0%, transparent 62%),
+    radial-gradient(ellipse 55% 45% at -8% 108%, rgba(99, 91, 255, 0.1) 0%, transparent 58%);
+  color: var(--ink);
+  font: 13px/1.45 "Avenir Next", "Segoe UI", sans-serif;
+}
+
+.app {
+  padding: 12px;
+  display: grid;
+  gap: 10px;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 22px;
+  letter-spacing: -0.02em;
+  color: #211b35;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.brand img {
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+  object-fit: cover;
+  border: 1px solid var(--line);
+  box-shadow: 0 3px 10px rgba(58, 44, 84, 0.18);
+}
+
+header p {
+  margin: 2px 0 0;
+  color: var(--muted);
+}
+
+.panel {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: linear-gradient(180deg, rgba(255, 253, 248, 0.95), rgba(249, 244, 255, 0.82));
+  padding: 10px;
+  display: grid;
+  gap: 8px;
+  box-shadow: 0 8px 24px rgba(58, 44, 84, 0.06);
+}
+
+.panel.hidden {
+  display: none;
+}
+
+label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+
+input,
+textarea,
+button {
+  font: inherit;
+}
+
+input:not([type="checkbox"]),
+textarea {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px;
+  background: rgba(255, 253, 248, 0.92);
+  color: var(--ink);
+  transition: border-color 0.16s, box-shadow 0.16s, background 0.16s;
+}
+
+input:not([type="checkbox"]):focus,
+textarea:focus {
+  outline: none;
+  border-color: rgba(99, 91, 255, 0.48);
+  box-shadow: 0 0 0 3px rgba(99, 91, 255, 0.12);
+  background: #fffdf8;
+}
+
+textarea {
+  min-height: 82px;
+  resize: vertical;
+}
+
+#transcript,
+#redactedText {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  line-height: 1.4;
+  white-space: pre-wrap;
+  overflow-wrap: normal;
+  tab-size: 2;
+}
+
+button {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 8px 12px;
+  background: rgba(255, 253, 248, 0.92);
+  color: #322a45;
+  cursor: pointer;
+  transition: transform 0.16s, border-color 0.16s, background 0.16s;
+}
+
+button:hover {
+  transform: translateY(-1px);
+}
+
+button.primary {
+  border-color: var(--violet);
+  background: linear-gradient(135deg, #635bff, #7f78ff);
+  color: #fff;
+}
+
+button.primary:hover {
+  background: linear-gradient(135deg, #5750ec, #736cff);
+}
+
+button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: space-between;
+}
+
+.row.compact {
+  justify-content: flex-start;
+}
+
+.badge,
+.pill {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 3px 8px;
+  background: var(--paper-2);
+  color: var(--muted);
+  font-size: 11px;
+}
+
+ul {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.confirm {
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 12px;
+  color: var(--ink);
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.status {
+  min-height: 16px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.status.error {
+  color: var(--err);
+}
+
+.status.ok {
+  color: var(--ok);
+}
+
+.subtle {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.subtle.hidden {
+  display: none;
+}
+
+.redaction-list {
+  margin: 0;
+  padding-left: 18px;
+  max-height: 120px;
+  overflow: auto;
+}
+
+.redaction-list li {
+  margin: 3px 0;
+  font-size: 12px;
+}
+
+.redaction-list del {
+  color: var(--err);
+}
+
+.redaction-list code {
+  background: #f3eeff;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  padding: 1px 4px;
+  color: #453c9b;
+}
+
+#redactedText {
+  min-height: 110px;
+}

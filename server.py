@@ -97,6 +97,60 @@ Rules:
 Output schema:
 {"format":"History transcript|JSON export|Generic chat|LLM segmented","turns":[{"role":"user|assistant","text":"...","marker":"..."}]}"""
 
+DISSATISFACTION_SYSTEM = """You extract why a user is dissatisfied with an AI answer.
+You will receive:
+- SOURCE_AI: model/provider label if known
+- USER_NOTE: the user's own complaint (optional)
+- TRANSCRIPT: the conversation text
+
+Return ONLY one-line JSON:
+{"summary":"<1 sentence>","reasons":["<short reason>", "..."],"severity":1-5,"needs_human_review":true|false,"confidence":0.0-1.0}
+
+Rules:
+- Focus on concrete dissatisfaction drivers: factual error, missing context, hallucination, refusal mismatch, shallow answer, unsafe advice, stale info.
+- Keep reasons concise and non-duplicative (1-4 items).
+- If transcript is too vague, say so and lower confidence.
+- severity=1 means minor annoyance; severity=5 means high-stakes error.
+"""
+
+PII_REDACT_SYSTEM = """You are a privacy redaction agent for user-shared claim text.
+Input includes a transcript and optional user note.
+
+Identify and redact user-identifiable or sensitive data, including:
+- person names when they appear to identify a real individual
+- emails, phone numbers, home/work addresses
+- IDs, account numbers, passports, SSN-like tokens
+- credit card / banking details
+- dates of birth, exact ages for minors, medical record identifiers
+- exact employer/school identifiers if personally identifying
+
+Do NOT redact generic technical content, model names, or non-identifying facts.
+
+Output ONLY one-line JSON:
+{"redacted_text":"<full redacted transcript>","redactions":[{"original":"...","replacement":"[REDACTED:TYPE]","type":"NAME|EMAIL|PHONE|ADDRESS|ID|ACCOUNT|PAYMENT|DOB|MEDICAL|OTHER"}],"risk_level":"low|medium|high","confidence":0.0-1.0}
+
+Rules:
+- Keep redacted_text same structure as source; only replace sensitive spans.
+- Use replacement token exactly like [REDACTED:TYPE].
+- redactions should be unique and concise.
+"""
+
+AUTO_SIGNAL_SYSTEM = """You are an LLM claims triage agent.
+Given a transcript between a user and an AI assistant, predict whether there is a likely
+substantive assistant failure worth offering a HugInsure claim signal.
+
+A substantive failure includes: factual error, unsafe advice, fabricated citation/source,
+important omission, severe misunderstanding, or self-contradiction.
+Ignore minor style issues and harmless preference mismatches.
+
+Return ONLY one-line JSON:
+{"detected":true|false,"summary":"<1 sentence>","reasons":["<short reason>", "..."],"difficulty":1-5,"confidence":0.0-1.0}
+
+Guidance:
+- difficulty=1 easy/low-stakes, 5 difficult/high-stakes verification burden.
+- If uncertain, set detected=false and low confidence.
+"""
+
 
 VERIFIER_MODEL = os.environ.get("HUG_VERIFIER_MODEL", "claude-haiku-4-5")
 VERIFIER_SYSTEM = """You are an impartial verifier of error claims against AI assistants. \
@@ -146,9 +200,11 @@ ALLOWED_ORIGINS = [
     ).split(",")
     if origin.strip()
 ]
+ALLOWED_ORIGIN_REGEX = os.environ.get("ALLOWED_ORIGIN_REGEX", r"chrome-extension://.*")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=ALLOWED_ORIGINS,
+    allow_origin_regex=ALLOWED_ORIGIN_REGEX,
     allow_methods=["GET", "POST", "OPTIONS"],
     allow_headers=["*"],
 )
@@ -181,7 +237,9 @@ def get_client() -> AsyncAnthropicFoundry:
 DATA_DIR = HERE / "data"
 DATA_DIR.mkdir(exist_ok=True)
 EVENTS_FILE = DATA_DIR / "events.jsonl"
+EXTENSION_RECORDS_FILE = DATA_DIR / "extension_records.jsonl"
 _events_lock = asyncio.Lock()
+_extension_records_lock = asyncio.Lock()
 
 
 async def log_event(
@@ -216,6 +274,33 @@ async def log_event(
     return record
 
 
+async def log_extension_record(
+    record_type: str,
+    *,
+    session_id: Optional[str] = None,
+    source_ai: Optional[str] = None,
+    transcript: Optional[str] = None,
+    payload: Optional[dict] = None,
+) -> dict:
+    """Append one extension-focused JSONL record for easy downstream analysis."""
+    record: dict[str, Any] = {
+        "record_id": str(_uuid.uuid4()),
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "record_type": record_type,
+        "session_id": session_id,
+        "source_ai": source_ai or "Unknown",
+        "transcript": (transcript or "")[:50000],
+        "payload": payload or {},
+    }
+    try:
+        async with _extension_records_lock:
+            with EXTENSION_RECORDS_FILE.open("a", encoding="utf-8") as f:
+                f.write(json.dumps(record, ensure_ascii=False, default=str) + "\n")
+    except Exception as e:
+        print(f"[hug] extension record write error: {type(e).__name__}: {e}", flush=True)
+    return record
+
+
 class Turn(BaseModel):
     role: str
     # str (plain text) OR list of Anthropic content blocks (text + image for multimodal)
@@ -246,6 +331,38 @@ class DetectLLMRequest(BaseModel):
 
 
 class SegmentTranscriptRequest(BaseModel):
+    transcript: str
+    source_ai: Optional[str] = None
+    session_id: Optional[str] = None
+
+
+class DissatisfactionExtractRequest(BaseModel):
+    transcript: str
+    source_ai: Optional[str] = None
+    user_note: Optional[str] = None
+    session_id: Optional[str] = None
+
+
+class SubmitExtensionClaimRequest(BaseModel):
+    source_ai: Optional[str] = None
+    transcript: str
+    summary: str
+    reasons: list[str] = Field(default_factory=list)
+    severity: int = 2
+    offered_cashback: Optional[int] = None
+    auto_detected: bool = False
+    user_note: Optional[str] = None
+    session_id: Optional[str] = None
+
+
+class RedactForShareRequest(BaseModel):
+    transcript: str
+    user_note: Optional[str] = None
+    source_ai: Optional[str] = None
+    session_id: Optional[str] = None
+
+
+class AutoFailureSignalRequest(BaseModel):
     transcript: str
     source_ai: Optional[str] = None
     session_id: Optional[str] = None
@@ -670,6 +787,408 @@ async def segment_transcript(req: SegmentTranscriptRequest, request: Request):
     return result
 
 
+@app.post("/extract_dissatisfaction")
+async def extract_dissatisfaction(req: DissatisfactionExtractRequest, request: Request):
+    """Extract and summarize why the user is unhappy with an AI answer."""
+    if not foundry_api_key():
+        raise HTTPException(500, "Foundry API key not set on server")
+
+    transcript = (req.transcript or "").strip()
+    if not transcript:
+        raise HTTPException(400, "transcript is required")
+
+    clipped = transcript[:50000]
+    user_note = (req.user_note or "").strip()
+    result: dict[str, Any] = {
+        "summary": "User is dissatisfied, but the issue needs manual clarification.",
+        "reasons": ["Not enough detail to identify a concrete model error."],
+        "severity": 2,
+        "needs_human_review": True,
+        "confidence": 0.2,
+    }
+    error: Optional[str] = None
+
+    prompt = (
+        f"SOURCE_AI: {req.source_ai or 'Unknown'}\n\n"
+        f"USER_NOTE:\n{user_note or '(none)'}\n\n"
+        f"TRANSCRIPT:\n{clipped}\n\n"
+        "Return the JSON now."
+    )
+    try:
+        resp = await get_client().messages.create(
+            model=DETECT_MODEL,
+            max_tokens=500,
+            system=DISSATISFACTION_SYSTEM,
+            messages=[{"role": "user", "content": prompt}],
+        )
+        text = next((b.text for b in resp.content if b.type == "text"), "").strip()
+        if text.startswith("```"):
+            text = text.strip("`").replace("json", "", 1).strip()
+        start = text.find("{")
+        end = text.rfind("}")
+        payload = json.loads(text[start : end + 1] if start >= 0 and end > start else text)
+
+        summary = str(payload.get("summary") or "").strip()[:260]
+        reasons_in = payload.get("reasons")
+        reasons: list[str] = []
+        if isinstance(reasons_in, list):
+            for item in reasons_in[:4]:
+                reason = str(item).strip()[:150]
+                if reason:
+                    reasons.append(reason)
+        severity = int(payload.get("severity") or 2)
+        needs_review = bool(payload.get("needs_human_review"))
+        confidence = float(payload.get("confidence") or 0.0)
+
+        result = {
+            "summary": summary or result["summary"],
+            "reasons": reasons or result["reasons"],
+            "severity": max(1, min(5, severity)),
+            "needs_human_review": needs_review,
+            "confidence": max(0.0, min(1.0, confidence)),
+        }
+    except anthropic.AuthenticationError:
+        error = "invalid Foundry API key"
+    except anthropic.APIStatusError as e:
+        error = f"extract API error {e.status_code}"
+    except Exception as e:
+        error = f"{type(e).__name__}: {e}"
+        print(f"[hug] dissatisfaction extract error: {error}", flush=True)
+
+    await log_event(
+        "dissatisfaction_extracted",
+        page="extension",
+        session_id=req.session_id,
+        payload={
+            "source_ai": req.source_ai or "Unknown",
+            "transcript_length": len(transcript),
+            "has_user_note": bool(user_note),
+            "result": result,
+            "model": DETECT_MODEL,
+            "error": error,
+        },
+        request=request,
+    )
+    await log_extension_record(
+        "extract_dissatisfaction",
+        session_id=req.session_id,
+        source_ai=req.source_ai,
+        transcript=transcript,
+        payload={
+            "user_note": user_note[:500],
+            "result": result,
+            "model": DETECT_MODEL,
+            "error": error,
+        },
+    )
+
+    if error == "invalid Foundry API key":
+        raise HTTPException(401, error)
+    if error and error.startswith("extract API error"):
+        raise HTTPException(502, error)
+    return result
+
+
+@app.post("/submit_extension_claim")
+async def submit_extension_claim(req: SubmitExtensionClaimRequest, request: Request):
+    """Record a confirmed extension claim and return mock LLM-credit payout."""
+    transcript = (req.transcript or "").strip()
+    summary = (req.summary or "").strip()
+    if not transcript:
+        raise HTTPException(400, "transcript is required")
+    if not summary:
+        raise HTTPException(400, "summary is required")
+
+    severity = max(1, min(5, int(req.severity)))
+    reasons = [str(r).strip()[:150] for r in (req.reasons or []) if str(r).strip()][:4]
+    source_ai = (req.source_ai or "Other/Unknown").strip()[:80]
+    claim_id = f"HUGX-{_uuid.uuid4().hex[:8].upper()}"
+
+    # Prototype payout policy for extension flow:
+    # - default/manual flow: base by severity + small source bonus
+    # - auto-detected signal flow: payout aligned to difficulty-estimated offer
+    source_bonus = 1 if source_ai != "Other/Unknown" else 0
+    base_amount = min(30, severity * 3 + source_bonus)
+    auto_offer_amount = min(30, max(2, severity * 3 + 2))
+    if req.auto_detected:
+        credit_amount = auto_offer_amount
+    else:
+        credit_amount = base_amount
+
+    # If the client passes the displayed offer, keep payout synced to that
+    # offer while enforcing server-side bounds and prototype policy ceiling.
+    if req.offered_cashback is not None:
+        offered = min(30, max(2, int(req.offered_cashback)))
+        ceiling = auto_offer_amount if req.auto_detected else base_amount
+        credit_amount = min(offered, ceiling)
+
+    await log_event(
+        "extension_claim_submitted",
+        page="extension",
+        session_id=req.session_id,
+        payload={
+            "claim_id": claim_id,
+            "source_ai": source_ai,
+            "summary": summary[:260],
+            "reasons": reasons,
+            "severity": severity,
+            "auto_detected": bool(req.auto_detected),
+            "offered_cashback": req.offered_cashback,
+            "credit_amount": credit_amount,
+            "transcript_length": len(transcript),
+            "user_note": (req.user_note or "")[:500],
+        },
+        request=request,
+    )
+    await log_extension_record(
+        "submit_extension_claim",
+        session_id=req.session_id,
+        source_ai=source_ai,
+        transcript=transcript,
+        payload={
+            "claim_id": claim_id,
+            "summary": summary[:260],
+            "reasons": reasons,
+            "severity": severity,
+            "auto_detected": bool(req.auto_detected),
+            "offered_cashback": req.offered_cashback,
+            "credit_amount": credit_amount,
+            "user_note": (req.user_note or "")[:500],
+        },
+    )
+
+    return {
+        "claim_id": claim_id,
+        "status": "approved_mock",
+        "credit_amount": credit_amount,
+        "currency": "LLM_CREDITS",
+        "message": "Claim confirmed and credits added (prototype payout).",
+    }
+
+
+@app.post("/redact_for_share")
+async def redact_for_share(req: RedactForShareRequest, request: Request):
+    """Redact user-identifiable info from transcript before sharing."""
+    if not foundry_api_key():
+        raise HTTPException(500, "Foundry API key not set on server")
+
+    transcript = (req.transcript or "").strip()
+    if not transcript:
+        raise HTTPException(400, "transcript is required")
+
+    clipped = transcript[:50000]
+    user_note = (req.user_note or "").strip()[:3000]
+    result: dict[str, Any] = {
+        "redacted_text": clipped,
+        "redactions": [],
+        "risk_level": "low",
+        "confidence": 0.2,
+    }
+    error: Optional[str] = None
+
+    prompt = (
+        f"SOURCE_AI: {req.source_ai or 'Unknown'}\n\n"
+        f"USER_NOTE:\n{user_note or '(none)'}\n\n"
+        f"TRANSCRIPT:\n{clipped}\n\n"
+        "Return the JSON now."
+    )
+    try:
+        resp = await get_client().messages.create(
+            model=DETECT_MODEL,
+            max_tokens=2200,
+            system=PII_REDACT_SYSTEM,
+            messages=[{"role": "user", "content": prompt}],
+        )
+        text = next((b.text for b in resp.content if b.type == "text"), "").strip()
+        if text.startswith("```"):
+            text = text.strip("`").replace("json", "", 1).strip()
+        start = text.find("{")
+        end = text.rfind("}")
+        payload = json.loads(text[start : end + 1] if start >= 0 and end > start else text)
+
+        redacted_text = str(payload.get("redacted_text") or "").strip()
+        if not redacted_text:
+            redacted_text = clipped
+
+        level = str(payload.get("risk_level") or "low").strip().lower()
+        if level not in ("low", "medium", "high"):
+            level = "medium"
+
+        conf = float(payload.get("confidence") or 0.0)
+        conf = max(0.0, min(1.0, conf))
+
+        redactions_in = payload.get("redactions")
+        redactions: list[dict[str, str]] = []
+        if isinstance(redactions_in, list):
+            seen: set[tuple[str, str]] = set()
+            for item in redactions_in[:80]:
+                if not isinstance(item, dict):
+                    continue
+                original = str(item.get("original") or "").strip()[:140]
+                replacement = str(item.get("replacement") or "").strip()[:40]
+                kind = str(item.get("type") or "OTHER").strip().upper()[:20]
+                if not original:
+                    continue
+                if not replacement.startswith("[REDACTED:"):
+                    replacement = f"[REDACTED:{kind or 'OTHER'}]"
+                key = (original, replacement)
+                if key in seen:
+                    continue
+                seen.add(key)
+                redactions.append({"original": original, "replacement": replacement, "type": kind or "OTHER"})
+
+        result = {
+            "redacted_text": redacted_text,
+            "redactions": redactions,
+            "risk_level": level,
+            "confidence": conf,
+        }
+    except anthropic.AuthenticationError:
+        error = "invalid Foundry API key"
+    except anthropic.APIStatusError as e:
+        error = f"redact API error {e.status_code}"
+    except Exception as e:
+        error = f"{type(e).__name__}: {e}"
+        print(f"[hug] redact_for_share error: {error}", flush=True)
+
+    await log_event(
+        "share_redaction_generated",
+        page="extension",
+        session_id=req.session_id,
+        payload={
+            "source_ai": req.source_ai or "Unknown",
+            "transcript_length": len(transcript),
+            "redaction_count": len(result.get("redactions") or []),
+            "risk_level": result.get("risk_level"),
+            "confidence": result.get("confidence"),
+            "model": DETECT_MODEL,
+            "error": error,
+        },
+        request=request,
+    )
+    await log_extension_record(
+        "redact_for_share",
+        session_id=req.session_id,
+        source_ai=req.source_ai,
+        transcript=transcript,
+        payload={
+            "user_note": user_note[:500],
+            "result": result,
+            "model": DETECT_MODEL,
+            "error": error,
+        },
+    )
+
+    if error == "invalid Foundry API key":
+        raise HTTPException(401, error)
+    if error and error.startswith("redact API error"):
+        raise HTTPException(502, error)
+    return result
+
+
+@app.post("/detect_failure_signal")
+async def detect_failure_signal(req: AutoFailureSignalRequest, request: Request):
+    """Predict whether to surface an auto claim signal and estimate payout difficulty."""
+    if not foundry_api_key():
+        raise HTTPException(500, "Foundry API key not set on server")
+
+    transcript = (req.transcript or "").strip()
+    if not transcript:
+        raise HTTPException(400, "transcript is required")
+
+    clipped = transcript[:50000]
+    result: dict[str, Any] = {
+        "detected": False,
+        "summary": "No clear high-confidence model failure detected.",
+        "reasons": [],
+        "difficulty": 1,
+        "confidence": 0.2,
+        "cashback_offer": 2,
+        "currency": "LLM_CREDITS",
+    }
+    error: Optional[str] = None
+
+    prompt = (
+        f"SOURCE_AI: {req.source_ai or 'Unknown'}\n\n"
+        f"TRANSCRIPT:\n{clipped}\n\n"
+        "Return the JSON now."
+    )
+    try:
+        resp = await get_client().messages.create(
+            model=DETECT_MODEL,
+            max_tokens=600,
+            system=AUTO_SIGNAL_SYSTEM,
+            messages=[{"role": "user", "content": prompt}],
+        )
+        text = next((b.text for b in resp.content if b.type == "text"), "").strip()
+        if text.startswith("```"):
+            text = text.strip("`").replace("json", "", 1).strip()
+        start = text.find("{")
+        end = text.rfind("}")
+        payload = json.loads(text[start : end + 1] if start >= 0 and end > start else text)
+
+        detected = bool(payload.get("detected"))
+        summary = str(payload.get("summary") or "").strip()[:260]
+        difficulty = max(1, min(5, int(payload.get("difficulty") or 1)))
+        confidence = max(0.0, min(1.0, float(payload.get("confidence") or 0.0)))
+        reasons_raw = payload.get("reasons")
+        reasons: list[str] = []
+        if isinstance(reasons_raw, list):
+            for r in reasons_raw[:4]:
+                rs = str(r).strip()[:160]
+                if rs:
+                    reasons.append(rs)
+
+        cashback = min(30, max(2, difficulty * 3 + (2 if detected else 0)))
+        result = {
+            "detected": detected,
+            "summary": summary or result["summary"],
+            "reasons": reasons,
+            "difficulty": difficulty,
+            "confidence": confidence,
+            "cashback_offer": cashback,
+            "currency": "LLM_CREDITS",
+        }
+    except anthropic.AuthenticationError:
+        error = "invalid Foundry API key"
+    except anthropic.APIStatusError as e:
+        error = f"auto-signal API error {e.status_code}"
+    except Exception as e:
+        error = f"{type(e).__name__}: {e}"
+        print(f"[hug] detect_failure_signal error: {error}", flush=True)
+
+    await log_event(
+        "auto_failure_signal_predicted",
+        page="extension",
+        session_id=req.session_id,
+        payload={
+            "source_ai": req.source_ai or "Unknown",
+            "transcript_length": len(transcript),
+            "result": result,
+            "model": DETECT_MODEL,
+            "error": error,
+        },
+        request=request,
+    )
+    await log_extension_record(
+        "detect_failure_signal",
+        session_id=req.session_id,
+        source_ai=req.source_ai,
+        transcript=transcript,
+        payload={
+            "result": result,
+            "model": DETECT_MODEL,
+            "error": error,
+        },
+    )
+
+    if error == "invalid Foundry API key":
+        raise HTTPException(401, error)
+    if error and error.startswith("auto-signal API error"):
+        raise HTTPException(502, error)
+    return result
+
+
 # ---------- Client-emitted events + dataset export ---------------------------
 
 @app.post("/event")
@@ -715,6 +1234,36 @@ async def events_count():
         for _ in f:
             n += 1
     return {"count": n, "bytes": EVENTS_FILE.stat().st_size, "path": str(EVENTS_FILE)}
+
+
+@app.get("/export_extension")
+async def export_extension(token: Optional[str] = None):
+    """Download extension-only JSONL records.
+
+    Uses the same optional HUG_EXPORT_TOKEN gate as /export.
+    """
+    expected = os.environ.get("HUG_EXPORT_TOKEN")
+    if expected and token != expected:
+        raise HTTPException(403, "missing or invalid token")
+    if not EXTENSION_RECORDS_FILE.exists():
+        return Response(content="", media_type="application/x-ndjson")
+    return FileResponse(
+        EXTENSION_RECORDS_FILE,
+        media_type="application/x-ndjson",
+        filename="extension_records.jsonl",
+    )
+
+
+@app.get("/extension_records_count")
+async def extension_records_count():
+    """Quick check for extension-only dataset size."""
+    if not EXTENSION_RECORDS_FILE.exists():
+        return {"count": 0, "bytes": 0, "path": str(EXTENSION_RECORDS_FILE)}
+    n = 0
+    with EXTENSION_RECORDS_FILE.open("rb") as f:
+        for _ in f:
+            n += 1
+    return {"count": n, "bytes": EXTENSION_RECORDS_FILE.stat().st_size, "path": str(EXTENSION_RECORDS_FILE)}
 
 
 # Serve every static file in the project dir (HTML pages, data assets, etc.).

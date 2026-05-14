@@ -1,0 +1,48 @@
+{
+  "manifest_version": 3,
+  "name": "HugInsure Claim Helper",
+  "version": "0.1.0",
+  "description": "Capture unsatisfying LLM responses, extract complaint reasons, and submit HugInsure credit claims.",
+  "permissions": ["activeTab", "storage", "tabs", "clipboardWrite", "scripting"],
+  "host_permissions": [
+    "https://chat.openai.com/*",
+    "https://chatgpt.com/*",
+    "https://claude.ai/*",
+    "https://gemini.google.com/*",
+    "https://copilot.microsoft.com/*",
+    "http://127.0.0.1:8000/*",
+    "http://localhost:8000/*"
+  ],
+  "action": {
+    "default_title": "HugInsure",
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "assets/hug-logo.jpg",
+      "32": "assets/hug-logo.jpg",
+      "48": "assets/hug-logo.jpg",
+      "128": "assets/hug-logo.jpg"
+    }
+  },
+  "icons": {
+    "16": "assets/hug-logo.jpg",
+    "32": "assets/hug-logo.jpg",
+    "48": "assets/hug-logo.jpg",
+    "128": "assets/hug-logo.jpg"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://chat.openai.com/*",
+        "https://chatgpt.com/*",
+        "https://claude.ai/*",
+        "https://gemini.google.com/*",
+        "https://copilot.microsoft.com/*"
+      ],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}
