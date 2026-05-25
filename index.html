@@ -605,10 +605,16 @@
   }
   .model-set {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 10px;
     padding-right: 10px;
     flex-shrink: 0;
+  }
+  .model-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
   }
   .model-chip {
     --provider-accent: #5f6f85;
@@ -627,6 +633,13 @@
     min-width: 246px;
     color: var(--ink-2);
     white-space: nowrap;
+    cursor: pointer;
+    text-decoration: none;
+    transition: transform .15s ease, box-shadow .18s ease;
+  }
+  .model-chip:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 24px -18px rgba(40, 25, 10, 0.34);
   }
   .model-chip img {
     width: 18px;
@@ -642,11 +655,12 @@
     color: var(--ink);
   }
   .model-caption {
-    font-size: 10.5px;
+    font-size: 8px;
     color: color-mix(in oklab, var(--provider-accent) 66%, #2f6b40);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    font-weight: 600;
+    text-transform: none;
+    letter-spacing: 0.01em;
+    font-weight: 500;
+    padding-left: 3px;
   }
   @keyframes model-scroll {
     from { transform: translateX(0); }
@@ -734,7 +748,9 @@
     border-top: 1px solid var(--line);
     border-bottom: 1px solid var(--line);
     background:
-      linear-gradient(180deg, rgba(250, 246, 240, 0.9), rgba(255, 253, 248, 0.84));
+      radial-gradient(ellipse 88% 76% at 8% 2%, rgba(132, 102, 178, 0.14) 0%, rgba(132, 102, 178, 0) 58%),
+      radial-gradient(ellipse 92% 70% at 96% 100%, rgba(196, 74, 63, 0.09) 0%, rgba(196, 74, 63, 0) 56%),
+      linear-gradient(180deg, rgba(238, 230, 246, 0.72), rgba(243, 236, 249, 0.55));
   }
   .reviews .label {
     font-size: 10.5px;
@@ -760,21 +776,32 @@
     gap: 18px;
   }
   .review-card {
-    background: #fffdf8;
-    border: 1px solid var(--line);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.86), rgba(251, 247, 255, 0.78));
+    border: 1px solid rgba(179, 162, 198, 0.55);
     border-radius: 18px;
     padding: 22px 22px 20px;
-    box-shadow: 0 18px 34px -30px rgba(40, 25, 10, 0.24);
+    box-shadow:
+      0 18px 34px -30px rgba(40, 25, 10, 0.28),
+      0 0 0 1px rgba(255, 255, 255, 0.35) inset;
     display: flex;
     flex-direction: column;
     gap: 13px;
+    backdrop-filter: blur(2px);
+    transition: transform .18s ease, box-shadow .2s ease, border-color .2s ease;
+  }
+  .review-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(196, 74, 63, 0.42);
+    box-shadow:
+      0 20px 40px -30px rgba(40, 25, 10, 0.35),
+      0 0 0 1px rgba(255, 255, 255, 0.45) inset;
   }
   .review-type {
     display: inline-flex;
     width: fit-content;
-    border: 1px solid rgba(196, 74, 63, 0.24);
-    color: var(--hug-2);
-    background: rgba(196, 74, 63, 0.08);
+    border: 1px solid rgba(132, 102, 178, 0.32);
+    color: #5e4a7a;
+    background: rgba(132, 102, 178, 0.12);
     border-radius: 999px;
     padding: 4px 10px;
     font-size: 9.8px;
@@ -790,7 +817,7 @@
   }
   .review-foot {
     margin-top: auto;
-    border-top: 1px dashed var(--line);
+    border-top: 1px dashed rgba(179, 162, 198, 0.52);
     padding-top: 12px;
     display: flex;
     justify-content: space-between;
@@ -803,6 +830,7 @@
     text-transform: uppercase;
     letter-spacing: 0.11em;
     font-weight: 600;
+    color: #5a4d68;
   }
   .review-reward {
     font-family: var(--serif);
@@ -1053,7 +1081,7 @@
       <article class="review-card">
         <div class="review-type">user review</div>
         <p class="review-quote">
-          &ldquo;The model gave a wrong dosage schedule. I filed a failure-mode claim with the corrected guidance, and Hug approved in a few hours.&rdquo;
+          &ldquo;The model gave a <strong>wrong dosage schedule</strong>. I filed a failure-mode claim with the corrected guidance, and Hug approved in a few hours.&rdquo;
         </p>
         <div class="review-foot">
           <span class="review-who">User SAREM</span>
@@ -1063,7 +1091,7 @@
       <article class="review-card">
         <div class="review-type">user review</div>
         <p class="review-quote">
-          &ldquo;I caught a fabricated legal citation in a draft motion. Submitted the claim with source links, got paid, and reused the fix for my team template.&rdquo;
+          &ldquo;I caught a <strong>fabricated legal citation</strong> in a draft motion. Submitted the claim with source links, got paid, and reused the fix for my team template.&rdquo;
         </p>
         <div class="review-foot">
           <span class="review-who">User MILOX</span>
@@ -1073,7 +1101,7 @@
       <article class="review-card">
         <div class="review-type">user review</div>
         <p class="review-quote">
-          &ldquo;The equation chain looked polished but had a hidden sign error. My claim was verified and the cashback made the debugging time worth it.&rdquo;
+          &ldquo;The equation chain looked polished but had a <strong>hidden sign error</strong>. My claim was verified and the cashback made the debugging time worth it.&rdquo;
         </p>
         <div class="review-foot">
           <span class="review-who">User UAKEC</span>
@@ -1083,7 +1111,7 @@
       <article class="review-card">
         <div class="review-type">company impact</div>
         <p class="review-quote">
-          &ldquo;Our support team used submitted failure-mode claims to patch recurring bot mistakes. Escalations dropped and customer trust improved quickly.&rdquo;
+          &ldquo;Our support team used submitted failure-mode claims like <strong>wrong dosage schedule</strong> to patch recurring bot mistakes. Escalations dropped and customer trust improved quickly.&rdquo;
         </p>
         <div class="review-foot">
           <span class="review-who">Ops Lead, Arcwell</span>
@@ -1093,7 +1121,7 @@
       <article class="review-card">
         <div class="review-type">company impact</div>
         <p class="review-quote">
-          &ldquo;Claims gave us a live map of where the model was brittle. We turned those reports into eval cases and cut repeat failures in two weeks.&rdquo;
+          &ldquo;Claims gave us a live map of where the model was brittle, including <strong>fabricated legal citation</strong> issues. We turned those reports into eval cases and cut repeat failures in two weeks.&rdquo;
         </p>
         <div class="review-foot">
           <span class="review-who">AI PM, NorthGrid</span>
@@ -1103,7 +1131,7 @@
       <article class="review-card">
         <div class="review-type">company impact</div>
         <p class="review-quote">
-          &ldquo;The payout mechanism motivated high-quality reports from users. Their claims exposed blind spots we missed in internal testing.&rdquo;
+          &ldquo;The payout mechanism motivated high-quality reports from users. Their claims exposed blind spots like <strong>equation chain hidden sign error</strong> that we missed in internal testing.&rdquo;
         </p>
         <div class="review-foot">
           <span class="review-who">CTO, Solstem</span>
@@ -1349,6 +1377,7 @@
     qwen: '#5b5ce2',
     yi: '#5b6f87',
   };
+  const CLAIM_PAGE_URL = 'https://yuexinghao.github.io/HugClaims.ai/claim.html';
   const CAPTION_NAMES = ['UAKEC', 'NIVAR', 'MILOX', 'SAREM', 'QATEN', 'RUVIK', 'LEONA', 'DYLAN', 'MARA', 'KAI'];
 
   function seededInt(seedStr, min, max) {
@@ -1365,7 +1394,7 @@
   function phraseForModel(modelName) {
     const idx = seededInt(`${modelName}:name`, 0, CAPTION_NAMES.length - 1);
     const dollars = seededInt(`${modelName}:cash`, 2, 27);
-    return `User ${CAPTION_NAMES[idx]} earns $${dollars} cash back`;
+    return `User ${CAPTION_NAMES[idx]} earns $${dollars}`;
   }
 
   function titleizeModelName(modelName) {
@@ -1390,10 +1419,15 @@
     if (!rowEl || !rowEl.parentElement) return;
     rowEl.innerHTML = '';
     items.forEach((item) => {
-      const chip = document.createElement('span');
+      const modelItem = document.createElement('div');
+      modelItem.className = 'model-item';
+      const chip = document.createElement('a');
       chip.className = 'model-chip';
       const providerKey = String(item.provider_key || '').toLowerCase();
       chip.style.setProperty('--provider-accent', PROVIDER_COLORS[providerKey] || '#5f6f85');
+      modelItem.style.setProperty('--provider-accent', PROVIDER_COLORS[providerKey] || '#5f6f85');
+      chip.href = `${CLAIM_PAGE_URL}?model=${encodeURIComponent(String(item.name || ''))}&provider=${encodeURIComponent(String(item.provider || ''))}`;
+      chip.title = `File a claim for ${titleizeModelName(item.name || 'this model')}`;
 
       const img = document.createElement('img');
       img.src = String(item.logo || '');
@@ -1409,9 +1443,10 @@
       const caption = document.createElement('span');
       caption.className = 'model-caption';
       caption.textContent = phraseForModel(item.name || item.provider || 'model');
-      chip.appendChild(caption);
+      modelItem.appendChild(chip);
+      modelItem.appendChild(caption);
 
-      rowEl.appendChild(chip);
+      rowEl.appendChild(modelItem);
     });
 
     const oldDuplicate = rowEl.parentElement.querySelector('.model-set[data-duplicate="true"]');
