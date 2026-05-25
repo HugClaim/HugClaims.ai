@@ -591,17 +591,17 @@
   .model-marquee-inner {
     width: max-content;
     display: flex;
-    animation: model-scroll 78s linear infinite;
+    animation: model-scroll 112s linear infinite;
   }
   .model-marquee:hover .model-marquee-inner {
     animation-play-state: paused;
   }
   .model-marquee.reverse .model-marquee-inner {
     animation-name: model-scroll-reverse;
-    animation-duration: 86s;
+    animation-duration: 124s;
   }
   .model-marquee.slow .model-marquee-inner {
-    animation-duration: 72s;
+    animation-duration: 102s;
   }
   .model-set {
     display: flex;
@@ -1199,6 +1199,7 @@
     <nav class="nav">
       <a href="forum.html">forum</a>
       <a href="claim.html">file a claim</a>
+      <a href="career.html">careers</a>
       <a href="login.html">login</a>
       <a href="chat.html" class="cta">try the chat &rarr;</a>
     </nav>
@@ -1222,7 +1223,6 @@
         </p>
         <div class="actions">
           <a href="chat.html" class="btn-primary">open the chat &rarr;</a>
-          <span class="hint"><span class="arrow">&larr;</span> hover any strikethrough to see what was actually right</span>
         </div>
       </div>
       <aside class="hero-demo" aria-labelledby="demo-title">
@@ -1247,7 +1247,7 @@
 
   <section class="accepted-models" aria-labelledby="accepted-models-title">
     <div class="label">cash back eligible models</div>
-    <h2 id="accepted-models-title">We currently cover claims across <em>18 LLMs</em>.</h2>
+    <h2 id="accepted-models-title">We currently cover claims across <em>model families</em> and <em>models</em>.</h2>
     <div class="marquee-grid" aria-label="Accepted language models">
       <div class="model-marquee" data-row="1">
         <div class="model-marquee-inner">
@@ -1337,7 +1337,7 @@
   <section class="literature" aria-labelledby="literature-title">
     <div class="label">Research Results</div>
     <h2 id="literature-title">Papers our team is <em>currently doing</em>.</h2>
-    <p class="lit-sub">Active directions across failure analysis, risk tracing, and trust benchmarking.</p>
+    <p class="lit-sub">Our paper shows Failure Is the Training Signal.</p>
     <div class="lit-grid">
       <article class="lit-feature">
         <figure class="lit-figure">
@@ -1379,7 +1379,7 @@
           <h3 class="lit-title">MedPerturb</h3>
           <span class="lit-status">Under Review (Nature Medicine)</span>
           <p class="lit-desc">The MedPerturb Dataset: What Non-Content Perturbations Reveal About Human and Clinical LLM Decision Making.</p>
-          <p class="lit-authors">Abinitha Gourabathina (~Abinitha_Gourabathina1), Haoran Zhang, <strong>Yuexing Hao</strong>, Walter Gerych, Marzyeh Ghassemi</p>
+          <p class="lit-authors">Abinitha Gourabathina, Haoran Zhang, <strong>Yuexing Hao</strong>, Walter Gerych, Marzyeh Ghassemi</p>
           <a class="lit-link" href="https://github.com/abinithago/MedPerturb" target="_blank" rel="noopener noreferrer">View Project &rarr;</a>
         </article>
       </div>
@@ -1474,6 +1474,8 @@
       <a href="claim.html">file a claim</a>
       &nbsp;&middot;&nbsp;
       <a href="chat.html">try the chat</a>
+      &nbsp;&middot;&nbsp;
+      <a href="career.html">careers</a>
       &nbsp;&middot;&nbsp;
       <a href="login.html">login</a>
       &nbsp;&middot;&nbsp;
@@ -1723,6 +1725,7 @@
     const row1 = document.getElementById('acceptedModelsRow1');
     const row2 = document.getElementById('acceptedModelsRow2');
     const row3 = document.getElementById('acceptedModelsRow3');
+    const titleEl = document.getElementById('accepted-models-title');
     if (!row1 || !row2 || !row3) return;
     const items = Array.isArray(models) && models.length ? models : FALLBACK_MODELS;
     const unique = [];
@@ -1733,6 +1736,16 @@
       seen.add(key);
       unique.push(item);
     });
+
+    if (titleEl) {
+      const familySet = new Set(unique.map((item) => String(item.provider_key || item.provider || '').toLowerCase()).filter(Boolean));
+      const familyCount = familySet.size;
+      const modelCount = unique.length;
+      const familyLabel = familyCount === 1 ? 'model family' : 'model families';
+      const modelLabel = modelCount === 1 ? 'model' : 'models';
+      titleEl.innerHTML = `We currently cover claims across <em>${familyCount} ${familyLabel}</em> and <em>${modelCount} ${modelLabel}</em>.`;
+    }
+
     const buckets = [[], [], []];
     unique.forEach((item, idx) => {
       buckets[idx % 3].push(item);
@@ -1754,10 +1767,23 @@
 
   async function loadAzureModels() {
     try {
-      const res = await fetch('/api/azure_models?limit=36');
+      const res = await fetch('/api/azure_models?limit=80');
       if (!res.ok) throw new Error(`status ${res.status}`);
       const payload = await res.json();
-      const models = Array.isArray(payload.models) ? payload.models : [];
+      let models = Array.isArray(payload.models) ? payload.models : [];
+      const families = new Set(models.map((m) => String(m.provider_key || m.provider || '').toLowerCase()).filter(Boolean));
+
+      // If cache or parsing ever returns a narrow set (e.g., GPT-only),
+      // force-refresh once to recover provider diversity.
+      if (families.size < 4) {
+        const retry = await fetch('/api/azure_models?limit=80&refresh=true');
+        if (retry.ok) {
+          const retryPayload = await retry.json();
+          const retryModels = Array.isArray(retryPayload.models) ? retryPayload.models : [];
+          if (retryModels.length) models = retryModels;
+        }
+      }
+
       renderModelMarquee(models);
     } catch (_err) {
       renderModelMarquee(FALLBACK_MODELS);

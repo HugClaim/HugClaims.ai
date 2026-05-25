@@ -374,7 +374,35 @@ def _fetch_azure_models(limit: int = 36) -> dict[str, Any]:
         "yi": 12,
     }
     candidates.sort(key=lambda x: (provider_order.get(x["provider_key"], 99), x["name"]))
-    models = candidates[: max(1, min(80, int(limit or 36)))]
+
+    # Select a diverse set instead of letting one provider (usually OpenAI)
+    # consume the entire limit.
+    max_models = max(1, min(80, int(limit or 36)))
+    by_provider: dict[str, list[dict[str, Any]]] = {}
+    for item in candidates:
+        by_provider.setdefault(item["provider_key"], []).append(item)
+
+    ordered_providers = sorted(
+        by_provider.keys(),
+        key=lambda k: (provider_order.get(k, 99), k),
+    )
+    provider_idx = {k: 0 for k in ordered_providers}
+    models: list[dict[str, Any]] = []
+    while len(models) < max_models:
+        made_progress = False
+        for key in ordered_providers:
+            idx = provider_idx[key]
+            bucket = by_provider[key]
+            if idx >= len(bucket):
+                continue
+            models.append(bucket[idx])
+            provider_idx[key] = idx + 1
+            made_progress = True
+            if len(models) >= max_models:
+                break
+        if not made_progress:
+            break
+
     return {
         "source_url": AZURE_MODEL_CATALOG_URL,
         "fetched_at": datetime.now(timezone.utc).isoformat(),
