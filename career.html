@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/jpeg" href="assets/hug-logo.jpg" />
+  <link rel="apple-touch-icon" href="assets/hug-logo.jpg" />
+  <title>HugClaim.com - careers</title>
+  <style>
+    :root {
+      --paper:   #f1edf6;
+      --paper-2: #e5ddee;
+      --ink:     #1a1612;
+      --ink-2:   #4b4339;
+      --ink-3:   #8a8073;
+      --hug:     #c44a3f;
+      --hug-2:   #a83a30;
+      --line:    #d3c8da;
+      --serif:   -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+      --sans:    -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--sans);
+      color: var(--ink);
+      background: var(--paper);
+      background-image:
+        radial-gradient(ellipse 60% 40% at 85% -5%, rgba(132,102,178,.14) 0%, transparent 60%),
+        radial-gradient(ellipse 70% 50% at -5% 105%, rgba(196,74,63,.07) 0%, transparent 55%);
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.55;
+      font-size: 17.5px;
+      min-height: 100vh;
+    }
+
+    .app {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 32px 48px;
+    }
+
+    header.top {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 32px 0 24px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .brand-link {
+      display: inline-flex;
+      align-items: baseline;
+      text-decoration: none;
+      color: inherit;
+      transition: opacity .15s, transform .15s;
+    }
+    .brand-link:hover { opacity: 0.85; transform: translateY(-1px); }
+    .brand-text {
+      font-family: var(--serif);
+      font-style: italic;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      line-height: 1;
+      font-size: 30px;
+    }
+    .brand-text .em { color: var(--hug); font-style: italic; font-weight: 500; }
+    .brand-text .small {
+      font-size: 18px;
+      color: var(--ink-3);
+      margin-left: 1px;
+      font-weight: 400;
+    }
+
+    header .nav {
+      display: flex;
+      gap: 24px;
+      align-items: baseline;
+      flex-wrap: wrap;
+    }
+    header .nav a {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 14px;
+      color: var(--ink-2);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: border-color .15s, color .15s;
+      padding-bottom: 1px;
+    }
+    header .nav a:hover {
+      border-bottom-color: var(--hug);
+      color: var(--hug);
+    }
+
+    .panel {
+      margin-top: 28px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.72);
+      backdrop-filter: blur(2px);
+      padding: 24px;
+    }
+
+    h1 {
+      font-family: var(--sans);
+      font-size: clamp(34px, 4vw, 52px);
+      letter-spacing: -0.03em;
+      line-height: 1.06;
+      margin-bottom: 10px;
+    }
+
+    .sub {
+      color: var(--ink-2);
+      font-size: 18px;
+      margin-bottom: 18px;
+    }
+
+    .roles {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .role {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.82);
+      padding: 14px 14px 12px;
+    }
+
+    .role a {
+      color: var(--ink);
+      text-decoration: none;
+      font-family: var(--sans);
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+
+    .role a:hover { color: var(--hug); }
+
+    .meta {
+      margin-top: 4px;
+      color: var(--ink-3);
+      font-family: var(--sans);
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .foot {
+      margin-top: 18px;
+      color: var(--ink-2);
+      font-size: 14px;
+    }
+
+    @media (max-width: 860px) {
+      .app { padding: 0 20px 40px; }
+      header.top { gap: 14px; flex-direction: column; align-items: flex-start; }
+      .roles { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="top">
+      <a class="brand-link" href="index.html" aria-label="Hug Claims home">
+        <span class="brand-text">Hug<span class="em">.</span><span class="small">claims</span></span>
+      </a>
+      <nav class="nav" aria-label="Main">
+        <a href="index.html">home</a>
+        <a href="claim.html">file a claim</a>
+        <a href="chat.html">chat</a>
+      </nav>
+    </header>
+
+    <section class="panel">
+      <h1>Careers</h1>
+      <p class="sub">We are hiring for 5 posts across technical research and deployment.</p>
+      <p class="foot" style="margin-top:0;margin-bottom:14px;">Location: Hybrid / San Francisco, CA</p>
+
+      <div class="roles" aria-label="Open roles">
+        <div class="role">
+          <a href="career-mts-post-training.html">Member of Technical Staff - Post-Training</a>
+        </div>
+        <div class="role">
+          <a href="career-mts-data-analysis.html">Member of Technical Staff - Data Analysis</a>
+        </div>
+        <div class="role">
+          <a href="career-mts-multimodal.html">Member of Technical Staff - Multimodal</a>
+        </div>
+        <div class="role">
+          <a href="career-forward-deployed-engineer.html">Forward Deployed Engineer</a>
+        </div>
+      </div>
+
+      <p class="foot">Applications are accepted on an ongoing basis until positions are filled.</p>
+    </section>
+  </div>
+</body>
+</html>
