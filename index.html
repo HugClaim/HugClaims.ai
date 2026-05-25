@@ -591,17 +591,17 @@
   .model-marquee-inner {
     width: max-content;
     display: flex;
-    animation: model-scroll 54s linear infinite;
+    animation: model-scroll 78s linear infinite;
   }
   .model-marquee:hover .model-marquee-inner {
     animation-play-state: paused;
   }
   .model-marquee.reverse .model-marquee-inner {
     animation-name: model-scroll-reverse;
-    animation-duration: 58s;
+    animation-duration: 86s;
   }
-  .model-marquee.fast .model-marquee-inner {
-    animation-duration: 46s;
+  .model-marquee.slow .model-marquee-inner {
+    animation-duration: 72s;
   }
   .model-set {
     display: flex;
@@ -661,6 +661,15 @@
     letter-spacing: 0.01em;
     font-weight: 500;
     padding-left: 3px;
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+    transition: opacity .28s ease, transform .28s ease, filter .28s ease;
+  }
+  .model-caption.is-updating {
+    opacity: 0;
+    transform: translateY(4px);
+    filter: blur(1.2px);
   }
   @keyframes model-scroll {
     from { transform: translateX(0); }
@@ -867,62 +876,93 @@
   }
   .lit-grid {
     display: grid;
-    grid-template-columns: 1.2fr 1fr;
-    gap: 18px;
-  }
-  .lit-feature,
-  .lit-card {
-    background: #fffdf8;
-    border: 1px solid var(--line);
-    border-radius: 18px;
-    box-shadow: 0 18px 36px -30px rgba(40, 25, 10, 0.22);
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.95fr);
+    gap: 16px;
   }
   .lit-feature {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(247, 241, 253, 0.76));
+    border: 1px solid rgba(179, 162, 198, 0.56);
+    border-radius: 18px;
+    box-shadow:
+      0 20px 38px -30px rgba(40, 25, 10, 0.25),
+      0 0 0 1px rgba(255, 255, 255, 0.35) inset;
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    min-height: 100%;
   }
-  .lit-image {
+  .lit-figure {
+    margin: 0;
+    border-bottom: 1px solid rgba(179, 162, 198, 0.38);
+    background: linear-gradient(180deg, rgba(245, 239, 250, 0.95), rgba(252, 248, 255, 0.8));
+    padding: 12px;
+  }
+  .lit-figure img {
     width: 100%;
-    aspect-ratio: 16/10;
-    object-fit: cover;
-    border-bottom: 1px solid var(--line);
-    background: #f3edf9;
+    height: auto;
+    max-height: 420px;
+    object-fit: contain;
+    display: block;
+    border-radius: 10px;
   }
-  .lit-body {
-    padding: 18px 20px 20px;
+  .lit-figure figcaption {
+    margin-top: 8px;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+  .lit-feature-body {
+    padding: 16px 18px 16px;
     display: grid;
     gap: 8px;
   }
-  .lit-kicker {
-    width: fit-content;
-    border: 1px solid rgba(132, 102, 178, 0.36);
-    color: #5e4a7a;
-    background: rgba(132, 102, 178, 0.12);
-    border-radius: 999px;
-    padding: 4px 10px;
-    font-size: 9.8px;
-    text-transform: uppercase;
-    letter-spacing: 0.14em;
-    font-weight: 600;
+  .lit-list {
+    display: grid;
+    gap: 12px;
+    align-content: start;
+  }
+  .lit-card {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(248, 242, 253, 0.74));
+    border: 1px solid rgba(179, 162, 198, 0.52);
+    border-radius: 18px;
+    box-shadow:
+      0 18px 36px -30px rgba(40, 25, 10, 0.24),
+      0 0 0 1px rgba(255, 255, 255, 0.35) inset;
+    padding: 18px 18px 16px;
+    display: grid;
+    gap: 8px;
+    transition: transform .16s ease, box-shadow .2s ease, border-color .2s ease;
+  }
+  .lit-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--hug-soft);
+    box-shadow:
+      0 22px 42px -30px rgba(40, 25, 10, 0.3),
+      0 0 0 1px rgba(255, 255, 255, 0.42) inset;
   }
   .lit-title {
     font-family: var(--serif);
-    font-size: 24px;
-    line-height: 1.2;
-    letter-spacing: -0.015em;
+    font-size: 27px;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
     color: var(--ink);
   }
+  .lit-status {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--ink-3);
+    font-weight: 600;
+  }
   .lit-desc {
-    font-size: 15.5px;
+    font-size: 15px;
     color: var(--ink-2);
-    line-height: 1.55;
+    line-height: 1.5;
   }
   .lit-authors {
-    font-size: 13.5px;
+    font-size: 14px;
     color: var(--ink-2);
-    line-height: 1.45;
+    line-height: 1.5;
   }
   .lit-authors strong {
     color: var(--ink);
@@ -937,39 +977,11 @@
     text-transform: uppercase;
     letter-spacing: 0.14em;
     transition: color .15s ease, border-color .15s ease;
+    margin-top: 2px;
   }
   .lit-link:hover {
     color: var(--hug);
     border-bottom-color: var(--hug);
-  }
-  .lit-side {
-    display: grid;
-    gap: 12px;
-  }
-  .lit-card {
-    padding: 16px 18px;
-    display: grid;
-    gap: 7px;
-  }
-  .lit-card h3 {
-    font-family: var(--serif);
-    font-size: 23px;
-    font-weight: 400;
-    letter-spacing: -0.02em;
-    line-height: 1.2;
-    color: var(--ink);
-  }
-  .lit-card p {
-    font-size: 15px;
-    color: var(--ink-2);
-    line-height: 1.5;
-  }
-  .lit-status {
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.18em;
-    color: var(--ink-3);
-    font-weight: 600;
   }
 
   /* ---------- Extension ---------- */
@@ -1162,6 +1174,7 @@
     .brand .mark .product { display: none; }
     .hero { padding: 52px 0 64px; }
     .extension-card h3 { font-size: 26px; }
+    .lit-title { font-size: 24px; }
   }
   @media (hover: none) {
     .hint { display: none; }
@@ -1234,19 +1247,19 @@
 
   <section class="accepted-models" aria-labelledby="accepted-models-title">
     <div class="label">cash back eligible models</div>
-    <h2 id="accepted-models-title">We currently cover claims across these <em>LLMs</em>.</h2>
+    <h2 id="accepted-models-title">We currently cover claims across <em>18 LLMs</em>.</h2>
     <div class="marquee-grid" aria-label="Accepted language models">
-      <div class="model-marquee" data-row="0">
+      <div class="model-marquee" data-row="1">
         <div class="model-marquee-inner">
           <div class="model-set" id="acceptedModelsRow1"></div>
         </div>
       </div>
-      <div class="model-marquee reverse" data-row="1">
+      <div class="model-marquee reverse" data-row="2">
         <div class="model-marquee-inner">
           <div class="model-set" id="acceptedModelsRow2"></div>
         </div>
       </div>
-      <div class="model-marquee fast" data-row="2">
+      <div class="model-marquee slow" data-row="3">
         <div class="model-marquee-inner">
           <div class="model-set" id="acceptedModelsRow3"></div>
         </div>
@@ -1322,40 +1335,52 @@
   </section>
 
   <section class="literature" aria-labelledby="literature-title">
-    <div class="label">team literature</div>
+    <div class="label">Research Results</div>
     <h2 id="literature-title">Papers our team is <em>currently doing</em>.</h2>
     <p class="lit-sub">Active directions across failure analysis, risk tracing, and trust benchmarking.</p>
     <div class="lit-grid">
       <article class="lit-feature">
-        <img
-          class="lit-image"
-          src="https://raw.githubusercontent.com/HowieHwong/ProbeLLM/main/aassets/clusters.png"
-          alt="Failure Mode Map clusters from ProbeLLM"
-          loading="lazy"
-        />
-        <div class="lit-body">
-          <span class="lit-kicker">Featured Map</span>
+        <figure class="lit-figure">
+          <img
+            src="https://raw.githubusercontent.com/YuexingHao/Yuexing-Hao/main/assets/img/publications/ProbeLLM.png"
+            alt="ProbeLLM figure"
+            loading="lazy"
+          />
+          <figcaption>ProbeLLM Figure</figcaption>
+        </figure>
+        <div class="lit-feature-body">
           <h3 class="lit-title">ProbeLLM</h3>
-          <p class="lit-desc">Failure Mode Map for probing and clustering recurring LLM failure patterns at scale.</p>
-          <p class="lit-authors">Howie Wong, <strong>Yuexing Hao</strong>, et al.</p>
           <span class="lit-status">Published in ICML 2026</span>
+          <p class="lit-desc"><strong>ProbeLLM: Automating Principled Diagnosis of LLM Failures</strong></p>
+          <p class="lit-desc">Failure Mode Map for probing and clustering recurring LLM failure patterns at scale.</p>
+          <p class="lit-authors">Yue Huang, Zhengzhe Jiang, Yuchen Ma, Yu Jiang, Xiangqi Wang, Yujun Zhou, <strong>Yuexing Hao</strong>, Kehan Guo, Pin-Yu Chen, Marzyeh Ghassemi, Stefan Feuerriegel, Xiangliang Zhang</p>
           <a class="lit-link" href="https://arxiv.org/abs/2602.12966" target="_blank" rel="noopener noreferrer">Read Paper &rarr;</a>
         </div>
       </article>
-      <div class="lit-side">
+
+      <div class="lit-list">
         <article class="lit-card">
+          <h3 class="lit-title">Chain-Of-Risk</h3>
           <span class="lit-status">Under Review (NeurIPS 2026)</span>
-          <h3>Chain-Of-Risk</h3>
-          <p>A risk-tracing framework for decomposing failure propagation across multi-step model reasoning chains.</p>
-          <p class="lit-authors"><strong>Yuexing Hao</strong>, et al.</p>
+          <p class="lit-desc"><strong>Chain of Risk: Safety Failures in Large Reasoning Models and Mitigation via Adaptive Multi-Principle Steering</strong></p>
+          <p class="lit-authors">Xiaomin Li, Jianheng Hou, Zheyuan Deng, Zhiwei Zhang, Taoran Li, Binghang Lu, Bing Hu, Yunhan Zhao, <strong>Yuexing Hao</strong></p>
           <a class="lit-link" href="https://arxiv.org/abs/2605.05678" target="_blank" rel="noopener noreferrer">Read Paper &rarr;</a>
         </article>
+
         <article class="lit-card">
+          <h3 class="lit-title">TrustGen</h3>
           <span class="lit-status">Published in ICLR 2026</span>
-          <h3>TrustGen</h3>
-          <p>TrustGen: A Platform of Dynamic Benchmarking on the Trustworthiness of Generative Foundation Models.</p>
-          <p class="lit-authors"><strong>Yuexing Hao</strong>, et al.</p>
+          <p class="lit-desc">TrustGen: A Platform of Dynamic Benchmarking on the Trustworthiness of Generative Foundation Models.</p>
+          <p class="lit-authors">Yue Huang, Chujie Gao, Siyuan Wu, Haoran Wang, Xiangqi Wang, Yujun Zhou, ... <strong>Yuexing Hao</strong>, ... Bo Li, Dawn Song, Xiangliang Zhang.</p>
           <a class="lit-link" href="https://iclr.cc/virtual/2026/poster/10010583" target="_blank" rel="noopener noreferrer">View Poster &rarr;</a>
+        </article>
+
+        <article class="lit-card">
+          <h3 class="lit-title">MedPerturb</h3>
+          <span class="lit-status">Under Review (Nature Medicine)</span>
+          <p class="lit-desc">The MedPerturb Dataset: What Non-Content Perturbations Reveal About Human and Clinical LLM Decision Making.</p>
+          <p class="lit-authors">Abinitha Gourabathina (~Abinitha_Gourabathina1), Haoran Zhang, <strong>Yuexing Hao</strong>, Walter Gerych, Marzyeh Ghassemi</p>
+          <a class="lit-link" href="https://github.com/abinithago/MedPerturb" target="_blank" rel="noopener noreferrer">View Project &rarr;</a>
         </article>
       </div>
     </div>
@@ -1627,10 +1652,16 @@
     return min + (n % (max - min + 1));
   }
 
-  function phraseForModel(modelName) {
-    const idx = seededInt(`${modelName}:name`, 0, CAPTION_NAMES.length - 1);
-    const dollars = seededInt(`${modelName}:cash`, 2, 27);
-    return `User ${CAPTION_NAMES[idx]} earns $${dollars}`;
+  function randomName() {
+    return CAPTION_NAMES[Math.floor(Math.random() * CAPTION_NAMES.length)];
+  }
+
+  function randomCashback() {
+    return 2 + Math.floor(Math.random() * 26);
+  }
+
+  function phraseForModel() {
+    return `User ${randomName()} earns $${randomCashback()}`;
   }
 
   function titleizeModelName(modelName) {
@@ -1643,12 +1674,6 @@
     if (m.startsWith('llama')) return m.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
     if (m.startsWith('phi')) return m.toUpperCase().replace(/-/g, ' ');
     return m.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
-  }
-
-  function rowBuckets(items, rows = 3) {
-    const buckets = Array.from({ length: rows }, () => []);
-    items.forEach((item, idx) => buckets[idx % rows].push(item));
-    return buckets;
   }
 
   function renderRow(rowEl, items) {
@@ -1678,7 +1703,7 @@
 
       const caption = document.createElement('span');
       caption.className = 'model-caption';
-      caption.textContent = phraseForModel(item.name || item.provider || 'model');
+      caption.textContent = phraseForModel();
       modelItem.appendChild(chip);
       modelItem.appendChild(caption);
 
@@ -1695,6 +1720,10 @@
   }
 
   function renderModelMarquee(models) {
+    const row1 = document.getElementById('acceptedModelsRow1');
+    const row2 = document.getElementById('acceptedModelsRow2');
+    const row3 = document.getElementById('acceptedModelsRow3');
+    if (!row1 || !row2 || !row3) return;
     const items = Array.isArray(models) && models.length ? models : FALLBACK_MODELS;
     const unique = [];
     const seen = new Set();
@@ -1704,10 +1733,23 @@
       seen.add(key);
       unique.push(item);
     });
-    const buckets = rowBuckets(unique, 3);
-    renderRow(document.getElementById('acceptedModelsRow1'), buckets[0]);
-    renderRow(document.getElementById('acceptedModelsRow2'), buckets[1]);
-    renderRow(document.getElementById('acceptedModelsRow3'), buckets[2]);
+    const buckets = [[], [], []];
+    unique.forEach((item, idx) => {
+      buckets[idx % 3].push(item);
+    });
+    renderRow(row1, buckets[0]);
+    renderRow(row2, buckets[1]);
+    renderRow(row3, buckets[2]);
+  }
+
+  function refreshLiveCashbackCaptions() {
+    document.querySelectorAll('.model-caption').forEach((el) => {
+      el.classList.add('is-updating');
+      setTimeout(() => {
+        el.textContent = phraseForModel();
+        el.classList.remove('is-updating');
+      }, 180);
+    });
   }
 
   async function loadAzureModels() {
@@ -1723,6 +1765,8 @@
   }
 
   loadAzureModels();
+  setInterval(refreshLiveCashbackCaptions, 3000);
+
 </script>
 </body>
 </html>
