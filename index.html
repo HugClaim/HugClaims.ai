@@ -554,6 +554,76 @@
     object-fit: cover;
   }
 
+  /* ---------- Accepted models marquee ---------- */
+  .accepted-models {
+    padding: 54px 0 38px;
+    border-bottom: 1px solid var(--line);
+  }
+  .accepted-models .label {
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: var(--ink-3);
+    margin-bottom: 14px;
+    font-weight: 500;
+  }
+  .accepted-models h2 {
+    font-family: var(--serif);
+    font-weight: 300;
+    font-size: clamp(30px, 3.8vw, 46px);
+    letter-spacing: -0.025em;
+    margin-bottom: 26px;
+    line-height: 1.16;
+  }
+  .accepted-models h2 em { font-style: italic; color: var(--green-2); }
+  .model-marquee {
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: #fffdf8;
+    box-shadow: 0 16px 38px -28px rgba(40, 25, 10, 0.2);
+    padding: 12px 0;
+  }
+  .model-marquee-inner {
+    width: max-content;
+    display: flex;
+    animation: model-scroll 50s linear infinite;
+  }
+  .model-marquee:hover .model-marquee-inner {
+    animation-play-state: paused;
+  }
+  .model-set {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-right: 12px;
+    flex-shrink: 0;
+  }
+  .model-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(211, 200, 218, 0.9);
+    background: #ffffff;
+    box-shadow: 0 8px 22px -18px rgba(40, 25, 10, 0.28);
+    white-space: nowrap;
+    color: var(--ink-2);
+    font-size: 13.5px;
+    letter-spacing: 0.01em;
+  }
+  .model-chip img {
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
+    flex-shrink: 0;
+  }
+  @keyframes model-scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
   /* ---------- Examples ---------- */
   .examples {
     padding: 90px 0;
@@ -762,7 +832,7 @@
       margin: 0;
     }
     .hero h1 { font-size: 44px; }
-    .examples h2, .how h2 { font-size: 30px; }
+    .examples h2, .how h2, .accepted-models h2 { font-size: 30px; }
     .final h2 { font-size: 36px; }
     .ex-grid, .how-grid { grid-template-columns: 1fr; }
     .brand .mark { font-size: 24px; }
@@ -771,6 +841,9 @@
   }
   @media (hover: none) {
     .hint { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .model-marquee-inner { animation: none; }
   }
 </style>
 <script src="hug-config.js"></script>
@@ -832,6 +905,16 @@
           </div>
         </div>
       </aside>
+    </div>
+  </section>
+
+  <section class="accepted-models" aria-labelledby="accepted-models-title">
+    <div class="label">cash back eligible models</div>
+    <h2 id="accepted-models-title">We currently cover claims across these <em>LLMs</em>.</h2>
+    <div class="model-marquee" aria-label="Accepted language models">
+      <div class="model-marquee-inner">
+        <div class="model-set" id="acceptedModels"></div>
+      </div>
     </div>
   </section>
 
@@ -1036,6 +1119,79 @@
       }));
     });
   });
+
+  const FALLBACK_MODELS = [
+    { name: 'gpt-5', provider: 'OpenAI', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/openai.svg' },
+    { name: 'gpt-4.1', provider: 'OpenAI', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/openai.svg' },
+    { name: 'claude-opus-4-1', provider: 'Anthropic', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/anthropic.svg' },
+    { name: 'claude-sonnet-4-6', provider: 'Anthropic', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/anthropic.svg' },
+    { name: 'gemini-2.5-pro', provider: 'Google', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/gemini.svg' },
+    { name: 'gemini-2.5-flash', provider: 'Google', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/gemini.svg' },
+    { name: 'llama-4-maverick', provider: 'Meta', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/meta.svg' },
+    { name: 'mistral-large', provider: 'Mistral AI', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/mistral.svg' },
+    { name: 'command-r-plus', provider: 'Cohere', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/cohere.svg' },
+    { name: 'deepseek-r1', provider: 'DeepSeek', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/deepseek.svg' },
+    { name: 'grok-3', provider: 'xAI', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/grok.svg' },
+    { name: 'phi-4', provider: 'Microsoft', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/microsoft.svg' },
+    { name: 'nemotron-4', provider: 'NVIDIA', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/nvidia.svg' },
+  ];
+
+  function titleizeModelName(modelName) {
+    const m = String(modelName || '').trim();
+    if (!m) return 'model';
+    if (m.startsWith('gpt')) return m.toUpperCase().replace(/-/g, ' ');
+    if (m.startsWith('o1') || m.startsWith('o3') || m.startsWith('o4')) return m.toUpperCase();
+    if (m.startsWith('claude')) return m.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+    if (m.startsWith('gemini')) return m.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+    if (m.startsWith('llama')) return m.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+    if (m.startsWith('phi')) return m.toUpperCase().replace(/-/g, ' ');
+    return m.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+  }
+
+  function renderModelMarquee(models) {
+    const acceptedModels = document.getElementById('acceptedModels');
+    if (!acceptedModels || !acceptedModels.parentElement) return;
+    acceptedModels.innerHTML = '';
+    const rows = Array.isArray(models) && models.length ? models : FALLBACK_MODELS;
+    rows.forEach((item) => {
+      const chip = document.createElement('span');
+      chip.className = 'model-chip';
+
+      const img = document.createElement('img');
+      img.src = String(item.logo || '');
+      img.alt = `${String(item.provider || 'Model')} logo`;
+      img.loading = 'lazy';
+      chip.appendChild(img);
+
+      const label = document.createElement('span');
+      label.textContent = titleizeModelName(item.name || '');
+      chip.appendChild(label);
+
+      acceptedModels.appendChild(chip);
+    });
+
+    const oldDuplicate = acceptedModels.parentElement.querySelector('.model-set[data-duplicate="true"]');
+    if (oldDuplicate) oldDuplicate.remove();
+    const duplicate = acceptedModels.cloneNode(true);
+    duplicate.id = '';
+    duplicate.dataset.duplicate = 'true';
+    duplicate.setAttribute('aria-hidden', 'true');
+    acceptedModels.parentElement.appendChild(duplicate);
+  }
+
+  async function loadAzureModels() {
+    try {
+      const res = await fetch('/api/azure_models?limit=36');
+      if (!res.ok) throw new Error(`status ${res.status}`);
+      const payload = await res.json();
+      const models = Array.isArray(payload.models) ? payload.models : [];
+      renderModelMarquee(models);
+    } catch (_err) {
+      renderModelMarquee(FALLBACK_MODELS);
+    }
+  }
+
+  loadAzureModels();
 </script>
 </body>
 </html>
