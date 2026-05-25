@@ -747,10 +747,7 @@
     padding: 88px 0;
     border-top: 1px solid var(--line);
     border-bottom: 1px solid var(--line);
-    background:
-      radial-gradient(ellipse 88% 76% at 8% 2%, rgba(132, 102, 178, 0.14) 0%, rgba(132, 102, 178, 0) 58%),
-      radial-gradient(ellipse 92% 70% at 96% 100%, rgba(196, 74, 63, 0.09) 0%, rgba(196, 74, 63, 0) 56%),
-      linear-gradient(180deg, rgba(238, 230, 246, 0.72), rgba(243, 236, 249, 0.55));
+    background: transparent;
   }
   .reviews .label {
     font-size: 10.5px;
@@ -837,6 +834,188 @@
     font-style: italic;
     font-size: 13px;
     color: var(--green-2);
+  }
+
+  /* ---------- Literature ---------- */
+  .literature {
+    padding: 92px 0 86px;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .literature .label {
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: var(--ink-3);
+    margin-bottom: 14px;
+    font-weight: 500;
+  }
+  .literature h2 {
+    font-family: var(--serif);
+    font-weight: 300;
+    font-size: clamp(30px, 3.8vw, 46px);
+    letter-spacing: -0.025em;
+    line-height: 1.15;
+    margin-bottom: 14px;
+    max-width: 24ch;
+  }
+  .literature h2 em { font-style: italic; color: var(--hug); }
+  .lit-sub {
+    color: var(--ink-2);
+    font-size: 16px;
+    margin-bottom: 36px;
+  }
+  .lit-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 18px;
+  }
+  .lit-feature,
+  .lit-card {
+    background: #fffdf8;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    box-shadow: 0 18px 36px -30px rgba(40, 25, 10, 0.22);
+  }
+  .lit-feature {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+  }
+  .lit-image {
+    width: 100%;
+    aspect-ratio: 16/10;
+    object-fit: cover;
+    border-bottom: 1px solid var(--line);
+    background: #f3edf9;
+  }
+  .lit-body {
+    padding: 18px 20px 20px;
+    display: grid;
+    gap: 8px;
+  }
+  .lit-kicker {
+    width: fit-content;
+    border: 1px solid rgba(132, 102, 178, 0.36);
+    color: #5e4a7a;
+    background: rgba(132, 102, 178, 0.12);
+    border-radius: 999px;
+    padding: 4px 10px;
+    font-size: 9.8px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-weight: 600;
+  }
+  .lit-title {
+    font-family: var(--serif);
+    font-size: 24px;
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+  }
+  .lit-desc {
+    font-size: 15.5px;
+    color: var(--ink-2);
+    line-height: 1.55;
+  }
+  .lit-authors {
+    font-size: 13.5px;
+    color: var(--ink-2);
+    line-height: 1.45;
+  }
+  .lit-authors strong {
+    color: var(--ink);
+    font-weight: 700;
+  }
+  .lit-link {
+    width: fit-content;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    color: var(--hug-2);
+    font: 600 11px var(--sans);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    transition: color .15s ease, border-color .15s ease;
+  }
+  .lit-link:hover {
+    color: var(--hug);
+    border-bottom-color: var(--hug);
+  }
+  .lit-side {
+    display: grid;
+    gap: 12px;
+  }
+  .lit-card {
+    padding: 16px 18px;
+    display: grid;
+    gap: 7px;
+  }
+  .lit-card h3 {
+    font-family: var(--serif);
+    font-size: 23px;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    color: var(--ink);
+  }
+  .lit-card p {
+    font-size: 15px;
+    color: var(--ink-2);
+    line-height: 1.5;
+  }
+  .lit-status {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--ink-3);
+    font-weight: 600;
+  }
+
+  /* ---------- Extension ---------- */
+  .extension {
+    padding: 64px 0 68px;
+    border-bottom: 1px solid var(--line);
+  }
+  .extension-card {
+    background: #fffdf8;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 22px 24px;
+    box-shadow: 0 16px 34px -30px rgba(40, 25, 10, 0.24);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .extension-card h3 {
+    font-family: var(--serif);
+    font-size: 30px;
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    margin-bottom: 8px;
+  }
+  .extension-card p {
+    color: var(--ink-2);
+    font-size: 15.5px;
+    line-height: 1.55;
+    max-width: 64ch;
+  }
+  .beta-pill {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid rgba(132, 102, 178, 0.36);
+    color: #5e4a7a;
+    background: rgba(132, 102, 178, 0.12);
+    border-radius: 999px;
+    padding: 4px 10px;
+    font-size: 9.8px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-weight: 600;
+    margin-bottom: 10px;
   }
 
   /* ---------- How it works ---------- */
@@ -976,12 +1155,13 @@
       margin: 0;
     }
     .hero h1 { font-size: 44px; }
-    .examples h2, .how h2, .accepted-models h2, .reviews h2 { font-size: 30px; }
+    .examples h2, .how h2, .accepted-models h2, .reviews h2, .literature h2 { font-size: 30px; }
     .final h2 { font-size: 36px; }
-    .ex-grid, .how-grid, .reviews-grid { grid-template-columns: 1fr; }
+    .ex-grid, .how-grid, .reviews-grid, .lit-grid { grid-template-columns: 1fr; }
     .brand .mark { font-size: 24px; }
     .brand .mark .product { display: none; }
     .hero { padding: 52px 0 64px; }
+    .extension-card h3 { font-size: 26px; }
   }
   @media (hover: none) {
     .hint { display: none; }
@@ -1138,6 +1318,62 @@
           <span class="review-reward">136 validated claims</span>
         </div>
       </article>
+    </div>
+  </section>
+
+  <section class="literature" aria-labelledby="literature-title">
+    <div class="label">team literature</div>
+    <h2 id="literature-title">Papers our team is <em>currently doing</em>.</h2>
+    <p class="lit-sub">Active directions across failure analysis, risk tracing, and trust benchmarking.</p>
+    <div class="lit-grid">
+      <article class="lit-feature">
+        <img
+          class="lit-image"
+          src="https://raw.githubusercontent.com/HowieHwong/ProbeLLM/main/aassets/clusters.png"
+          alt="Failure Mode Map clusters from ProbeLLM"
+          loading="lazy"
+        />
+        <div class="lit-body">
+          <span class="lit-kicker">Featured Map</span>
+          <h3 class="lit-title">ProbeLLM</h3>
+          <p class="lit-desc">Failure Mode Map for probing and clustering recurring LLM failure patterns at scale.</p>
+          <p class="lit-authors">Howie Wong, <strong>Yuexing Hao</strong>, et al.</p>
+          <span class="lit-status">Published in ICML 2026</span>
+          <a class="lit-link" href="https://arxiv.org/abs/2602.12966" target="_blank" rel="noopener noreferrer">Read Paper &rarr;</a>
+        </div>
+      </article>
+      <div class="lit-side">
+        <article class="lit-card">
+          <span class="lit-status">Under Review (NeurIPS 2026)</span>
+          <h3>Chain-Of-Risk</h3>
+          <p>A risk-tracing framework for decomposing failure propagation across multi-step model reasoning chains.</p>
+          <p class="lit-authors"><strong>Yuexing Hao</strong>, et al.</p>
+          <a class="lit-link" href="https://arxiv.org/abs/2605.05678" target="_blank" rel="noopener noreferrer">Read Paper &rarr;</a>
+        </article>
+        <article class="lit-card">
+          <span class="lit-status">Published in ICLR 2026</span>
+          <h3>TrustGen</h3>
+          <p>TrustGen: A Platform of Dynamic Benchmarking on the Trustworthiness of Generative Foundation Models.</p>
+          <p class="lit-authors"><strong>Yuexing Hao</strong>, et al.</p>
+          <a class="lit-link" href="https://iclr.cc/virtual/2026/poster/10010583" target="_blank" rel="noopener noreferrer">View Poster &rarr;</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="extension" aria-labelledby="extension-title">
+    <div class="extension-card">
+      <div>
+        <span class="beta-pill">Chrome Extension Beta</span>
+        <h3 id="extension-title">HugClaims.ai Chrome Extension</h3>
+        <p>Claim LLM credits when an answer misses. The extension is currently <strong>not yet available on the Chrome Web Store</strong>; install it unpacked from our GitHub repository.</p>
+      </div>
+      <a
+        class="btn-primary"
+        href="https://github.com/YuexingHao/HugClaims.ai/tree/main/chrome-extension"
+        target="_blank"
+        rel="noopener noreferrer"
+      >install unpacked &rarr;</a>
     </div>
   </section>
 
