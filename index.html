@@ -576,52 +576,85 @@
     line-height: 1.16;
   }
   .accepted-models h2 em { font-style: italic; color: var(--green-2); }
+  .marquee-grid {
+    display: grid;
+    gap: 14px;
+  }
   .model-marquee {
     overflow: hidden;
-    border: 1px solid var(--line);
-    border-radius: 999px;
-    background: #fffdf8;
+    border: 1px solid rgba(211, 200, 218, 0.95);
+    border-radius: 22px;
+    background: rgba(255, 253, 248, 0.9);
     box-shadow: 0 16px 38px -28px rgba(40, 25, 10, 0.2);
-    padding: 12px 0;
+    padding: 10px 0;
   }
   .model-marquee-inner {
     width: max-content;
     display: flex;
-    animation: model-scroll 50s linear infinite;
+    animation: model-scroll 54s linear infinite;
   }
   .model-marquee:hover .model-marquee-inner {
     animation-play-state: paused;
   }
+  .model-marquee.reverse .model-marquee-inner {
+    animation-name: model-scroll-reverse;
+    animation-duration: 58s;
+  }
+  .model-marquee.fast .model-marquee-inner {
+    animation-duration: 46s;
+  }
   .model-set {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding-right: 12px;
+    gap: 10px;
+    padding-right: 10px;
     flex-shrink: 0;
   }
   .model-chip {
-    display: inline-flex;
+    --provider-accent: #5f6f85;
+    display: inline-grid;
+    grid-template-columns: 18px auto;
+    grid-template-rows: auto auto;
     align-items: center;
-    gap: 10px;
-    padding: 7px 14px;
-    border-radius: 999px;
-    border: 1px solid rgba(211, 200, 218, 0.9);
+    column-gap: 10px;
+    row-gap: 2px;
+    padding: 8px 12px;
+    border-radius: 12px;
+    border: 1px solid color-mix(in oklab, var(--provider-accent) 26%, #d3c8da);
+    border-left: 3px solid var(--provider-accent);
     background: #ffffff;
     box-shadow: 0 8px 22px -18px rgba(40, 25, 10, 0.28);
-    white-space: nowrap;
+    min-width: 246px;
     color: var(--ink-2);
-    font-size: 13.5px;
-    letter-spacing: 0.01em;
+    white-space: nowrap;
   }
   .model-chip img {
-    width: 16px;
-    height: 16px;
+    width: 18px;
+    height: 18px;
+    grid-row: 1 / span 2;
     object-fit: contain;
     flex-shrink: 0;
+  }
+  .model-title {
+    font-size: 13.5px;
+    line-height: 1.1;
+    letter-spacing: 0.01em;
+    color: var(--ink);
+  }
+  .model-caption {
+    font-size: 10.5px;
+    color: color-mix(in oklab, var(--provider-accent) 66%, #2f6b40);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 600;
   }
   @keyframes model-scroll {
     from { transform: translateX(0); }
     to { transform: translateX(-50%); }
+  }
+  @keyframes model-scroll-reverse {
+    from { transform: translateX(-50%); }
+    to { transform: translateX(0); }
   }
 
   /* ---------- Examples ---------- */
@@ -693,6 +726,89 @@
     color: var(--green-2);
     font-style: normal;
     font-weight: 500;
+  }
+
+  /* ---------- Reviews ---------- */
+  .reviews {
+    padding: 88px 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    background:
+      linear-gradient(180deg, rgba(250, 246, 240, 0.9), rgba(255, 253, 248, 0.84));
+  }
+  .reviews .label {
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: var(--ink-3);
+    margin-bottom: 14px;
+    font-weight: 500;
+  }
+  .reviews h2 {
+    font-family: var(--serif);
+    font-weight: 300;
+    font-size: clamp(30px, 3.7vw, 46px);
+    letter-spacing: -0.025em;
+    line-height: 1.15;
+    margin-bottom: 38px;
+    max-width: 22ch;
+  }
+  .reviews h2 em { font-style: italic; color: var(--hug); }
+  .reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+  }
+  .review-card {
+    background: #fffdf8;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 22px 22px 20px;
+    box-shadow: 0 18px 34px -30px rgba(40, 25, 10, 0.24);
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+  }
+  .review-type {
+    display: inline-flex;
+    width: fit-content;
+    border: 1px solid rgba(196, 74, 63, 0.24);
+    color: var(--hug-2);
+    background: rgba(196, 74, 63, 0.08);
+    border-radius: 999px;
+    padding: 4px 10px;
+    font-size: 9.8px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-weight: 600;
+  }
+  .review-quote {
+    font-family: var(--serif);
+    font-size: 18px;
+    line-height: 1.45;
+    color: var(--ink);
+  }
+  .review-foot {
+    margin-top: auto;
+    border-top: 1px dashed var(--line);
+    padding-top: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    color: var(--ink-3);
+  }
+  .review-who {
+    font-size: 11.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.11em;
+    font-weight: 600;
+  }
+  .review-reward {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 13px;
+    color: var(--green-2);
   }
 
   /* ---------- How it works ---------- */
@@ -832,9 +948,9 @@
       margin: 0;
     }
     .hero h1 { font-size: 44px; }
-    .examples h2, .how h2, .accepted-models h2 { font-size: 30px; }
+    .examples h2, .how h2, .accepted-models h2, .reviews h2 { font-size: 30px; }
     .final h2 { font-size: 36px; }
-    .ex-grid, .how-grid { grid-template-columns: 1fr; }
+    .ex-grid, .how-grid, .reviews-grid { grid-template-columns: 1fr; }
     .brand .mark { font-size: 24px; }
     .brand .mark .product { display: none; }
     .hero { padding: 52px 0 64px; }
@@ -911,10 +1027,89 @@
   <section class="accepted-models" aria-labelledby="accepted-models-title">
     <div class="label">cash back eligible models</div>
     <h2 id="accepted-models-title">We currently cover claims across these <em>LLMs</em>.</h2>
-    <div class="model-marquee" aria-label="Accepted language models">
-      <div class="model-marquee-inner">
-        <div class="model-set" id="acceptedModels"></div>
+    <div class="marquee-grid" aria-label="Accepted language models">
+      <div class="model-marquee" data-row="0">
+        <div class="model-marquee-inner">
+          <div class="model-set" id="acceptedModelsRow1"></div>
+        </div>
       </div>
+      <div class="model-marquee reverse" data-row="1">
+        <div class="model-marquee-inner">
+          <div class="model-set" id="acceptedModelsRow2"></div>
+        </div>
+      </div>
+      <div class="model-marquee fast" data-row="2">
+        <div class="model-marquee-inner">
+          <div class="model-set" id="acceptedModelsRow3"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="reviews" aria-labelledby="reviews-title">
+    <div class="label">community proof</div>
+    <h2 id="reviews-title">Real reviews about <em>real rewards</em>.</h2>
+    <div class="reviews-grid">
+      <article class="review-card">
+        <div class="review-type">user review</div>
+        <p class="review-quote">
+          &ldquo;The model gave a wrong dosage schedule. I filed a failure-mode claim with the corrected guidance, and Hug approved in a few hours.&rdquo;
+        </p>
+        <div class="review-foot">
+          <span class="review-who">User SAREM</span>
+          <span class="review-reward">$24 cash back</span>
+        </div>
+      </article>
+      <article class="review-card">
+        <div class="review-type">user review</div>
+        <p class="review-quote">
+          &ldquo;I caught a fabricated legal citation in a draft motion. Submitted the claim with source links, got paid, and reused the fix for my team template.&rdquo;
+        </p>
+        <div class="review-foot">
+          <span class="review-who">User MILOX</span>
+          <span class="review-reward">$19 cash back</span>
+        </div>
+      </article>
+      <article class="review-card">
+        <div class="review-type">user review</div>
+        <p class="review-quote">
+          &ldquo;The equation chain looked polished but had a hidden sign error. My claim was verified and the cashback made the debugging time worth it.&rdquo;
+        </p>
+        <div class="review-foot">
+          <span class="review-who">User UAKEC</span>
+          <span class="review-reward">$11 cash back</span>
+        </div>
+      </article>
+      <article class="review-card">
+        <div class="review-type">company impact</div>
+        <p class="review-quote">
+          &ldquo;Our support team used submitted failure-mode claims to patch recurring bot mistakes. Escalations dropped and customer trust improved quickly.&rdquo;
+        </p>
+        <div class="review-foot">
+          <span class="review-who">Ops Lead, Arcwell</span>
+          <span class="review-reward">91 issues fixed</span>
+        </div>
+      </article>
+      <article class="review-card">
+        <div class="review-type">company impact</div>
+        <p class="review-quote">
+          &ldquo;Claims gave us a live map of where the model was brittle. We turned those reports into eval cases and cut repeat failures in two weeks.&rdquo;
+        </p>
+        <div class="review-foot">
+          <span class="review-who">AI PM, NorthGrid</span>
+          <span class="review-reward">47% fewer repeats</span>
+        </div>
+      </article>
+      <article class="review-card">
+        <div class="review-type">company impact</div>
+        <p class="review-quote">
+          &ldquo;The payout mechanism motivated high-quality reports from users. Their claims exposed blind spots we missed in internal testing.&rdquo;
+        </p>
+        <div class="review-foot">
+          <span class="review-who">CTO, Solstem</span>
+          <span class="review-reward">136 validated claims</span>
+        </div>
+      </article>
     </div>
   </section>
 
@@ -1121,20 +1316,57 @@
   });
 
   const FALLBACK_MODELS = [
-    { name: 'gpt-5', provider: 'OpenAI', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/openai.svg' },
-    { name: 'gpt-4.1', provider: 'OpenAI', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/openai.svg' },
-    { name: 'claude-opus-4-1', provider: 'Anthropic', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/anthropic.svg' },
-    { name: 'claude-sonnet-4-6', provider: 'Anthropic', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/anthropic.svg' },
-    { name: 'gemini-2.5-pro', provider: 'Google', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/gemini.svg' },
-    { name: 'gemini-2.5-flash', provider: 'Google', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/gemini.svg' },
-    { name: 'llama-4-maverick', provider: 'Meta', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/meta.svg' },
-    { name: 'mistral-large', provider: 'Mistral AI', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/mistral.svg' },
-    { name: 'command-r-plus', provider: 'Cohere', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/cohere.svg' },
-    { name: 'deepseek-r1', provider: 'DeepSeek', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/deepseek.svg' },
-    { name: 'grok-3', provider: 'xAI', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/grok.svg' },
-    { name: 'phi-4', provider: 'Microsoft', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/microsoft.svg' },
-    { name: 'nemotron-4', provider: 'NVIDIA', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/nvidia.svg' },
+    { name: 'gpt-5', provider: 'OpenAI', provider_key: 'openai', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/openai.svg' },
+    { name: 'gpt-4.1', provider: 'OpenAI', provider_key: 'openai', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/openai.svg' },
+    { name: 'gpt-4o', provider: 'OpenAI', provider_key: 'openai', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/openai.svg' },
+    { name: 'claude-opus-4-1', provider: 'Anthropic', provider_key: 'anthropic', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/anthropic.svg' },
+    { name: 'claude-sonnet-4-6', provider: 'Anthropic', provider_key: 'anthropic', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/anthropic.svg' },
+    { name: 'claude-haiku-4-5', provider: 'Anthropic', provider_key: 'anthropic', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/anthropic.svg' },
+    { name: 'gemini-2.5-pro', provider: 'Google', provider_key: 'google', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/gemini.svg' },
+    { name: 'gemini-2.5-flash', provider: 'Google', provider_key: 'google', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/gemini.svg' },
+    { name: 'llama-4-maverick', provider: 'Meta', provider_key: 'meta', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/meta.svg' },
+    { name: 'llama-3.3-70b', provider: 'Meta', provider_key: 'meta', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/meta.svg' },
+    { name: 'mistral-large', provider: 'Mistral AI', provider_key: 'mistral', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/mistral.svg' },
+    { name: 'ministral-8b', provider: 'Mistral AI', provider_key: 'mistral', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/mistral.svg' },
+    { name: 'command-r-plus', provider: 'Cohere', provider_key: 'cohere', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/cohere.svg' },
+    { name: 'deepseek-r1', provider: 'DeepSeek', provider_key: 'deepseek', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/deepseek.svg' },
+    { name: 'deepseek-v3', provider: 'DeepSeek', provider_key: 'deepseek', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/deepseek.svg' },
+    { name: 'grok-3', provider: 'xAI', provider_key: 'xai', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/grok.svg' },
+    { name: 'phi-4', provider: 'Microsoft', provider_key: 'microsoft', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/microsoft.svg' },
+    { name: 'nemotron-4', provider: 'NVIDIA', provider_key: 'nvidia', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/nvidia.svg' },
   ];
+  const PROVIDER_COLORS = {
+    openai: '#10a37f',
+    anthropic: '#d97757',
+    google: '#1a73e8',
+    meta: '#0866ff',
+    mistral: '#ff6f3d',
+    cohere: '#3950e5',
+    deepseek: '#2f7be5',
+    xai: '#111111',
+    microsoft: '#00a4ef',
+    nvidia: '#76b900',
+    qwen: '#5b5ce2',
+    yi: '#5b6f87',
+  };
+  const CAPTION_NAMES = ['UAKEC', 'NIVAR', 'MILOX', 'SAREM', 'QATEN', 'RUVIK', 'LEONA', 'DYLAN', 'MARA', 'KAI'];
+
+  function seededInt(seedStr, min, max) {
+    const s = String(seedStr || 'seed');
+    let h = 2166136261;
+    for (let i = 0; i < s.length; i++) {
+      h ^= s.charCodeAt(i);
+      h += (h << 1) + (h << 4) + (h << 7) + (h << 8) + (h << 24);
+    }
+    const n = Math.abs(h >>> 0);
+    return min + (n % (max - min + 1));
+  }
+
+  function phraseForModel(modelName) {
+    const idx = seededInt(`${modelName}:name`, 0, CAPTION_NAMES.length - 1);
+    const dollars = seededInt(`${modelName}:cash`, 2, 27);
+    return `User ${CAPTION_NAMES[idx]} earns $${dollars} cash back`;
+  }
 
   function titleizeModelName(modelName) {
     const m = String(modelName || '').trim();
@@ -1148,14 +1380,20 @@
     return m.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
   }
 
-  function renderModelMarquee(models) {
-    const acceptedModels = document.getElementById('acceptedModels');
-    if (!acceptedModels || !acceptedModels.parentElement) return;
-    acceptedModels.innerHTML = '';
-    const rows = Array.isArray(models) && models.length ? models : FALLBACK_MODELS;
-    rows.forEach((item) => {
+  function rowBuckets(items, rows = 3) {
+    const buckets = Array.from({ length: rows }, () => []);
+    items.forEach((item, idx) => buckets[idx % rows].push(item));
+    return buckets;
+  }
+
+  function renderRow(rowEl, items) {
+    if (!rowEl || !rowEl.parentElement) return;
+    rowEl.innerHTML = '';
+    items.forEach((item) => {
       const chip = document.createElement('span');
       chip.className = 'model-chip';
+      const providerKey = String(item.provider_key || '').toLowerCase();
+      chip.style.setProperty('--provider-accent', PROVIDER_COLORS[providerKey] || '#5f6f85');
 
       const img = document.createElement('img');
       img.src = String(item.logo || '');
@@ -1164,19 +1402,41 @@
       chip.appendChild(img);
 
       const label = document.createElement('span');
+      label.className = 'model-title';
       label.textContent = titleizeModelName(item.name || '');
       chip.appendChild(label);
 
-      acceptedModels.appendChild(chip);
+      const caption = document.createElement('span');
+      caption.className = 'model-caption';
+      caption.textContent = phraseForModel(item.name || item.provider || 'model');
+      chip.appendChild(caption);
+
+      rowEl.appendChild(chip);
     });
 
-    const oldDuplicate = acceptedModels.parentElement.querySelector('.model-set[data-duplicate="true"]');
+    const oldDuplicate = rowEl.parentElement.querySelector('.model-set[data-duplicate="true"]');
     if (oldDuplicate) oldDuplicate.remove();
-    const duplicate = acceptedModels.cloneNode(true);
+    const duplicate = rowEl.cloneNode(true);
     duplicate.id = '';
     duplicate.dataset.duplicate = 'true';
     duplicate.setAttribute('aria-hidden', 'true');
-    acceptedModels.parentElement.appendChild(duplicate);
+    rowEl.parentElement.appendChild(duplicate);
+  }
+
+  function renderModelMarquee(models) {
+    const items = Array.isArray(models) && models.length ? models : FALLBACK_MODELS;
+    const unique = [];
+    const seen = new Set();
+    items.forEach((item) => {
+      const key = String(item.name || '').toLowerCase();
+      if (!key || seen.has(key)) return;
+      seen.add(key);
+      unique.push(item);
+    });
+    const buckets = rowBuckets(unique, 3);
+    renderRow(document.getElementById('acceptedModelsRow1'), buckets[0]);
+    renderRow(document.getElementById('acceptedModelsRow2'), buckets[1]);
+    renderRow(document.getElementById('acceptedModelsRow3'), buckets[2]);
   }
 
   async function loadAzureModels() {
