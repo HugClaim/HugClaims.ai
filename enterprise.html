@@ -36,9 +36,9 @@
     }
 
     .app {
-      max-width: 1240px;
+      max-width: 1380px;
       margin: 0 auto;
-      padding: 0 28px 52px;
+      padding: 0 34px 58px;
     }
 
     .brand-link {
@@ -159,8 +159,8 @@
     .streams {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 16px;
-      margin: 16px 0;
+      gap: 20px;
+      margin: 20px 0;
     }
     .stream {
       border: 1px solid rgba(179, 162, 198, 0.56);
@@ -169,12 +169,12 @@
       box-shadow:
         0 20px 38px -32px rgba(40, 25, 10, 0.24),
         0 0 0 1px rgba(255, 255, 255, 0.36) inset;
-      overflow: hidden;
+      overflow: visible;
       display: flex;
       flex-direction: column;
     }
     .stream-head {
-      padding: 20px 20px 14px;
+      padding: 24px 24px 18px;
       border-bottom: 1px solid rgba(211, 200, 218, 0.78);
       background: linear-gradient(180deg, rgba(245, 239, 250, 0.9), rgba(255, 255, 255, 0.72));
     }
@@ -202,9 +202,9 @@
     .tiers {
       display: flex;
       flex-direction: column;
-      align-items: center;
-      gap: 12px;
-      padding: 16px 10px 14px;
+      align-items: stretch;
+      gap: 16px;
+      padding: 26px 16px 20px;
       position: relative;
       counter-reset: tier;
     }
@@ -213,8 +213,8 @@
       position: absolute;
       left: 50%;
       transform: translateX(-50%);
-      top: 20px;
-      bottom: 20px;
+      top: 30px;
+      bottom: 24px;
       width: 2px;
       border-radius: 999px;
       background: linear-gradient(
@@ -227,6 +227,7 @@
     .tier-card {
       counter-increment: tier;
       width: min(100%, var(--tier-width, 100%));
+      margin-inline: auto;
       position: relative;
       border: 1px solid rgba(211, 200, 218, 0.88);
       border-radius: 14px;
@@ -235,15 +236,15 @@
       overflow: hidden;
       box-shadow: 0 16px 30px -28px rgba(40, 25, 10, 0.28);
     }
-    .tier-card:nth-child(1) { --tier-width: 74%; }
-    .tier-card:nth-child(2) { --tier-width: 82%; }
-    .tier-card:nth-child(3) { --tier-width: 90%; }
+    .tier-card:nth-child(1) { --tier-width: 90%; }
+    .tier-card:nth-child(2) { --tier-width: 94%; }
+    .tier-card:nth-child(3) { --tier-width: 97%; }
     .tier-card:nth-child(4) { --tier-width: 100%; }
     .tier-card::after {
       content: "stage " counter(tier);
       position: absolute;
-      top: -11px;
-      left: 12px;
+      top: 10px;
+      right: 12px;
       border: 1px solid rgba(132, 102, 178, 0.38);
       border-radius: 999px;
       padding: 3px 8px;
@@ -253,15 +254,16 @@
       text-transform: uppercase;
       letter-spacing: 0.12em;
       font-weight: 700;
+      z-index: 2;
     }
     .tier-top {
       list-style: none;
       display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
-      gap: 8px 12px;
-      align-items: end;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      align-items: start;
       cursor: pointer;
-      padding: 16px 16px 14px;
+      padding: 20px 18px 16px;
       transition: background .15s ease;
     }
     .tier-top::-webkit-details-marker { display: none; }
@@ -288,15 +290,16 @@
     }
     .tier-name {
       font-family: var(--serif);
-      font-size: 21px;
+      font-size: 23px;
       font-weight: 430;
       letter-spacing: -0.02em;
       color: var(--ink);
+      padding-right: 92px;
     }
     .tier-price {
       display: grid;
       gap: 2px;
-      justify-items: end;
+      justify-items: start;
       color: var(--green-2);
       white-space: nowrap;
     }
@@ -342,9 +345,9 @@
     }
     .tier-body {
       border-top: 1px dashed rgba(211, 200, 218, 0.75);
-      padding: 12px 16px 14px;
+      padding: 14px 18px 18px;
       display: grid;
-      gap: 10px;
+      gap: 12px;
     }
     .tier-list {
       list-style: none;
