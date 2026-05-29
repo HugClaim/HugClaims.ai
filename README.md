@@ -33,16 +33,27 @@ Cash back when your AI gets it wrong. A prototype of an LLM-error claims platfor
 ├── run.sh                ← one-command launcher: creates .venv, installs
 │                            deps, starts uvicorn on 127.0.0.1:8000.
 └── data/
-    └── Math.JPG          ← sample induction-proof image used in the "math"
+    └── math-induction-proof.jpg  ← sample induction-proof image used in the "math"
                              scenario chip.
 ```
 
 ## Run it locally
 
-You need an Azure AI Foundry key for an Anthropic deployment (Haiku 4.5 by default).
+You need one configured LLM provider:
+- Azure AI Foundry + Anthropic deployment (existing path), or
+- Azure OpenAI (`AZURE_OPENAI_*`) credentials.
 
 ```bash
+# Option A: Azure Foundry (Anthropic)
 export ANTHROPIC_API_KEY=<your-foundry-key>
+
+# Option B: Azure OpenAI
+export AZURE_OPENAI_API_KEY=<your-azure-openai-key>
+export AZURE_OPENAI_ENDPOINT=https://<resource-name>.openai.azure.com
+export AZURE_OPENAI_DEPLOYMENT=<your-chat-deployment-name>
+# optional:
+# export AZURE_OPENAI_API_VERSION=2024-10-21
+
 ./run.sh
 ```
 
@@ -56,8 +67,12 @@ ssh -N -L 8000:127.0.0.1:8000 you@<host>
 
 | var | default | what it does |
 |---|---|---|
-| `ANTHROPIC_API_KEY` | *(required)* | Foundry key, passed to `AsyncAnthropicFoundry` |
+| `ANTHROPIC_API_KEY` | optional | Foundry key, passed to `AsyncAnthropicFoundry` |
 | `FOUNDRY_ENDPOINT` | hardcoded Azure URL | Foundry base URL |
+| `AZURE_OPENAI_API_KEY` | optional | Azure OpenAI API key |
+| `AZURE_OPENAI_ENDPOINT` | optional | Azure OpenAI resource endpoint, e.g. `https://<resource>.openai.azure.com` |
+| `AZURE_OPENAI_DEPLOYMENT` | optional | Azure OpenAI chat deployment name |
+| `AZURE_OPENAI_API_VERSION` | `2024-10-21` | Azure OpenAI API version |
 | `HUG_MODEL` | `claude-haiku-4-5` | model used for chat replies |
 | `HUG_RATER_MODEL` | `claude-haiku-4-5` | model used to score question stakes (0–10) |
 | `HUG_VERIFIER_MODEL` | `claude-haiku-4-5` | model used to grade submitted claims |
@@ -73,6 +88,7 @@ All implemented in `server.py`:
 | `/verify_claim` | POST | LLM-as-grader. Takes the conversation snapshot + claimed error + user's correction, returns `{verdict: valid\|invalid\|uncertain, confidence, reasoning}` |
 | `/suggest_edit` | POST | Haiku 4.5 suggests a corrected version of one assistant message. The frontend currently does not call this — kept for future re-enable |
 | `/extract_dissatisfaction` | POST | extension helper: summarizes why user is unhappy with an external LLM answer, returns `{summary, reasons[], severity, confidence}` |
+| `/analyze_image_evidence` | POST | optional vision helper: analyzes uploaded screenshot/image evidence for likely AI failures |
 | `/submit_extension_claim` | POST | extension helper: records confirmed extension claim and returns mock payout in `LLM_CREDITS` |
 | `/redact_for_share` | POST | extension helper: detects PII/sensitive content and returns redacted share text + replacement list (`original -> [REDACTED:TYPE]`) |
 | `/detect_failure_signal` | POST | extension auto-agent: predicts likely substantive failure, estimates verification difficulty, and returns cashback offer `$X` |
@@ -93,7 +109,7 @@ All implemented in `server.py`:
 
 ## Tech
 
-- **FastAPI** + uvicorn for the backend, async streaming via `AsyncAnthropicFoundry.messages.stream()`
+- **FastAPI** + uvicorn for the backend
 - **Anthropic Foundry SDK** (`anthropic >= 0.40`)
 - **Vanilla JS** + Server-Sent Events for the chat streaming
 - **Fraunces** + **Hanken Grotesk** from Google Fonts; warm parchment background with subtle noise + radial gradients
@@ -139,7 +155,15 @@ The popup lets you override backend URL if needed.
 Extension activity is persisted on the backend under `data/`:
 - `events.jsonl` (all pages + extension events)
 - `extension_records.jsonl` (extension-only records: extract, claim submit, redaction, auto-signal)
+- `extension_images/` (captured image evidence from extension requests, when provided)
 
 For download/export:
 - `/export` for all events
 - `/export_extension` for extension-only records
+
+Extension records are deduplicated by input fingerprint:
+- exact same input is skipped
+- same conversation with different failure datapoints (summary/reasons/severity/user note) is kept
+
+To dedupe existing historical duplicates in-place:
+- `POST /dedupe_extension_records` (creates backup `data/extension_records.jsonl.bak`)

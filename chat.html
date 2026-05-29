@@ -493,6 +493,7 @@
     display: flex;
     flex-direction: column;
     gap: 24px;
+    padding-bottom: 10px;
   }
 
   .greeting {
@@ -512,6 +513,7 @@
     max-width: 88%;
     opacity: 0;
     animation: rise 0.7s forwards cubic-bezier(.2,.7,.2,1);
+    scroll-margin-bottom: 170px; /* keep streamed replies clear of sticky composer */
   }
   .msg.user {
     align-self: flex-end;
@@ -520,6 +522,48 @@
     padding: 13px 18px;
     border-radius: 18px 18px 4px 18px;
     font-size: 15.5px;
+  }
+  .msg.user .msg-text[contenteditable="true"] {
+    outline: none;
+    min-width: 18ch;
+    white-space: pre-wrap;
+  }
+  .msg.user .msg-text[contenteditable="true"]:focus {
+    box-shadow: 0 0 0 2px rgba(196, 74, 63, 0.2);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.42);
+    padding: 2px 4px;
+  }
+  .user-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 6px;
+    margin-top: 8px;
+  }
+  .user-action-btn {
+    width: 24px;
+    height: 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(138, 128, 115, 0.32);
+    background: rgba(255, 255, 255, 0.64);
+    color: var(--ink-2);
+    border-radius: 50%;
+    padding: 0;
+    font: 600 12px/1 var(--sans);
+    cursor: pointer;
+    transition: border-color .15s ease, color .15s ease, background .15s ease, transform .12s ease;
+  }
+  .user-action-btn:hover {
+    border-color: var(--hug-soft);
+    color: var(--hug-2);
+    background: #fff;
+    transform: translateY(-1px);
+  }
+  .user-action-btn[disabled] {
+    opacity: 0.55;
+    cursor: default;
   }
   .msg.assistant {
     align-self: flex-start;
@@ -610,6 +654,12 @@
     border-radius: var(--radius-lg);
     padding: 14px 16px 12px;
     box-shadow: 0 22px 50px -28px rgba(40, 25, 10, 0.22);
+    transition: border-color .18s ease, box-shadow .18s ease, background .18s ease;
+  }
+  .composer.is-drop-target {
+    border-color: var(--hug-soft);
+    background: #fff7f3;
+    box-shadow: 0 0 0 3px rgba(196, 74, 63, 0.14), 0 22px 50px -28px rgba(40, 25, 10, 0.22);
   }
   .composer textarea {
     width: 100%;
@@ -627,6 +677,14 @@
     margin-top: 8px;
   }
   .composer-tools { display: flex; gap: 4px; align-items: center; }
+  .drop-note {
+    margin-left: 8px;
+    font: 500 11px var(--sans);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    user-select: none;
+  }
   .iconbtn {
     width: 30px; height: 30px;
     display: inline-flex; align-items: center; justify-content: center;
@@ -1161,6 +1219,7 @@
               <button class="iconbtn" id="voiceBtn" title="Voice input" aria-label="Start voice input">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1"/><path d="M12 18v4"/><path d="M8 22h8"/></svg>
               </button>
+              <span class="drop-note">upload or drop image</span>
             </div>
             <button class="send" id="send" title="Send" aria-label="Send">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
@@ -1236,6 +1295,7 @@
   const voiceBtn    = document.getElementById('voiceBtn');
   const imageInput  = document.getElementById('imageInput');
   const preview     = document.getElementById('preview');
+  const composerEl  = ta ? ta.closest('.composer') : null;
   const historyList = document.getElementById('historyList');
   const newChatBtn  = document.getElementById('newChatBtn');
   const restartChatBtn = document.getElementById('restartChatBtn');
@@ -1246,6 +1306,7 @@
   let pendingImage = null;       // {dataUrl, base64, mediaType, fileName}
   const userImages = new Map();  // msgId -> {base64, mediaType}
   let nextMsgId = 0;
+  let isSending = false;
 
   function showPreview() {
     preview.innerHTML = '';
@@ -1316,30 +1377,85 @@
     return { dataUrl, base64: dataUrl.split(',')[1] || '', mediaType: 'image/jpeg' };
   }
 
-  attachBtn.addEventListener('click', () => imageInput.click());
-  imageInput.addEventListener('change', async () => {
-    const f = imageInput.files[0];
-    if (!f) return;
-    if (!f.type.startsWith('image/')) {
-      console.warn('non-image file ignored:', f.type);
-      imageInput.value = '';
-      return;
+  function pickFirstImageFile(fileList) {
+    if (!fileList || !fileList.length) return null;
+    for (const f of Array.from(fileList)) {
+      if (f && String(f.type || '').startsWith('image/')) return f;
+    }
+    return null;
+  }
+
+  function transferHasImageFile(dt) {
+    if (!dt) return false;
+    if (dt.files && pickFirstImageFile(dt.files)) return true;
+    if (dt.items) {
+      for (const item of Array.from(dt.items)) {
+        if (item && item.kind === 'file' && String(item.type || '').startsWith('image/')) return true;
+      }
+    }
+    return false;
+  }
+
+  async function setPendingImageFromFile(file, source = 'upload') {
+    if (!file) return false;
+    if (!String(file.type || '').startsWith('image/')) {
+      console.warn('non-image file ignored:', file.type);
+      return false;
     }
     try {
-      const processed = await processImage(f);
-      pendingImage = { ...processed, fileName: f.name };
+      const processed = await processImage(file);
+      pendingImage = { ...processed, fileName: file.name || 'image' };
       showPreview();
       const finalKB = Math.round(_decodedBytes(processed.dataUrl) / 1024);
-      const origKB  = Math.round(f.size / 1024);
+      const origKB  = Math.round(file.size / 1024);
       if (origKB !== finalKB) {
         console.log(`[hug] image: ${origKB} KB → ${finalKB} KB (${processed.mediaType})`);
       }
+      if (window.hugEvent) hugEvent('composer_image_attached', { source, media_type: processed.mediaType, kb: finalKB });
+      return true;
     } catch (e) {
       console.error('image processing failed:', e);
-    } finally {
-      imageInput.value = '';
+      return false;
     }
+  }
+
+  attachBtn.addEventListener('click', () => imageInput.click());
+  imageInput.addEventListener('change', async () => {
+    const f = pickFirstImageFile(imageInput.files);
+    await setPendingImageFromFile(f, 'picker');
+    imageInput.value = '';
   });
+
+  if (composerEl) {
+    let dragDepth = 0;
+    const setDropTarget = (on) => composerEl.classList.toggle('is-drop-target', !!on);
+
+    composerEl.addEventListener('dragenter', (e) => {
+      if (!transferHasImageFile(e.dataTransfer)) return;
+      e.preventDefault();
+      dragDepth += 1;
+      setDropTarget(true);
+    });
+    composerEl.addEventListener('dragover', (e) => {
+      if (!transferHasImageFile(e.dataTransfer)) return;
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'copy';
+      setDropTarget(true);
+    });
+    composerEl.addEventListener('dragleave', (e) => {
+      e.preventDefault();
+      dragDepth = Math.max(0, dragDepth - 1);
+      if (dragDepth === 0) setDropTarget(false);
+    });
+    composerEl.addEventListener('drop', async (e) => {
+      if (!transferHasImageFile(e.dataTransfer)) return;
+      e.preventDefault();
+      dragDepth = 0;
+      setDropTarget(false);
+      const f = pickFirstImageFile(e.dataTransfer.files);
+      await setPendingImageFromFile(f, 'drop');
+    });
+  }
 
   /* ---------- voice input ---------- */
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -1426,7 +1542,7 @@
     ],
     math: [
       { role: 'user',
-        html: '<img class="attached-img" src="data/Math.JPG" alt="induction proof of integral n factorial" /><div class="msg-text">can you check this induction proof?</div>' },
+        html: '<img class="attached-img" src="assets/math-induction-proof.jpg" alt="induction proof of integral n factorial" /><div class="msg-text">can you check this induction proof?</div>' },
       { role: 'assistant',
         html: '<strong>Looks correct.</strong> Base case <span class="ans">n = 0</span> evaluates cleanly: &int;<sub>0</sub><sup>&infin;</sup> e<sup>&minus;x</sup>dx = 1 = 0!. Inductive step uses integration by parts &mdash; u = x<sup>n+1</sup>, dv = e<sup>&minus;x</sup>dx &mdash; and lands on (n+1)&middot;n! = (n+1)!. Final conclusion holds. Nice work.' }
     ]
@@ -1937,35 +2053,134 @@
     return turns;
   }
 
-  async function sendToClaude() {
-    const v = ta.value.trim();
-    if (!v && !pendingImage) return;
+  function userTextFromMsg(msgEl) {
+    const txtEl = msgEl && msgEl.querySelector('.msg-text');
+    return String(txtEl ? txtEl.textContent : '').trim();
+  }
+
+  function focusEditableEnd(el) {
+    if (!el) return;
+    el.focus();
+    const sel = window.getSelection && window.getSelection();
+    if (!sel) return;
+    const range = document.createRange();
+    range.selectNodeContents(el);
+    range.collapse(false);
+    sel.removeAllRanges();
+    sel.addRange(range);
+  }
+
+  function enhanceUserMessage(msgEl) {
+    if (!msgEl || !msgEl.classList || !msgEl.classList.contains('user')) return;
+    if (msgEl.dataset.enhancedUserMsg === 'true') return;
+    msgEl.dataset.enhancedUserMsg = 'true';
+
+    const txtEl = msgEl.querySelector('.msg-text');
+    if (txtEl) {
+      txtEl.setAttribute('contenteditable', 'true');
+      txtEl.setAttribute('role', 'textbox');
+      txtEl.setAttribute('aria-label', 'Editable user prompt');
+      txtEl.spellcheck = true;
+      txtEl.addEventListener('input', () => queueConversationSave());
+      txtEl.addEventListener('blur', () => queueConversationSave());
+    }
+
+    const actions = document.createElement('div');
+    actions.className = 'user-actions';
+
+    const editBtn = document.createElement('button');
+    editBtn.type = 'button';
+    editBtn.className = 'user-action-btn';
+    editBtn.textContent = '✎';
+    editBtn.title = 'Edit prompt';
+    editBtn.setAttribute('aria-label', 'Edit prompt');
+    editBtn.addEventListener('click', () => {
+      if (txtEl) focusEditableEnd(txtEl);
+    });
+
+    const copyBtn = document.createElement('button');
+    copyBtn.type = 'button';
+    copyBtn.className = 'user-action-btn';
+    copyBtn.textContent = '⧉';
+    copyBtn.title = 'Copy prompt';
+    copyBtn.setAttribute('aria-label', 'Copy prompt');
+    copyBtn.addEventListener('click', async () => {
+      const text = userTextFromMsg(msgEl);
+      if (!text) return;
+      try {
+        await navigator.clipboard.writeText(text);
+        copyBtn.textContent = '✓';
+      } catch (_e) {
+        copyBtn.textContent = '!';
+      }
+      setTimeout(() => { copyBtn.textContent = '⧉'; }, 1000);
+    });
+
+    const resendBtn = document.createElement('button');
+    resendBtn.type = 'button';
+    resendBtn.className = 'user-action-btn';
+    resendBtn.textContent = '↻';
+    resendBtn.title = 'Resend prompt';
+    resendBtn.setAttribute('aria-label', 'Resend prompt');
+    resendBtn.addEventListener('click', async () => {
+      if (isSending) return;
+      const text = userTextFromMsg(msgEl);
+      if (!text) return;
+      await sendToClaude({ text, source: 'resend', fromMsgId: msgEl.dataset.msgid || null });
+    });
+
+    actions.appendChild(editBtn);
+    actions.appendChild(copyBtn);
+    actions.appendChild(resendBtn);
+    msgEl.appendChild(actions);
+  }
+
+  function enhanceAllUserMessages() {
+    convo.querySelectorAll('.msg.user').forEach(enhanceUserMessage);
+  }
+
+  const convoObserver = new MutationObserver(() => {
+    enhanceAllUserMessages();
+  });
+  convoObserver.observe(convo, { childList: true, subtree: false });
+
+  async function sendToClaude(options = {}) {
+    if (isSending) return;
+    const programmaticText = typeof options.text === 'string' ? options.text : null;
+    const v = (programmaticText !== null ? programmaticText : ta.value).trim();
+    const attachedImage = programmaticText === null ? pendingImage : null;
+    if (!v && !attachedImage) return;
 
     resetScore('rating&hellip;', { resetBounty: false });
+    isSending = true;
+    send.disabled = true;
 
     // 1. Render the user turn — image first (if any), then text
     const userEl = document.createElement('div');
     userEl.className = 'msg user';
     const msgId = String(++nextMsgId);
     userEl.dataset.msgid = msgId;
-    if (pendingImage) {
-      userImages.set(msgId, { base64: pendingImage.base64, mediaType: pendingImage.mediaType });
+    if (attachedImage) {
+      userImages.set(msgId, { base64: attachedImage.base64, mediaType: attachedImage.mediaType });
       const img = document.createElement('img');
       img.className = 'attached-img';
-      img.src = pendingImage.dataUrl;
-      img.alt = pendingImage.fileName || 'attached image';
+      img.src = attachedImage.dataUrl;
+      img.alt = attachedImage.fileName || 'attached image';
       userEl.appendChild(img);
     }
     const txt = document.createElement('div');
     txt.className = 'msg-text';
     txt.textContent = v || '(image only)';
     userEl.appendChild(txt);
+    enhanceUserMessage(userEl);
     userEl.style.animation = 'rise 0.5s forwards';
     convo.appendChild(userEl);
-    ta.value = '';
-    resizeComposerText();
-    pendingImage = null;
-    showPreview();
+    if (programmaticText === null) {
+      ta.value = '';
+      resizeComposerText();
+      pendingImage = null;
+      showPreview();
+    }
     queueConversationSave();
 
     const history = buildHistory();
@@ -1975,6 +2190,8 @@
       has_image: !!userImages.get(msgId),
       image_media_type: userImages.get(msgId)?.mediaType || null,
       history_length: history.length,
+      source: options.source || 'composer',
+      resend_from_msg_id: options.fromMsgId || null,
     });
 
     // 2. Render an assistant placeholder with a blinking cursor
@@ -2047,6 +2264,9 @@
     } catch (e) {
       aEl.innerHTML = `<em>connection error: ${e.message}</em>`;
       queueConversationSave();
+    } finally {
+      isSending = false;
+      send.disabled = false;
     }
   }
 
