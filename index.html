@@ -583,15 +583,26 @@
     letter-spacing: 0.01em;
   }
   .eligible-buttons {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    display: flex;
+    flex-wrap: nowrap;
     gap: 12px;
-    max-width: 820px;
+    max-width: 980px;
+    overflow-x: auto;
+    padding-bottom: 3px;
+    scrollbar-width: thin;
+  }
+  .eligible-model {
+    --provider-accent: #5f6f85;
+    flex: 0 0 calc((100% - 36px) / 4);
+    min-width: 190px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
   }
   .eligible-button {
-    --provider-accent: #5f6f85;
     display: inline-flex;
     align-items: center;
+    justify-content: flex-start;
     gap: 10px;
     padding: 11px 13px;
     border-radius: 12px;
@@ -619,6 +630,22 @@
     line-height: 1.1;
     letter-spacing: 0.01em;
     color: var(--ink);
+  }
+  .eligible-caption {
+    font-size: 9.5px;
+    color: color-mix(in oklab, var(--provider-accent) 62%, #2f6b40);
+    letter-spacing: 0.01em;
+    font-weight: 500;
+    padding-left: 3px;
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+    transition: opacity .22s ease, transform .22s ease, filter .22s ease;
+  }
+  .eligible-caption.is-updating {
+    opacity: 0;
+    transform: translateY(4px);
+    filter: blur(1px);
   }
 
   /* ---------- Examples ---------- */
@@ -1116,7 +1143,7 @@
     .hero { padding: 52px 0 64px; }
     .extension-card h3 { font-size: 26px; }
     .lit-title { font-size: 24px; }
-    .eligible-buttons { grid-template-columns: 1fr; }
+    .eligible-model { flex-basis: 220px; }
   }
   @media (hover: none) {
     .hint { display: none; }
@@ -1190,22 +1217,34 @@
     <h2 id="accepted-models-title">Now streaming claims for <em>Claude Opus 4.8</em>, <em>GPT 5.5</em>, <em>GPT Codex 5.3</em>, and <em>Gemini 3.5 Pro</em>.</h2>
     <p class="accepted-models-note">More proprietary models will be added soon.</p>
     <div class="eligible-buttons" aria-label="Accepted language models">
-      <a class="eligible-button" style="--provider-accent:#d97757;" href="https://yuexinghao.github.io/HugClaims.ai/claim.html?model=claude-opus-4.8&amp;provider=Anthropic" title="File a claim for Claude Opus 4.8">
-        <img src="https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/anthropic.svg" alt="Anthropic logo" loading="lazy" />
-        <span>Claude Opus 4.8</span>
-      </a>
-      <a class="eligible-button" style="--provider-accent:#10a37f;" href="https://yuexinghao.github.io/HugClaims.ai/claim.html?model=gpt-5.5&amp;provider=OpenAI" title="File a claim for GPT 5.5">
-        <img src="https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/openai.svg" alt="OpenAI logo" loading="lazy" />
-        <span>GPT 5.5</span>
-      </a>
-      <a class="eligible-button" style="--provider-accent:#10a37f;" href="https://yuexinghao.github.io/HugClaims.ai/claim.html?model=gpt-codex-5.3&amp;provider=OpenAI" title="File a claim for GPT Codex 5.3">
-        <img src="https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/openai.svg" alt="OpenAI logo" loading="lazy" />
-        <span>GPT Codex 5.3</span>
-      </a>
-      <a class="eligible-button" style="--provider-accent:#1a73e8;" href="https://yuexinghao.github.io/HugClaims.ai/claim.html?model=gemini-3.5-pro&amp;provider=Google" title="File a claim for Gemini 3.5 Pro">
-        <img src="https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/gemini.svg" alt="Google logo" loading="lazy" />
-        <span>Gemini 3.5 Pro</span>
-      </a>
+      <div class="eligible-model" style="--provider-accent:#d97757;">
+        <a class="eligible-button" href="https://yuexinghao.github.io/HugClaims.ai/claim.html?model=claude-opus-4.8&amp;provider=Anthropic" title="File a claim for Claude Opus 4.8">
+          <img src="https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/anthropic.svg" alt="Anthropic logo" loading="lazy" />
+          <span>Claude Opus 4.8</span>
+        </a>
+        <span class="eligible-caption">User UAKEC received $22</span>
+      </div>
+      <div class="eligible-model" style="--provider-accent:#10a37f;">
+        <a class="eligible-button" href="https://yuexinghao.github.io/HugClaims.ai/claim.html?model=gpt-5.5&amp;provider=OpenAI" title="File a claim for GPT 5.5">
+          <img src="https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/openai.svg" alt="OpenAI logo" loading="lazy" />
+          <span>GPT 5.5</span>
+        </a>
+        <span class="eligible-caption">User NIVAR received $19</span>
+      </div>
+      <div class="eligible-model" style="--provider-accent:#10a37f;">
+        <a class="eligible-button" href="https://yuexinghao.github.io/HugClaims.ai/claim.html?model=gpt-codex-5.3&amp;provider=OpenAI" title="File a claim for GPT Codex 5.3">
+          <img src="https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/openai.svg" alt="OpenAI logo" loading="lazy" />
+          <span>GPT Codex 5.3</span>
+        </a>
+        <span class="eligible-caption">User MILOX received $24</span>
+      </div>
+      <div class="eligible-model" style="--provider-accent:#1a73e8;">
+        <a class="eligible-button" href="https://yuexinghao.github.io/HugClaims.ai/claim.html?model=gemini-3.5-pro&amp;provider=Google" title="File a claim for Gemini 3.5 Pro">
+          <img src="https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/gemini.svg" alt="Google logo" loading="lazy" />
+          <span>Gemini 3.5 Pro</span>
+        </a>
+        <span class="eligible-caption">User SAREM received $17</span>
+      </div>
     </div>
   </section>
 
@@ -1549,6 +1588,32 @@
       }));
     });
   });
+
+  const ELIGIBLE_CAPTION_NAMES = ['UAKEC', 'NIVAR', 'MILOX', 'SAREM', 'QATEN', 'RUVIK', 'LEONA', 'DYLAN', 'MARA', 'KAI'];
+
+  function randomEligibleName() {
+    return ELIGIBLE_CAPTION_NAMES[Math.floor(Math.random() * ELIGIBLE_CAPTION_NAMES.length)];
+  }
+
+  function randomEligibleCashback() {
+    return 2 + Math.floor(Math.random() * 26);
+  }
+
+  function eligibleCaptionText() {
+    return `User ${randomEligibleName()} received $${randomEligibleCashback()}`;
+  }
+
+  function refreshEligibleCaptions() {
+    document.querySelectorAll('.eligible-caption').forEach((el) => {
+      el.classList.add('is-updating');
+      setTimeout(() => {
+        el.textContent = eligibleCaptionText();
+        el.classList.remove('is-updating');
+      }, 130);
+    });
+  }
+
+  setInterval(refreshEligibleCaptions, 2000);
 
 </script>
 </body>
