@@ -572,10 +572,16 @@
     font-weight: 300;
     font-size: clamp(30px, 3.8vw, 46px);
     letter-spacing: -0.025em;
-    margin-bottom: 26px;
+    margin-bottom: 10px;
     line-height: 1.16;
   }
   .accepted-models h2 em { font-style: italic; color: var(--green-2); }
+  .accepted-models-note {
+    margin: 0 0 24px;
+    font-size: 12px;
+    color: var(--ink-3);
+    letter-spacing: 0.01em;
+  }
   .marquee-grid {
     display: grid;
     gap: 14px;
@@ -1247,7 +1253,8 @@
 
   <section class="accepted-models" aria-labelledby="accepted-models-title">
     <div class="label">cash back eligible models</div>
-    <h2 id="accepted-models-title">We currently cover claims across <em>model families</em> and <em>models</em>.</h2>
+    <h2 id="accepted-models-title">Now streaming claims for <em>Claude Opus 4.8</em>, <em>GPT 5.5</em>, <em>GPT Codex 5.3</em>, and <em>Gemini 3.5 Pro</em>.</h2>
+    <p class="accepted-models-note">More proprietary models will be added soon.</p>
     <div class="marquee-grid" aria-label="Accepted language models">
       <div class="model-marquee" data-row="1">
         <div class="model-marquee-inner">
@@ -1606,25 +1613,11 @@
     });
   });
 
-  const FALLBACK_MODELS = [
-    { name: 'gpt-5', provider: 'OpenAI', provider_key: 'openai', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/openai.svg' },
-    { name: 'gpt-4.1', provider: 'OpenAI', provider_key: 'openai', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/openai.svg' },
-    { name: 'gpt-4o', provider: 'OpenAI', provider_key: 'openai', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/openai.svg' },
-    { name: 'claude-opus-4-1', provider: 'Anthropic', provider_key: 'anthropic', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/anthropic.svg' },
-    { name: 'claude-sonnet-4-6', provider: 'Anthropic', provider_key: 'anthropic', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/anthropic.svg' },
-    { name: 'claude-haiku-4-5', provider: 'Anthropic', provider_key: 'anthropic', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/anthropic.svg' },
-    { name: 'gemini-2.5-pro', provider: 'Google', provider_key: 'google', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/gemini.svg' },
-    { name: 'gemini-2.5-flash', provider: 'Google', provider_key: 'google', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/gemini.svg' },
-    { name: 'llama-4-maverick', provider: 'Meta', provider_key: 'meta', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/meta.svg' },
-    { name: 'llama-3.3-70b', provider: 'Meta', provider_key: 'meta', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/meta.svg' },
-    { name: 'mistral-large', provider: 'Mistral AI', provider_key: 'mistral', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/mistral.svg' },
-    { name: 'ministral-8b', provider: 'Mistral AI', provider_key: 'mistral', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/mistral.svg' },
-    { name: 'command-r-plus', provider: 'Cohere', provider_key: 'cohere', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/cohere.svg' },
-    { name: 'deepseek-r1', provider: 'DeepSeek', provider_key: 'deepseek', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/deepseek.svg' },
-    { name: 'deepseek-v3', provider: 'DeepSeek', provider_key: 'deepseek', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/deepseek.svg' },
-    { name: 'grok-3', provider: 'xAI', provider_key: 'xai', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/grok.svg' },
-    { name: 'phi-4', provider: 'Microsoft', provider_key: 'microsoft', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/microsoft.svg' },
-    { name: 'nemotron-4', provider: 'NVIDIA', provider_key: 'nvidia', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/nvidia.svg' },
+  const ELIGIBLE_STREAM_MODELS = [
+    { name: 'claude-opus-4.8', display_name: 'Claude Opus 4.8', provider: 'Anthropic', provider_key: 'anthropic', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/anthropic.svg' },
+    { name: 'gpt-5.5', display_name: 'GPT 5.5', provider: 'OpenAI', provider_key: 'openai', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/openai.svg' },
+    { name: 'gpt-codex-5.3', display_name: 'GPT Codex 5.3', provider: 'OpenAI', provider_key: 'openai', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/openai.svg' },
+    { name: 'gemini-3.5-pro', display_name: 'Gemini 3.5 Pro', provider: 'Google', provider_key: 'google', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/gemini.svg' },
   ];
   const PROVIDER_COLORS = {
     openai: '#10a37f',
@@ -1700,7 +1693,7 @@
 
       const label = document.createElement('span');
       label.className = 'model-title';
-      label.textContent = titleizeModelName(item.name || '');
+      label.textContent = String(item.display_name || titleizeModelName(item.name || ''));
       chip.appendChild(label);
 
       const caption = document.createElement('span');
@@ -1725,9 +1718,8 @@
     const row1 = document.getElementById('acceptedModelsRow1');
     const row2 = document.getElementById('acceptedModelsRow2');
     const row3 = document.getElementById('acceptedModelsRow3');
-    const titleEl = document.getElementById('accepted-models-title');
     if (!row1 || !row2 || !row3) return;
-    const items = Array.isArray(models) && models.length ? models : FALLBACK_MODELS;
+    const items = Array.isArray(models) && models.length ? models : ELIGIBLE_STREAM_MODELS;
     const unique = [];
     const seen = new Set();
     items.forEach((item) => {
@@ -1736,14 +1728,14 @@
       seen.add(key);
       unique.push(item);
     });
+    if (!unique.length) return;
 
-    if (titleEl) {
-      const familySet = new Set(unique.map((item) => String(item.provider_key || item.provider || '').toLowerCase()).filter(Boolean));
-      const familyCount = familySet.size;
-      const modelCount = unique.length;
-      const familyLabel = familyCount === 1 ? 'model family' : 'model families';
-      const modelLabel = modelCount === 1 ? 'model' : 'models';
-      titleEl.innerHTML = `We currently cover claims across <em>${familyCount} ${familyLabel}</em> and <em>${modelCount} ${modelLabel}</em>.`;
+    if (unique.length <= 4) {
+      const by = (i) => unique[i % unique.length];
+      renderRow(row1, [by(0), by(1), by(2), by(3)]);
+      renderRow(row2, [by(2), by(3), by(0), by(1)]);
+      renderRow(row3, [by(3), by(2), by(1), by(0)]);
+      return;
     }
 
     const buckets = [[], [], []];
@@ -1765,32 +1757,7 @@
     });
   }
 
-  async function loadAzureModels() {
-    try {
-      const res = await fetch('/api/azure_models?limit=80');
-      if (!res.ok) throw new Error(`status ${res.status}`);
-      const payload = await res.json();
-      let models = Array.isArray(payload.models) ? payload.models : [];
-      const families = new Set(models.map((m) => String(m.provider_key || m.provider || '').toLowerCase()).filter(Boolean));
-
-      // If cache or parsing ever returns a narrow set (e.g., GPT-only),
-      // force-refresh once to recover provider diversity.
-      if (families.size < 4) {
-        const retry = await fetch('/api/azure_models?limit=80&refresh=true');
-        if (retry.ok) {
-          const retryPayload = await retry.json();
-          const retryModels = Array.isArray(retryPayload.models) ? retryPayload.models : [];
-          if (retryModels.length) models = retryModels;
-        }
-      }
-
-      renderModelMarquee(models);
-    } catch (_err) {
-      renderModelMarquee(FALLBACK_MODELS);
-    }
-  }
-
-  loadAzureModels();
+  renderModelMarquee(ELIGIBLE_STREAM_MODELS);
   setInterval(refreshLiveCashbackCaptions, 3000);
 
 </script>
