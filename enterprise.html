@@ -190,15 +190,58 @@
     }
 
     .tiers {
-      display: grid;
-      gap: 10px;
-      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 10px 14px;
+      position: relative;
+      counter-reset: tier;
+    }
+    .tiers::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 20px;
+      bottom: 20px;
+      width: 2px;
+      border-radius: 999px;
+      background: linear-gradient(
+        180deg,
+        rgba(132, 102, 178, 0.1),
+        rgba(132, 102, 178, 0.42),
+        rgba(132, 102, 178, 0.1)
+      );
     }
     .tier-card {
+      counter-increment: tier;
+      width: min(100%, var(--tier-width, 100%));
+      position: relative;
       border: 1px solid rgba(211, 200, 218, 0.88);
       border-radius: 14px;
       background: #fff;
-      padding: 14px 14px 12px;
+      padding: 16px 16px 14px;
+      box-shadow: 0 16px 30px -28px rgba(40, 25, 10, 0.28);
+    }
+    .tier-card:nth-child(1) { --tier-width: 74%; }
+    .tier-card:nth-child(2) { --tier-width: 82%; }
+    .tier-card:nth-child(3) { --tier-width: 90%; }
+    .tier-card:nth-child(4) { --tier-width: 100%; }
+    .tier-card::after {
+      content: "stage " counter(tier);
+      position: absolute;
+      top: -11px;
+      left: 12px;
+      border: 1px solid rgba(132, 102, 178, 0.38);
+      border-radius: 999px;
+      padding: 3px 8px;
+      background: #f8f3ff;
+      color: #655485;
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 700;
     }
     .tier-top {
       display: flex;
@@ -216,11 +259,33 @@
       color: var(--ink);
     }
     .tier-price {
-      font-size: 12px;
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      color: var(--green-2);
+      white-space: nowrap;
+    }
+    .price-prefix {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 700;
+      color: var(--ink-3);
+    }
+    .price-number {
+      font-family: var(--serif);
+      font-size: clamp(30px, 3.1vw, 44px);
+      line-height: 0.95;
+      letter-spacing: -0.03em;
+      font-weight: 520;
+      color: var(--green-2);
+    }
+    .price-unit {
+      font-size: 11px;
       text-transform: uppercase;
       letter-spacing: 0.1em;
       font-weight: 700;
-      color: var(--green-2);
+      color: var(--ink-3);
     }
     .tier-copy {
       color: var(--ink-2);
@@ -387,6 +452,14 @@
       .trial-grid { grid-template-columns: 1fr; }
       .hero, .stream-head, .trial { padding: 16px; }
       .tiers { padding: 10px; }
+      .tiers::before { display: none; }
+      .tier-card,
+      .tier-card:nth-child(1),
+      .tier-card:nth-child(2),
+      .tier-card:nth-child(3),
+      .tier-card:nth-child(4) {
+        width: 100%;
+      }
     }
   </style>
 </head>
@@ -422,7 +495,7 @@
           <article class="tier-card">
             <div class="tier-top">
               <div class="tier-name">Starter</div>
-              <div class="tier-price">$120K / year</div>
+              <div class="tier-price"><span class="price-number">$120K</span><span class="price-unit">/ year</span></div>
             </div>
             <p class="tier-copy">One domain pack of your choice: coding, medical, legal, math, multilingual, or general reasoning.</p>
             <ul class="tier-list">
@@ -435,7 +508,7 @@
           <article class="tier-card">
             <div class="tier-top">
               <div class="tier-name">Growth</div>
-              <div class="tier-price">$360K / year</div>
+              <div class="tier-price"><span class="price-number">$360K</span><span class="price-unit">/ year</span></div>
             </div>
             <p class="tier-copy">Three domain packs of your choice, with 1,000 items per pack each quarter for 12,000 items per year.</p>
             <ul class="tier-list">
@@ -448,7 +521,7 @@
           <article class="tier-card">
             <div class="tier-top">
               <div class="tier-name">Frontier</div>
-              <div class="tier-price">$750K / year</div>
+              <div class="tier-price"><span class="price-number">$750K</span><span class="price-unit">/ year</span></div>
             </div>
             <p class="tier-copy">Full access to all current and future domain packs with no item caps.</p>
             <ul class="tier-list">
@@ -462,7 +535,7 @@
           <article class="tier-card">
             <div class="tier-top">
               <div class="tier-name">Custom Enterprise</div>
-              <div class="tier-price">from $1.5M / year</div>
+              <div class="tier-price"><span class="price-prefix">from</span><span class="price-number">$1.5M</span><span class="price-unit">/ year</span></div>
             </div>
             <p class="tier-copy">Everything in Frontier plus strategic partnership capabilities.</p>
             <ul class="tier-list">
@@ -485,7 +558,7 @@
           <article class="tier-card">
             <div class="tier-top">
               <div class="tier-name">Departmental</div>
-              <div class="tier-price">$90K / year</div>
+              <div class="tier-price"><span class="price-number">$90K</span><span class="price-unit">/ year</span></div>
             </div>
             <p class="tier-copy">Supports up to 100 employee users on the platform.</p>
             <ul class="tier-list">
@@ -498,7 +571,7 @@
           <article class="tier-card">
             <div class="tier-top">
               <div class="tier-name">Enterprise</div>
-              <div class="tier-price">$300K / year</div>
+              <div class="tier-price"><span class="price-number">$300K</span><span class="price-unit">/ year</span></div>
             </div>
             <p class="tier-copy">Supports up to 1,000 employee users with deeper integration and governance controls.</p>
             <ul class="tier-list">
@@ -512,7 +585,7 @@
           <article class="tier-card">
             <div class="tier-top">
               <div class="tier-name">Enterprise Plus</div>
-              <div class="tier-price">$750K / year</div>
+              <div class="tier-price"><span class="price-number">$750K</span><span class="price-unit">/ year</span></div>
             </div>
             <p class="tier-copy">Unlimited users with high-frequency reporting and live operational visibility.</p>
             <ul class="tier-list">
@@ -525,7 +598,7 @@
           <article class="tier-card">
             <div class="tier-top">
               <div class="tier-name">Regulated Enterprise</div>
-              <div class="tier-price">$1.5M+ / year</div>
+              <div class="tier-price"><span class="price-number">$1.5M+</span><span class="price-unit">/ year</span></div>
             </div>
             <p class="tier-copy">Custom tier for the largest deployments with regulator-facing requirements.</p>
             <ul class="tier-list">
