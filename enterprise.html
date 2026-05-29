@@ -1,0 +1,576 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" type="image/jpeg" href="assets/hug-logo.jpg" />
+  <link rel="apple-touch-icon" href="assets/hug-logo.jpg" />
+  <title>hug.claims - Enterprise User Pricing</title>
+  <style>
+    :root {
+      --paper: #f1edf6;
+      --ink: #1a1612;
+      --ink-2: #4b4339;
+      --ink-3: #8a8073;
+      --hug: #c44a3f;
+      --hug-2: #a83a30;
+      --green-2: #2f6b40;
+      --line: #d3c8da;
+      --surface: rgba(255, 253, 248, 0.9);
+      --serif: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+      --sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--sans);
+      color: var(--ink);
+      background: var(--paper);
+      background-image:
+        radial-gradient(ellipse 62% 42% at 84% -8%, rgba(132, 102, 178, 0.14) 0%, transparent 60%),
+        radial-gradient(ellipse 68% 50% at -8% 104%, rgba(196, 74, 63, 0.08) 0%, transparent 56%);
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.5;
+      font-size: 16.5px;
+    }
+
+    .app {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 28px 52px;
+    }
+
+    .brand-link {
+      display: inline-flex;
+      align-items: baseline;
+      text-decoration: none;
+      color: inherit;
+      transition: opacity .15s, transform .15s;
+    }
+    .brand-link:hover { opacity: 0.86; transform: translateY(-1px); }
+    .brand-text {
+      font-family: var(--serif);
+      font-style: italic;
+      letter-spacing: -0.02em;
+      font-size: 30px;
+      line-height: 1;
+    }
+    .brand-text .em { color: var(--hug); font-weight: 500; }
+    .brand-text .small { font-size: 18px; color: var(--ink-3); margin-left: 1px; font-weight: 400; }
+
+    header.top {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 18px;
+      padding: 30px 0 22px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 24px;
+    }
+    .nav {
+      display: flex;
+      gap: 20px;
+      align-items: baseline;
+      flex-wrap: wrap;
+    }
+    .nav a {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 14px;
+      color: var(--ink-2);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: border-color .15s, color .15s;
+      padding-bottom: 1px;
+    }
+    .nav a:hover {
+      color: var(--hug);
+      border-bottom-color: var(--hug);
+    }
+
+    .hero {
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(248, 243, 253, 0.8));
+      padding: 28px;
+      box-shadow: 0 22px 40px -34px rgba(40, 25, 10, 0.28);
+      margin-bottom: 16px;
+    }
+    .kicker {
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid rgba(196, 74, 63, 0.35);
+      border-radius: 999px;
+      padding: 5px 11px;
+      font-size: 10.5px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--hug-2);
+      margin-bottom: 11px;
+      font-weight: 600;
+      background: rgba(250, 233, 224, 0.62);
+    }
+    .hero h1 {
+      font-family: var(--serif);
+      font-weight: 320;
+      font-size: clamp(32px, 4.3vw, 56px);
+      letter-spacing: -0.03em;
+      line-height: 1.08;
+      margin-bottom: 10px;
+      max-width: 22ch;
+    }
+    .hero h1 em {
+      color: var(--green-2);
+      font-style: italic;
+    }
+    .hero p {
+      color: var(--ink-2);
+      max-width: 78ch;
+    }
+    .hero-trial {
+      margin-top: 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--green-2);
+      font-weight: 600;
+      font-size: 13px;
+      letter-spacing: 0.01em;
+    }
+    .hero-trial .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--green-2);
+      box-shadow: 0 0 0 6px rgba(47, 107, 64, 0.12);
+    }
+
+    .streams {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin: 16px 0;
+    }
+    .stream {
+      border: 1px solid rgba(179, 162, 198, 0.56);
+      border-radius: 20px;
+      background: var(--surface);
+      box-shadow:
+        0 20px 38px -32px rgba(40, 25, 10, 0.24),
+        0 0 0 1px rgba(255, 255, 255, 0.36) inset;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .stream-head {
+      padding: 20px 20px 14px;
+      border-bottom: 1px solid rgba(211, 200, 218, 0.78);
+      background: linear-gradient(180deg, rgba(245, 239, 250, 0.9), rgba(255, 255, 255, 0.72));
+    }
+    .stream-head .stream-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--ink-3);
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+    .stream-head h2 {
+      font-family: var(--serif);
+      font-weight: 320;
+      font-size: clamp(24px, 3vw, 34px);
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-bottom: 6px;
+    }
+    .stream-head p {
+      color: var(--ink-2);
+      font-size: 14px;
+    }
+
+    .tiers {
+      display: grid;
+      gap: 10px;
+      padding: 12px;
+    }
+    .tier-card {
+      border: 1px solid rgba(211, 200, 218, 0.88);
+      border-radius: 14px;
+      background: #fff;
+      padding: 14px 14px 12px;
+    }
+    .tier-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 10px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+    .tier-name {
+      font-family: var(--serif);
+      font-size: 21px;
+      font-weight: 430;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+    }
+    .tier-price {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 700;
+      color: var(--green-2);
+    }
+    .tier-copy {
+      color: var(--ink-2);
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+    .tier-list {
+      list-style: none;
+      display: grid;
+      gap: 6px;
+      font-size: 13px;
+      color: var(--ink-2);
+    }
+    .tier-list li {
+      padding-left: 14px;
+      position: relative;
+    }
+    .tier-list li::before {
+      content: "";
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: color-mix(in oklab, var(--hug) 42%, #8a8073);
+      position: absolute;
+      left: 1px;
+      top: 8px;
+    }
+
+    .trial {
+      margin-top: 14px;
+      border: 1px solid rgba(132, 102, 178, 0.44);
+      border-radius: 20px;
+      background: linear-gradient(180deg, rgba(247, 241, 253, 0.86), rgba(255, 255, 255, 0.88));
+      box-shadow:
+        0 20px 36px -34px rgba(60, 45, 90, 0.34),
+        0 0 0 1px rgba(255, 255, 255, 0.38) inset;
+      padding: 20px;
+    }
+    .trial h3 {
+      font-family: var(--serif);
+      font-weight: 350;
+      font-size: clamp(26px, 3.2vw, 40px);
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-bottom: 7px;
+    }
+    .trial h3 em {
+      font-style: italic;
+      color: var(--green-2);
+    }
+    .trial p {
+      color: var(--ink-2);
+      margin-bottom: 12px;
+      max-width: 74ch;
+      font-size: 14.5px;
+    }
+    .trial-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .trial-card {
+      border: 1px solid rgba(179, 162, 198, 0.7);
+      border-radius: 14px;
+      background: #fff;
+      padding: 12px;
+    }
+    .trial-card .trial-name {
+      font-size: 11px;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      margin-bottom: 4px;
+      font-weight: 700;
+    }
+    .trial-card .trial-title {
+      font-family: var(--serif);
+      font-size: 19px;
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+    }
+    .trial-card ul {
+      list-style: none;
+      display: grid;
+      gap: 6px;
+      font-size: 13px;
+      color: var(--ink-2);
+    }
+    .trial-card li {
+      padding-left: 14px;
+      position: relative;
+    }
+    .trial-card li::before {
+      content: "";
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--green-2);
+      position: absolute;
+      left: 1px;
+      top: 8px;
+    }
+
+    .cta-row {
+      margin-top: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      color: var(--ink-2);
+      font-size: 13px;
+    }
+    .cta-btn {
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      border: 1px solid var(--ink);
+      background: var(--ink);
+      color: #fff;
+      padding: 9px 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-size: 10px;
+      font-weight: 700;
+      transition: transform .14s ease, background .15s ease;
+    }
+    .cta-btn:hover {
+      transform: translateY(-1px);
+      background: #2d2720;
+    }
+
+    footer.bottom {
+      margin-top: 22px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: var(--ink-3);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    footer.bottom em {
+      text-transform: none;
+      letter-spacing: 0;
+      font-size: 12px;
+      color: var(--ink-2);
+      font-style: italic;
+    }
+
+    @media (max-width: 1040px) {
+      .streams { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 760px) {
+      .app { padding: 0 16px 34px; }
+      header.top {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .trial-grid { grid-template-columns: 1fr; }
+      .hero, .stream-head, .trial { padding: 16px; }
+      .tiers { padding: 10px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="top">
+      <a class="brand-link" href="index.html" aria-label="Hug Claims home">
+        <span class="brand-text">Hug<span class="em">.</span><span class="small">claims</span></span>
+      </a>
+      <nav class="nav" aria-label="Main">
+        <a href="index.html">home</a>
+        <a href="claim.html">file a claim</a>
+        <a href="forum.html">forum</a>
+        <a href="career.html">careers</a>
+      </nav>
+    </header>
+
+    <section class="hero" aria-labelledby="enterprise-pricing-title">
+      <div class="kicker">for enterprise users</div>
+      <h1 id="enterprise-pricing-title">Enterprise pricing for <em>data licensing</em> and <em>audit coverage</em>.</h1>
+      <p>Choose the stream that fits your deployment model. Data Licensing is built for model teams training and evaluating systems. Enterprise Audits is built for organizations deploying LLMs internally with governance and compliance requirements.</p>
+      <div class="hero-trial"><span class="dot" aria-hidden="true"></span> One-month free trial available for qualified enterprise teams.</div>
+    </section>
+
+    <section class="streams" aria-label="Enterprise pricing streams">
+      <article class="stream">
+        <div class="stream-head">
+          <div class="stream-label">stream one</div>
+          <h2>Enterprise Data Licensing</h2>
+          <p>Verified LLM failure datasets delivered as feeds for training, evaluation, and model risk analysis.</p>
+        </div>
+        <div class="tiers">
+          <article class="tier-card">
+            <div class="tier-top">
+              <div class="tier-name">Starter</div>
+              <div class="tier-price">$120K / year</div>
+            </div>
+            <p class="tier-copy">One domain pack of your choice: coding, medical, legal, math, multilingual, or general reasoning.</p>
+            <ul class="tier-list">
+              <li>1,000 verified failure items per quarter, about $30 per item.</li>
+              <li>Designed for smaller labs, well-funded startups, or specific teams inside larger labs.</li>
+              <li>Delivery via downloadable JSON or Parquet feed plus dashboard access.</li>
+            </ul>
+          </article>
+
+          <article class="tier-card">
+            <div class="tier-top">
+              <div class="tier-name">Growth</div>
+              <div class="tier-price">$360K / year</div>
+            </div>
+            <p class="tier-copy">Three domain packs of your choice, with 1,000 items per pack each quarter for 12,000 items per year.</p>
+            <ul class="tier-list">
+              <li>Effective price is about $30 per item with larger bundled volume.</li>
+              <li>Includes basic API access for programmatic querying.</li>
+              <li>Targets mid-sized labs and hyperscaler data teams exploring before full feed commitment.</li>
+            </ul>
+          </article>
+
+          <article class="tier-card">
+            <div class="tier-top">
+              <div class="tier-name">Frontier</div>
+              <div class="tier-price">$750K / year</div>
+            </div>
+            <p class="tier-copy">Full access to all current and future domain packs with no item caps.</p>
+            <ul class="tier-list">
+              <li>Real-time webhook delivery and custom taxonomy filters.</li>
+              <li>Dedicated solutions engineer for integration.</li>
+              <li>Primary tier for OpenAI, Anthropic, Google DeepMind, Meta, and xAI.</li>
+              <li>Effective per-item cost is roughly $15 to $20 at high volume.</li>
+            </ul>
+          </article>
+
+          <article class="tier-card">
+            <div class="tier-top">
+              <div class="tier-name">Custom Enterprise</div>
+              <div class="tier-price">from $1.5M / year</div>
+            </div>
+            <p class="tier-copy">Everything in Frontier plus strategic partnership capabilities.</p>
+            <ul class="tier-list">
+              <li>Exclusive early access to new domains before general feed release.</li>
+              <li>Custom validation pipelines for proprietary requirements.</li>
+              <li>On-premise data delivery for security-sensitive buyers.</li>
+              <li>Quarterly executive reviews and direct influence on taxonomy direction.</li>
+            </ul>
+          </article>
+        </div>
+      </article>
+
+      <article class="stream">
+        <div class="stream-head">
+          <div class="stream-label">stream two</div>
+          <h2>Enterprise Audits</h2>
+          <p>Operational oversight for LLM deployments, with risk reporting, taxonomy governance, and compliance alignment.</p>
+        </div>
+        <div class="tiers">
+          <article class="tier-card">
+            <div class="tier-top">
+              <div class="tier-name">Departmental</div>
+              <div class="tier-price">$90K / year</div>
+            </div>
+            <p class="tier-copy">Supports up to 100 employee users on the platform.</p>
+            <ul class="tier-list">
+              <li>Quarterly audit reports, basic failure taxonomy, and email support.</li>
+              <li>Built for one department deploying LLMs, such as bank wealth teams or hospital radiology groups.</li>
+              <li>Designed as a land-and-expand wedge within larger enterprises.</li>
+            </ul>
+          </article>
+
+          <article class="tier-card">
+            <div class="tier-top">
+              <div class="tier-name">Enterprise</div>
+              <div class="tier-price">$300K / year</div>
+            </div>
+            <p class="tier-copy">Supports up to 1,000 employee users with deeper integration and governance controls.</p>
+            <ul class="tier-list">
+              <li>Monthly audit reports and custom taxonomies mapped to your risk framework.</li>
+              <li>Integrations with LLM gateway and observability stacks such as Datadog or LangSmith.</li>
+              <li>Dedicated customer success and quarterly executive briefings.</li>
+              <li>Primary tier for Fortune 1000 organizations running serious LLM deployments.</li>
+            </ul>
+          </article>
+
+          <article class="tier-card">
+            <div class="tier-top">
+              <div class="tier-name">Enterprise Plus</div>
+              <div class="tier-price">$750K / year</div>
+            </div>
+            <p class="tier-copy">Unlimited users with high-frequency reporting and live operational visibility.</p>
+            <ul class="tier-list">
+              <li>Real-time failure dashboards, weekly trend reports, and on-call analyst support.</li>
+              <li>Regulatory reporting templates aligned to EU AI Act, NIST AI RMF, and HIPAA.</li>
+              <li>Annual on-site executive review for regulated and high-exposure deployments.</li>
+            </ul>
+          </article>
+
+          <article class="tier-card">
+            <div class="tier-top">
+              <div class="tier-name">Regulated Enterprise</div>
+              <div class="tier-price">$1.5M+ / year</div>
+            </div>
+            <p class="tier-copy">Custom tier for the largest deployments with regulator-facing requirements.</p>
+            <ul class="tier-list">
+              <li>On-premise infrastructure and integration with internal incident-response workflows.</li>
+              <li>Dedicated validation teams with sector expertise, including licensed clinicians or attorneys.</li>
+              <li>Custom audit methodologies aligned to regulator expectations.</li>
+            </ul>
+          </article>
+        </div>
+      </article>
+    </section>
+
+    <section class="trial" aria-labelledby="trial-title">
+      <h3 id="trial-title">One-Month <em>Free Trial</em></h3>
+      <p>Start with zero license cost for 30 days. We run the onboarding and integration sprint so your team can validate data quality and risk visibility before signing an annual contract.</p>
+      <div class="trial-grid">
+        <article class="trial-card">
+          <div class="trial-name">Data Licensing Trial</div>
+          <div class="trial-title">$0 for month 1</div>
+          <ul>
+            <li>One domain pack with up to 250 verified failure items during trial.</li>
+            <li>Dashboard access and sample API credentials for workflow testing.</li>
+            <li>JSON or Parquet exports included for internal evaluation.</li>
+          </ul>
+        </article>
+        <article class="trial-card">
+          <div class="trial-name">Audit Trial</div>
+          <div class="trial-title">$0 for month 1</div>
+          <ul>
+            <li>Up to 50 employee users with one baseline audit report.</li>
+            <li>Failure taxonomy preview and starter governance mapping.</li>
+            <li>Integration check with your existing LLM gateway or observability stack.</li>
+          </ul>
+        </article>
+      </div>
+      <div class="cta-row">
+        <a class="cta-btn" href="mailto:enterprise@hug.claims?subject=Enterprise%20pricing%20and%20trial">request enterprise trial</a>
+        <span>Enterprise contracts and trial qualification are finalized with sales and security review.</span>
+      </div>
+    </section>
+
+    <footer class="bottom">
+      <div>hug.claims</div>
+      <div><em>enterprise user pricing</em></div>
+    </footer>
+  </div>
+</body>
+</html>

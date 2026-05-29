@@ -554,7 +554,7 @@
     object-fit: cover;
   }
 
-  /* ---------- Accepted models marquee ---------- */
+  /* ---------- Accepted models ---------- */
   .accepted-models {
     padding: 54px 0 38px;
     border-bottom: 1px solid var(--line);
@@ -582,108 +582,43 @@
     color: var(--ink-3);
     letter-spacing: 0.01em;
   }
-  .marquee-grid {
+  .eligible-buttons {
     display: grid;
-    gap: 14px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    max-width: 820px;
   }
-  .model-marquee {
-    overflow: hidden;
-    border: 1px solid rgba(211, 200, 218, 0.95);
-    border-radius: 22px;
-    background: rgba(255, 253, 248, 0.9);
-    box-shadow: 0 16px 38px -28px rgba(40, 25, 10, 0.2);
-    padding: 10px 0;
-  }
-  .model-marquee-inner {
-    width: max-content;
-    display: flex;
-    animation: model-scroll 112s linear infinite;
-  }
-  .model-marquee:hover .model-marquee-inner {
-    animation-play-state: paused;
-  }
-  .model-marquee.reverse .model-marquee-inner {
-    animation-name: model-scroll-reverse;
-    animation-duration: 124s;
-  }
-  .model-marquee.slow .model-marquee-inner {
-    animation-duration: 102s;
-  }
-  .model-set {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    padding-right: 10px;
-    flex-shrink: 0;
-  }
-  .model-item {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 4px;
-  }
-  .model-chip {
+  .eligible-button {
     --provider-accent: #5f6f85;
-    display: inline-grid;
-    grid-template-columns: 18px auto;
-    grid-template-rows: auto auto;
+    display: inline-flex;
     align-items: center;
-    column-gap: 10px;
-    row-gap: 2px;
-    padding: 8px 12px;
+    gap: 10px;
+    padding: 11px 13px;
     border-radius: 12px;
     border: 1px solid color-mix(in oklab, var(--provider-accent) 26%, #d3c8da);
     border-left: 3px solid var(--provider-accent);
     background: #ffffff;
     box-shadow: 0 8px 22px -18px rgba(40, 25, 10, 0.28);
-    min-width: 246px;
     color: var(--ink-2);
-    white-space: nowrap;
-    cursor: pointer;
     text-decoration: none;
+    min-height: 46px;
     transition: transform .15s ease, box-shadow .18s ease;
   }
-  .model-chip:hover {
+  .eligible-button:hover {
     transform: translateY(-1px);
     box-shadow: 0 12px 24px -18px rgba(40, 25, 10, 0.34);
   }
-  .model-chip img {
+  .eligible-button img {
     width: 18px;
     height: 18px;
-    grid-row: 1 / span 2;
     object-fit: contain;
     flex-shrink: 0;
   }
-  .model-title {
+  .eligible-button span {
     font-size: 13.5px;
     line-height: 1.1;
     letter-spacing: 0.01em;
     color: var(--ink);
-  }
-  .model-caption {
-    font-size: 8px;
-    color: color-mix(in oklab, var(--provider-accent) 66%, #2f6b40);
-    text-transform: none;
-    letter-spacing: 0.01em;
-    font-weight: 500;
-    padding-left: 3px;
-    opacity: 1;
-    transform: translateY(0);
-    filter: blur(0);
-    transition: opacity .28s ease, transform .28s ease, filter .28s ease;
-  }
-  .model-caption.is-updating {
-    opacity: 0;
-    transform: translateY(4px);
-    filter: blur(1.2px);
-  }
-  @keyframes model-scroll {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
-  }
-  @keyframes model-scroll-reverse {
-    from { transform: translateX(-50%); }
-    to { transform: translateX(0); }
   }
 
   /* ---------- Examples ---------- */
@@ -1181,12 +1116,10 @@
     .hero { padding: 52px 0 64px; }
     .extension-card h3 { font-size: 26px; }
     .lit-title { font-size: 24px; }
+    .eligible-buttons { grid-template-columns: 1fr; }
   }
   @media (hover: none) {
     .hint { display: none; }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .model-marquee-inner { animation: none; }
   }
 </style>
 <script src="hug-config.js"></script>
@@ -1205,6 +1138,7 @@
     <nav class="nav">
       <a href="forum.html">forum</a>
       <a href="claim.html">file a claim</a>
+      <a href="enterprise.html">enterprise</a>
       <a href="career.html">careers</a>
       <a href="login.html">login</a>
       <a href="chat.html" class="cta">try the chat &rarr;</a>
@@ -1255,22 +1189,23 @@
     <div class="label">cash back eligible models</div>
     <h2 id="accepted-models-title">Now streaming claims for <em>Claude Opus 4.8</em>, <em>GPT 5.5</em>, <em>GPT Codex 5.3</em>, and <em>Gemini 3.5 Pro</em>.</h2>
     <p class="accepted-models-note">More proprietary models will be added soon.</p>
-    <div class="marquee-grid" aria-label="Accepted language models">
-      <div class="model-marquee" data-row="1">
-        <div class="model-marquee-inner">
-          <div class="model-set" id="acceptedModelsRow1"></div>
-        </div>
-      </div>
-      <div class="model-marquee reverse" data-row="2">
-        <div class="model-marquee-inner">
-          <div class="model-set" id="acceptedModelsRow2"></div>
-        </div>
-      </div>
-      <div class="model-marquee slow" data-row="3">
-        <div class="model-marquee-inner">
-          <div class="model-set" id="acceptedModelsRow3"></div>
-        </div>
-      </div>
+    <div class="eligible-buttons" aria-label="Accepted language models">
+      <a class="eligible-button" style="--provider-accent:#d97757;" href="https://yuexinghao.github.io/HugClaims.ai/claim.html?model=claude-opus-4.8&amp;provider=Anthropic" title="File a claim for Claude Opus 4.8">
+        <img src="https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/anthropic.svg" alt="Anthropic logo" loading="lazy" />
+        <span>Claude Opus 4.8</span>
+      </a>
+      <a class="eligible-button" style="--provider-accent:#10a37f;" href="https://yuexinghao.github.io/HugClaims.ai/claim.html?model=gpt-5.5&amp;provider=OpenAI" title="File a claim for GPT 5.5">
+        <img src="https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/openai.svg" alt="OpenAI logo" loading="lazy" />
+        <span>GPT 5.5</span>
+      </a>
+      <a class="eligible-button" style="--provider-accent:#10a37f;" href="https://yuexinghao.github.io/HugClaims.ai/claim.html?model=gpt-codex-5.3&amp;provider=OpenAI" title="File a claim for GPT Codex 5.3">
+        <img src="https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/openai.svg" alt="OpenAI logo" loading="lazy" />
+        <span>GPT Codex 5.3</span>
+      </a>
+      <a class="eligible-button" style="--provider-accent:#1a73e8;" href="https://yuexinghao.github.io/HugClaims.ai/claim.html?model=gemini-3.5-pro&amp;provider=Google" title="File a claim for Gemini 3.5 Pro">
+        <img src="https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/gemini.svg" alt="Google logo" loading="lazy" />
+        <span>Gemini 3.5 Pro</span>
+      </a>
     </div>
   </section>
 
@@ -1482,6 +1417,8 @@
       &nbsp;&middot;&nbsp;
       <a href="chat.html">try the chat</a>
       &nbsp;&middot;&nbsp;
+      <a href="enterprise.html">enterprise</a>
+      &nbsp;&middot;&nbsp;
       <a href="career.html">careers</a>
       &nbsp;&middot;&nbsp;
       <a href="login.html">login</a>
@@ -1612,153 +1549,6 @@
       }));
     });
   });
-
-  const ELIGIBLE_STREAM_MODELS = [
-    { name: 'claude-opus-4.8', display_name: 'Claude Opus 4.8', provider: 'Anthropic', provider_key: 'anthropic', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/anthropic.svg' },
-    { name: 'gpt-5.5', display_name: 'GPT 5.5', provider: 'OpenAI', provider_key: 'openai', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/openai.svg' },
-    { name: 'gpt-codex-5.3', display_name: 'GPT Codex 5.3', provider: 'OpenAI', provider_key: 'openai', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/openai.svg' },
-    { name: 'gemini-3.5-pro', display_name: 'Gemini 3.5 Pro', provider: 'Google', provider_key: 'google', logo: 'https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/gemini.svg' },
-  ];
-  const PROVIDER_COLORS = {
-    openai: '#10a37f',
-    anthropic: '#d97757',
-    google: '#1a73e8',
-    meta: '#0866ff',
-    mistral: '#ff6f3d',
-    cohere: '#3950e5',
-    deepseek: '#2f7be5',
-    xai: '#111111',
-    microsoft: '#00a4ef',
-    nvidia: '#76b900',
-    qwen: '#5b5ce2',
-    yi: '#5b6f87',
-  };
-  const CLAIM_PAGE_URL = 'https://yuexinghao.github.io/HugClaims.ai/claim.html';
-  const CAPTION_NAMES = ['UAKEC', 'NIVAR', 'MILOX', 'SAREM', 'QATEN', 'RUVIK', 'LEONA', 'DYLAN', 'MARA', 'KAI'];
-
-  function seededInt(seedStr, min, max) {
-    const s = String(seedStr || 'seed');
-    let h = 2166136261;
-    for (let i = 0; i < s.length; i++) {
-      h ^= s.charCodeAt(i);
-      h += (h << 1) + (h << 4) + (h << 7) + (h << 8) + (h << 24);
-    }
-    const n = Math.abs(h >>> 0);
-    return min + (n % (max - min + 1));
-  }
-
-  function randomName() {
-    return CAPTION_NAMES[Math.floor(Math.random() * CAPTION_NAMES.length)];
-  }
-
-  function randomCashback() {
-    return 2 + Math.floor(Math.random() * 26);
-  }
-
-  function phraseForModel() {
-    return `User ${randomName()} earns $${randomCashback()}`;
-  }
-
-  function titleizeModelName(modelName) {
-    const m = String(modelName || '').trim();
-    if (!m) return 'model';
-    if (m.startsWith('gpt')) return m.toUpperCase().replace(/-/g, ' ');
-    if (m.startsWith('o1') || m.startsWith('o3') || m.startsWith('o4')) return m.toUpperCase();
-    if (m.startsWith('claude')) return m.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
-    if (m.startsWith('gemini')) return m.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
-    if (m.startsWith('llama')) return m.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
-    if (m.startsWith('phi')) return m.toUpperCase().replace(/-/g, ' ');
-    return m.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
-  }
-
-  function renderRow(rowEl, items) {
-    if (!rowEl || !rowEl.parentElement) return;
-    rowEl.innerHTML = '';
-    items.forEach((item) => {
-      const modelItem = document.createElement('div');
-      modelItem.className = 'model-item';
-      const chip = document.createElement('a');
-      chip.className = 'model-chip';
-      const providerKey = String(item.provider_key || '').toLowerCase();
-      chip.style.setProperty('--provider-accent', PROVIDER_COLORS[providerKey] || '#5f6f85');
-      modelItem.style.setProperty('--provider-accent', PROVIDER_COLORS[providerKey] || '#5f6f85');
-      chip.href = `${CLAIM_PAGE_URL}?model=${encodeURIComponent(String(item.name || ''))}&provider=${encodeURIComponent(String(item.provider || ''))}`;
-      chip.title = `File a claim for ${titleizeModelName(item.name || 'this model')}`;
-
-      const img = document.createElement('img');
-      img.src = String(item.logo || '');
-      img.alt = `${String(item.provider || 'Model')} logo`;
-      img.loading = 'lazy';
-      chip.appendChild(img);
-
-      const label = document.createElement('span');
-      label.className = 'model-title';
-      label.textContent = String(item.display_name || titleizeModelName(item.name || ''));
-      chip.appendChild(label);
-
-      const caption = document.createElement('span');
-      caption.className = 'model-caption';
-      caption.textContent = phraseForModel();
-      modelItem.appendChild(chip);
-      modelItem.appendChild(caption);
-
-      rowEl.appendChild(modelItem);
-    });
-
-    const oldDuplicate = rowEl.parentElement.querySelector('.model-set[data-duplicate="true"]');
-    if (oldDuplicate) oldDuplicate.remove();
-    const duplicate = rowEl.cloneNode(true);
-    duplicate.id = '';
-    duplicate.dataset.duplicate = 'true';
-    duplicate.setAttribute('aria-hidden', 'true');
-    rowEl.parentElement.appendChild(duplicate);
-  }
-
-  function renderModelMarquee(models) {
-    const row1 = document.getElementById('acceptedModelsRow1');
-    const row2 = document.getElementById('acceptedModelsRow2');
-    const row3 = document.getElementById('acceptedModelsRow3');
-    if (!row1 || !row2 || !row3) return;
-    const items = Array.isArray(models) && models.length ? models : ELIGIBLE_STREAM_MODELS;
-    const unique = [];
-    const seen = new Set();
-    items.forEach((item) => {
-      const key = String(item.name || '').toLowerCase();
-      if (!key || seen.has(key)) return;
-      seen.add(key);
-      unique.push(item);
-    });
-    if (!unique.length) return;
-
-    if (unique.length <= 4) {
-      const by = (i) => unique[i % unique.length];
-      renderRow(row1, [by(0), by(1), by(2), by(3)]);
-      renderRow(row2, [by(2), by(3), by(0), by(1)]);
-      renderRow(row3, [by(3), by(2), by(1), by(0)]);
-      return;
-    }
-
-    const buckets = [[], [], []];
-    unique.forEach((item, idx) => {
-      buckets[idx % 3].push(item);
-    });
-    renderRow(row1, buckets[0]);
-    renderRow(row2, buckets[1]);
-    renderRow(row3, buckets[2]);
-  }
-
-  function refreshLiveCashbackCaptions() {
-    document.querySelectorAll('.model-caption').forEach((el) => {
-      el.classList.add('is-updating');
-      setTimeout(() => {
-        el.textContent = phraseForModel();
-        el.classList.remove('is-updating');
-      }, 180);
-    });
-  }
-
-  renderModelMarquee(ELIGIBLE_STREAM_MODELS);
-  setInterval(refreshLiveCashbackCaptions, 3000);
 
 </script>
 </body>
