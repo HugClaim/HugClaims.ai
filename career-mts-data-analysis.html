@@ -5,88 +5,534 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" type="image/jpeg" href="assets/hug-logo.jpg" />
   <link rel="apple-touch-icon" href="assets/hug-logo.jpg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,600,80&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <title>MTS Data Analysis - HugClaim.com careers</title>
   <style>
-    :root { --paper:#f1edf6; --ink:#1a1612; --ink-2:#4b4339; --ink-3:#8a8073; --hug:#c44a3f; --line:#d3c8da; --serif:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue",Arial,sans-serif; --sans:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display","Helvetica Neue",Arial,sans-serif; }
-    *{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:var(--sans);color:var(--ink);background:var(--paper);background-image:radial-gradient(ellipse 60% 40% at 85% -5%, rgba(132,102,178,.14) 0%, transparent 60%),radial-gradient(ellipse 70% 50% at -5% 105%, rgba(196,74,63,.07) 0%, transparent 55%);line-height:1.55;font-size:17.5px;-webkit-font-smoothing:antialiased}
-    .app{max-width:1280px;margin:0 auto;padding:0 32px 48px}
-    header.top{display:flex;justify-content:space-between;align-items:baseline;padding:32px 0 24px;border-bottom:1px solid var(--line);gap:12px}
-    .brand-link{text-decoration:none;color:inherit;display:inline-flex;align-items:baseline}
-    .brand-text{font-family:var(--serif);font-style:italic;letter-spacing:-.02em;font-size:30px;line-height:1}
-    .brand-text .em{color:var(--hug)} .brand-text .small{font-size:18px;color:var(--ink-3);margin-left:1px}
-    .nav{display:flex;gap:24px;align-items:baseline;flex-wrap:wrap}
-    .nav a{font-family:var(--serif);font-style:italic;font-size:14px;color:var(--ink-2);text-decoration:none;border-bottom:1px solid transparent;padding-bottom:1px}
-    .nav a:hover{color:var(--hug);border-bottom-color:var(--hug)}
-    .panel{margin-top:28px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.72);padding:24px}
-    h1{font-size:clamp(30px,3.5vw,44px);letter-spacing:-.03em;line-height:1.08;margin-bottom:8px}
-    h2{font-size:20px;letter-spacing:-.01em;margin:20px 0 8px}
-    p{color:var(--ink-2);margin-bottom:10px}
-    ul{padding-left:20px;color:var(--ink-2)} li{margin:6px 0}
-    .location{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);margin-bottom:10px}
-    @media (max-width:860px){.app{padding:0 20px 40px}header.top{flex-direction:column;align-items:flex-start}}
+    :root {
+      --bg: #f3f2ed;
+      --bg-strong: #e9e6dd;
+      --panel: rgba(255, 255, 255, 0.88);
+      --panel-solid: #ffffff;
+      --text: #12242d;
+      --text-muted: #4e616a;
+      --line: #cdd7d3;
+      --primary: #1f7a76;
+      --primary-soft: #e2f1ec;
+      --brand: #c44a3f;
+      --brand-soft: #f8e4df;
+      --radius-lg: 20px;
+      --radius-md: 14px;
+      --shadow: 0 20px 48px rgba(18, 36, 45, 0.08);
+      --sans: "Manrope", "Avenir Next", "Segoe UI", "Noto Sans", sans-serif;
+      --serif: "Fraunces", "Iowan Old Style", "Times New Roman", serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: var(--sans);
+      color: var(--text);
+      background:
+        radial-gradient(920px 520px at 8% -8%, #d9e8e1 0%, rgba(217, 232, 225, 0) 70%),
+        radial-gradient(680px 460px at 98% 20%, #f2ddd7 0%, rgba(242, 221, 215, 0) 72%),
+        linear-gradient(165deg, var(--bg) 0%, var(--bg-strong) 100%);
+      line-height: 1.58;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 26px 20px 56px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 22px;
+    }
+
+    .brand-link {
+      display: inline-flex;
+      align-items: baseline;
+      text-decoration: none;
+      color: inherit;
+      transition: opacity 0.16s ease, transform 0.16s ease;
+    }
+
+    .brand-link:hover {
+      opacity: 0.86;
+      transform: translateY(-1px);
+    }
+
+    .brand-text {
+      font-family: var(--serif);
+      font-size: 34px;
+      line-height: 1;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+
+    .brand-text .em {
+      color: var(--brand);
+      font-style: italic;
+    }
+
+    .brand-text .small {
+      font-size: 18px;
+      color: #78867f;
+      margin-left: 2px;
+      font-weight: 500;
+    }
+
+    .nav {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .nav a {
+      text-decoration: none;
+      color: var(--text-muted);
+      font-size: 14px;
+      font-weight: 600;
+      border-bottom: 1px solid transparent;
+      padding-bottom: 2px;
+      transition: color 0.14s ease, border-color 0.14s ease;
+    }
+
+    .nav a:hover {
+      color: var(--text);
+      border-bottom-color: var(--primary);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.75fr) minmax(280px, 1fr);
+      gap: 24px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      padding: 28px;
+      margin-bottom: 18px;
+    }
+
+    .kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--primary-soft);
+      border: 1px solid #c8ddd5;
+      border-radius: 999px;
+      color: var(--primary);
+      text-transform: uppercase;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.09em;
+      padding: 5px 11px;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      font-family: var(--serif);
+      font-size: clamp(32px, 4.3vw, 52px);
+      line-height: 1.04;
+      letter-spacing: -0.03em;
+      margin-bottom: 10px;
+      max-width: 20ch;
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 17px;
+      max-width: 66ch;
+      margin-bottom: 15px;
+    }
+
+    .pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .pill {
+      border: 1px solid #d0dad6;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      background: rgba(255, 255, 255, 0.86);
+    }
+
+    .hero-card {
+      background: var(--panel-solid);
+      border: 1px solid #d6dfdb;
+      border-radius: 16px;
+      padding: 16px;
+      display: grid;
+      gap: 12px;
+      align-content: start;
+    }
+
+    .hero-card h2 {
+      font-size: 16px;
+      letter-spacing: -0.01em;
+    }
+
+    .point {
+      border-top: 1px solid #e5ece8;
+      padding-top: 10px;
+    }
+
+    .point:first-of-type {
+      border-top: none;
+      padding-top: 0;
+    }
+
+    .point strong {
+      display: block;
+      font-size: 18px;
+      margin-bottom: 2px;
+      letter-spacing: -0.01em;
+    }
+
+    .point p {
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      background: var(--panel);
+      padding: 18px;
+    }
+
+    .panel h2 {
+      font-size: 22px;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+
+    .panel p {
+      color: var(--text-muted);
+      margin-bottom: 10px;
+      font-size: 15px;
+    }
+
+    .panel ul {
+      padding-left: 18px;
+      color: var(--text-muted);
+    }
+
+    .panel li {
+      margin: 7px 0;
+    }
+
+    .projects {
+      margin-bottom: 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      background: var(--panel);
+      padding: 18px;
+    }
+
+    .projects h2 {
+      font-size: 24px;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+
+    .projects > p {
+      color: var(--text-muted);
+      font-size: 15px;
+      margin-bottom: 12px;
+      max-width: 72ch;
+    }
+
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .project-card {
+      border: 1px solid #d6dfdb;
+      border-radius: 12px;
+      background: var(--panel-solid);
+      padding: 14px;
+    }
+
+    .project-card h3 {
+      font-size: 16px;
+      letter-spacing: -0.01em;
+      margin-bottom: 5px;
+    }
+
+    .project-card p {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .details {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .comp {
+      border: 1px solid #c8d6d0;
+      border-radius: var(--radius-lg);
+      background: linear-gradient(126deg, #e8f1ed 0%, #f8f5ef 44%, #f7e5e1 100%);
+      padding: 18px;
+    }
+
+    .comp h2 {
+      font-size: 24px;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+
+    .comp p {
+      color: #2f444b;
+      margin-bottom: 6px;
+      font-size: 15px;
+    }
+
+    .apply {
+      border: 1px solid #d6dfdb;
+      border-radius: var(--radius-md);
+      background: var(--panel-solid);
+      padding: 16px;
+      display: grid;
+      align-content: start;
+      gap: 8px;
+    }
+
+    .apply h3 {
+      font-size: 18px;
+      letter-spacing: -0.01em;
+    }
+
+    .apply p {
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    .apply a {
+      font-weight: 800;
+      color: var(--text);
+      text-decoration: none;
+      border-bottom: 1px solid #81949a;
+      width: fit-content;
+    }
+
+    .apply a:hover {
+      border-bottom-color: var(--text);
+    }
+
+    .foot-nav {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      margin-top: 12px;
+      font-size: 13px;
+    }
+
+    .foot-nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+    }
+
+    .foot-nav a:hover {
+      color: var(--text);
+      border-bottom-color: var(--primary);
+    }
+
+    @media (max-width: 980px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .grid,
+      .details,
+      .project-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .page {
+        padding: 18px 14px 40px;
+      }
+
+      .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .hero,
+      .panel,
+      .projects,
+      .comp {
+        padding: 16px;
+      }
+    }
   </style>
 </head>
 <body>
-  <div class="app">
-    <header class="top">
-      <a class="brand-link" href="index.html" aria-label="Hug Claims home"><span class="brand-text">Hug<span class="em">.</span><span class="small">claims</span></span></a>
-      <nav class="nav" aria-label="Main"><a href="career.html">careers</a><a href="index.html">home</a><a href="chat.html">chat</a></nav>
+  <main class="page">
+    <header class="topbar">
+      <a class="brand-link" href="index.html" aria-label="Hug Claims home">
+        <span class="brand-text">Hug<span class="em">.</span><span class="small">claims</span></span>
+      </a>
+      <nav class="nav" aria-label="Main">
+        <a href="career.html">Careers</a>
+        <a href="index.html">Home</a>
+        <a href="chat.html">Chat</a>
+      </nav>
     </header>
 
-    <section class="panel">
-      <h1>Member of Technical Staff - Data Analysis</h1>
-      <div class="location">Location: Hybrid / San Francisco, CA</div>
-      <p>Focus on telemetry, experimentation, product analytics, and risk trend analysis.</p>
-
-      <h2>Role Context</h2>
-      <p>This role drives product and model decisions through evidence. You will build the data foundation for experimentation, surface root causes behind failure patterns, and help leadership prioritize the highest-leverage fixes.</p>
-      <ul>
-        <li>Own analytics for claims quality, user trust, and mitigation impact.</li>
-        <li>Turn ambiguous questions into measurable metrics and clear dashboards.</li>
-        <li>Translate findings into concrete product and policy recommendations.</li>
-      </ul>
-
-      <h2>First 90 Days</h2>
-      <ul>
-        <li>Audit existing telemetry and define a unified metric taxonomy.</li>
-        <li>Stand up dashboards for claim lifecycle, severity, and mitigation outcomes.</li>
-        <li>Lead at least one A/B analysis that directly informs a shipped decision.</li>
-      </ul>
-
-      <h2>Cross-Functional Partners</h2>
-      <ul>
-        <li>Product managers for claims and chat workflows.</li>
-        <li>Engineering teams owning instrumentation and backend pipelines.</li>
-        <li>Research teams validating model-level interventions.</li>
-      </ul>
-
-      <h2>Success Metrics</h2>
-      <ul>
-        <li>Metric coverage and reliability for critical product flows.</li>
-        <li>Decision velocity enabled by analytics deliverables.</li>
-        <li>Measured uplift from data-informed product or model changes.</li>
-      </ul>
-
-      <h2>Responsibilities</h2>
-      <ul>
-        <li>Drive product insights and opportunity analysis using large telemetry datasets.</li>
-        <li>Define metrics and instrumentation for A/B tests and feature evaluation.</li>
-        <li>Build and maintain data pipelines to support experimentation and misuse mitigation.</li>
-        <li>Present clear data narratives to inform product and engineering decisions.</li>
-      </ul>
-
-      <h2>Qualifications</h2>
-      <ul>
-        <li>MS/PhD or equivalent experience in data science, statistics, econometrics, OR, or computer science.</li>
-        <li>Experience with experimentation, telemetry analysis, and communicating actionable findings.</li>
-      </ul>
-
-      <h2>Compensation</h2>
-      <p>IC4: USD $119,800 - $234,700 (San Francisco: $158,400 - $258,000)</p>
-      <p>IC5: USD $139,900 - $274,800 (San Francisco: $188,000 - $304,200)</p>
-      <p>Apply: <a href="mailto:careers@hugclaim.com?subject=Application%20-%20MTS%20Data%20Analysis">careers@hugclaim.com</a></p>
+    <section class="hero">
+      <div>
+        <span class="kicker">Role Detail</span>
+        <h1>Member of Technical Staff - Data Analysis</h1>
+        <p class="subtitle">
+          This role owns the analytics spine of HugClaim. You will convert noisy product and model behavior
+          into high-confidence evidence, then drive decisions across quality, safety, and business outcomes.
+        </p>
+        <div class="pills">
+          <span class="pill">Hybrid / San Francisco, CA</span>
+          <span class="pill">IC4-IC5</span>
+          <span class="pill">Product + Model Analytics</span>
+        </div>
+      </div>
+      <aside class="hero-card" aria-label="Role summary">
+        <h2>What This Role Owns</h2>
+        <div class="point">
+          <strong>Telemetry Quality</strong>
+          <p>Set metric definitions and instrumentation standards for reliable reporting.</p>
+        </div>
+        <div class="point">
+          <strong>Decision Velocity</strong>
+          <p>Turn open questions into analyses that unblock product and model choices quickly.</p>
+        </div>
+        <div class="point">
+          <strong>Risk Visibility</strong>
+          <p>Surface failure patterns early and quantify expected user impact and business exposure.</p>
+        </div>
+      </aside>
     </section>
-  </div>
+
+    <section class="grid">
+      <article class="panel">
+        <h2>Role Context</h2>
+        <p>
+          HugClaim sits at the intersection of AI reliability and insurance outcomes.
+          This data analysis role is central to that loop: identify where failures concentrate,
+          isolate why they happen, and show which interventions materially change outcomes.
+        </p>
+        <ul>
+          <li>Define and maintain canonical metrics for claims lifecycle, trust, severity, and mitigation impact.</li>
+          <li>Partner with engineering to improve event reliability and reduce blind spots in product telemetry.</li>
+          <li>Deliver clear recommendations with tradeoffs, confidence levels, and next-step actions.</li>
+        </ul>
+      </article>
+
+      <article class="panel">
+        <h2>First 90 Days</h2>
+        <ul>
+          <li>Complete a telemetry audit and publish a metric dictionary used by product, research, and leadership.</li>
+          <li>Launch dashboards that segment failures by user type, workflow step, and estimated financial impact.</li>
+          <li>Run at least one experiment analysis that directly drives a shipped product or mitigation decision.</li>
+          <li>Create a recurring analytics review that tracks movement on top reliability priorities.</li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="projects">
+      <h2>Example Projects You Would Lead</h2>
+      <p>
+        Beyond routine reporting, this role is expected to structure ambiguous problems and produce
+        decision-quality analysis that changes roadmap direction.
+      </p>
+      <div class="project-grid">
+        <article class="project-card">
+          <h3>Claims Funnel Stability</h3>
+          <p>Pinpoint the highest-loss drop-off points in the claim flow and recommend measurable fixes.</p>
+        </article>
+        <article class="project-card">
+          <h3>Mitigation ROI Modeling</h3>
+          <p>Estimate which model or policy interventions reduce repeat failures at the best cost/performance ratio.</p>
+        </article>
+        <article class="project-card">
+          <h3>Trust Signal Forecasting</h3>
+          <p>Build early-warning metrics that detect rising user dissatisfaction before support volume spikes.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="details">
+      <article class="panel">
+        <h2>Cross-Functional Collaboration</h2>
+        <ul>
+          <li>Product managers for claims and chat experiences.</li>
+          <li>Backend and data engineers for event design, data quality, and pipeline reliability.</li>
+          <li>Model and evaluation teams translating analysis into mitigation priorities.</li>
+          <li>Leadership stakeholders making portfolio-level quality and investment decisions.</li>
+        </ul>
+
+        <h2>Success Profile</h2>
+        <ul>
+          <li>Strong statistical judgment and practical experimentation experience in production environments.</li>
+          <li>Comfort with incomplete data and ability to communicate uncertainty clearly.</li>
+          <li>Track record of influencing product direction with concise and defensible analysis.</li>
+          <li>MS/PhD or equivalent experience in statistics, data science, econometrics, OR, or computer science.</li>
+        </ul>
+      </article>
+
+      <div>
+        <section class="comp">
+          <h2>Compensation</h2>
+          <p>IC4: USD $119,800 - $234,700 (San Francisco: $158,400 - $258,000)</p>
+          <p>IC5: USD $139,900 - $274,800 (San Francisco: $188,000 - $304,200)</p>
+        </section>
+        <section class="apply" aria-label="How to apply">
+          <h3>How to Apply</h3>
+          <p>Apply: yuexing@mit.edu. Email a cover letter, resume, and your most proud technical artifact.</p>
+          <a href="mailto:yuexing@mit.edu?subject=Application%20-%20MTS%20Data%20Analysis">yuexing@mit.edu</a>
+        </section>
+      </div>
+    </section>
+
+    <footer class="foot-nav">
+      <a href="career.html">Back to all roles</a>
+      <a href="career-mts-post-training.html">View Post-Training role</a>
+    </footer>
+  </main>
 </body>
 </html>
