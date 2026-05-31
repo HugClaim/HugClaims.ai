@@ -1137,7 +1137,7 @@
         &ldquo;Landlords must give <s class="struck">48 hours&rsquo;</s><ins class="correction">24 hours&rsquo;</ins> written notice under <s class="struck">California Civil Code &sect;1947</s><ins class="correction">California Civil Code &sect;1954</ins>.&rdquo;
       </div>
       <p class="context">Was reading my lease and asked Gemini to verify entry-notice rules. Both the hours and the section were off. &sect;1947 is about rent payment; &sect;1954 is the actual entry statute. Real attorney confirmed.</p>
-      <button class="pdf-toggle" type="button" data-pdf-src="data/Sample_Housing_Contract.pdf#toolbar=0&navpanes=0&page=1">
+      <button class="pdf-toggle" type="button" data-pdf-src="/data/Sample_Housing_Contract.pdf#toolbar=0&navpanes=0&page=1">
         <span class="mini-doc">PDF</span>
         Look into Sample_Housing_Contract.pdf
       </button>
@@ -1403,7 +1403,7 @@
       <button class="pdf-close" id="pdfModalClose" type="button" aria-label="Close PDF">&times;</button>
     </div>
     <object class="pdf-frame" id="pdfModalFrame" data="" type="application/pdf">
-      <a class="pdf-fallback" href="data/Sample_Housing_Contract.pdf">Open Sample_Housing_Contract.pdf</a>
+      <a class="pdf-fallback" href="/data/Sample_Housing_Contract.pdf" target="_blank" rel="noopener">Open Sample_Housing_Contract.pdf</a>
     </object>
   </div>
 </div>
@@ -1635,7 +1635,7 @@
   }
   document.querySelectorAll('.pdf-toggle').forEach((btn) => {
     btn.addEventListener('click', () => {
-      openPdfModal(btn.dataset.pdfSrc || 'data/Sample_Housing_Contract.pdf', postKey(btn.closest('.post')));
+      openPdfModal(btn.dataset.pdfSrc || '/data/Sample_Housing_Contract.pdf', postKey(btn.closest('.post')));
     });
   });
   if (pdfModalClose) pdfModalClose.addEventListener('click', closePdfModal);
