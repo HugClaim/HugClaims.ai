@@ -5,47 +5,77 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" type="image/jpeg" href="assets/hug-logo.jpg" />
   <link rel="apple-touch-icon" href="assets/hug-logo.jpg" />
-  <title>HugClaim.com - careers</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,600,80&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <title>HugClaim.com Careers</title>
   <style>
     :root {
-      --paper:   #f1edf6;
-      --paper-2: #e5ddee;
-      --ink:     #1a1612;
-      --ink-2:   #4b4339;
-      --ink-3:   #8a8073;
-      --hug:     #c44a3f;
-      --hug-2:   #a83a30;
-      --line:    #d3c8da;
-      --serif:   -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
-      --sans:    -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+      --bg: #f4f2ec;
+      --bg-strong: #ebe7dd;
+      --panel: rgba(255, 255, 255, 0.86);
+      --panel-solid: #ffffff;
+      --text: #12242d;
+      --text-muted: #4f6169;
+      --line: #cdd7d2;
+      --primary: #1f7a76;
+      --primary-soft: #e2f1ec;
+      --brand: #c44a3f;
+      --brand-soft: #f8e4df;
+      --radius-lg: 20px;
+      --radius-md: 14px;
+      --shadow: 0 20px 48px rgba(18, 36, 45, 0.08);
+      --sans: "Manrope", "Avenir Next", "Segoe UI", "Noto Sans", sans-serif;
+      --serif: "Fraunces", "Iowan Old Style", "Times New Roman", serif;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
-      font-family: var(--sans);
-      color: var(--ink);
-      background: var(--paper);
-      background-image:
-        radial-gradient(ellipse 60% 40% at 85% -5%, rgba(132,102,178,.14) 0%, transparent 60%),
-        radial-gradient(ellipse 70% 50% at -5% 105%, rgba(196,74,63,.07) 0%, transparent 55%);
-      -webkit-font-smoothing: antialiased;
-      line-height: 1.55;
-      font-size: 17.5px;
       min-height: 100vh;
+      font-family: var(--sans);
+      color: var(--text);
+      background:
+        radial-gradient(900px 520px at 8% -10%, #d9e8e1 0%, rgba(217, 232, 225, 0) 70%),
+        radial-gradient(700px 500px at 98% 18%, #f2ddd7 0%, rgba(242, 221, 215, 0) 72%),
+        linear-gradient(165deg, var(--bg) 0%, var(--bg-strong) 100%);
+      line-height: 1.58;
+      -webkit-font-smoothing: antialiased;
     }
 
-    .app {
-      max-width: 1280px;
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(18, 36, 45, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(18, 36, 45, 0.03) 1px, transparent 1px);
+      background-size: 36px 36px;
+      mask-image: radial-gradient(circle at center, black 34%, transparent 92%);
+      opacity: 0.38;
+      z-index: 0;
+    }
+
+    .page {
+      max-width: 1140px;
       margin: 0 auto;
-      padding: 0 32px 48px;
+      padding: 28px 24px 64px;
+      position: relative;
+      z-index: 1;
     }
 
-    header.top {
+    .topbar {
       display: flex;
       justify-content: space-between;
-      align-items: baseline;
-      padding: 32px 0 24px;
-      border-bottom: 1px solid var(--line);
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 26px;
+      animation: reveal-up 0.65s ease forwards;
     }
 
     .brand-link {
@@ -53,150 +83,654 @@
       align-items: baseline;
       text-decoration: none;
       color: inherit;
-      transition: opacity .15s, transform .15s;
+      transition: opacity 0.16s ease, transform 0.16s ease;
     }
-    .brand-link:hover { opacity: 0.85; transform: translateY(-1px); }
+
+    .brand-link:hover {
+      opacity: 0.86;
+      transform: translateY(-1px);
+    }
+
     .brand-text {
       font-family: var(--serif);
-      font-style: italic;
-      letter-spacing: -0.02em;
-      color: var(--ink);
+      font-size: 34px;
       line-height: 1;
-      font-size: 30px;
+      letter-spacing: -0.02em;
+      color: var(--text);
     }
-    .brand-text .em { color: var(--hug); font-style: italic; font-weight: 500; }
+
+    .brand-text .em {
+      color: var(--brand);
+      font-style: italic;
+    }
+
     .brand-text .small {
       font-size: 18px;
-      color: var(--ink-3);
-      margin-left: 1px;
-      font-weight: 400;
+      color: #7b887f;
+      margin-left: 2px;
+      font-weight: 500;
     }
 
-    header .nav {
+    .nav {
       display: flex;
-      gap: 24px;
-      align-items: baseline;
+      gap: 18px;
       flex-wrap: wrap;
-    }
-    header .nav a {
-      font-family: var(--serif);
-      font-style: italic;
-      font-size: 14px;
-      color: var(--ink-2);
-      text-decoration: none;
-      border-bottom: 1px solid transparent;
-      transition: border-color .15s, color .15s;
-      padding-bottom: 1px;
-    }
-    header .nav a:hover {
-      border-bottom-color: var(--hug);
-      color: var(--hug);
+      align-items: center;
     }
 
-    .panel {
-      margin-top: 28px;
+    .nav a {
+      text-decoration: none;
+      color: var(--text-muted);
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      border-bottom: 1px solid transparent;
+      padding-bottom: 2px;
+      transition: color 0.14s ease, border-color 0.14s ease;
+    }
+
+    .nav a:hover {
+      color: var(--text);
+      border-bottom-color: var(--primary);
+    }
+
+    .hero {
+      background: var(--panel);
       border: 1px solid var(--line);
-      border-radius: 16px;
-      background: rgba(255, 255, 255, 0.72);
-      backdrop-filter: blur(2px);
-      padding: 24px;
+      border-radius: var(--radius-lg);
+      backdrop-filter: blur(3px);
+      box-shadow: var(--shadow);
+      padding: 30px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.7fr) minmax(280px, 1fr);
+      gap: 26px;
+      animation: reveal-up 0.7s ease forwards;
+      animation-delay: 0.08s;
+      opacity: 0;
+    }
+
+    .kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 14px;
+      background: var(--primary-soft);
+      border: 1px solid #c6e0d7;
+      color: var(--primary);
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.11em;
+      text-transform: uppercase;
+      padding: 5px 12px;
     }
 
     h1 {
-      font-family: var(--sans);
-      font-size: clamp(34px, 4vw, 52px);
+      font-family: var(--serif);
+      font-size: clamp(34px, 5vw, 58px);
+      line-height: 1.03;
       letter-spacing: -0.03em;
-      line-height: 1.06;
-      margin-bottom: 10px;
+      margin-bottom: 14px;
+      max-width: 16ch;
     }
 
-    .sub {
-      color: var(--ink-2);
-      font-size: 18px;
+    .hero-copy {
+      color: var(--text-muted);
+      max-width: 64ch;
+      margin-bottom: 18px;
+      font-size: 17px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
       margin-bottom: 18px;
     }
 
-    .roles {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
-    }
-
-    .role {
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      background: rgba(255, 255, 255, 0.82);
-      padding: 14px 14px 12px;
-    }
-
-    .role a {
-      color: var(--ink);
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       text-decoration: none;
-      font-family: var(--sans);
-      font-size: 17px;
-      font-weight: 600;
+      border-radius: 999px;
+      padding: 10px 16px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      transition: transform 0.14s ease, box-shadow 0.14s ease, background 0.14s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      background: var(--text);
+      color: #f6f4ef;
+      box-shadow: 0 10px 22px rgba(18, 36, 45, 0.18);
+    }
+
+    .btn-primary:hover {
+      background: #1c343f;
+    }
+
+    .btn-secondary {
+      border: 1px solid var(--line);
+      background: #faf9f5;
+      color: var(--text);
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .meta-pill {
+      border-radius: 999px;
+      border: 1px solid #d4ddd8;
+      color: var(--text-muted);
+      background: rgba(255, 255, 255, 0.86);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 6px 10px;
+      font-weight: 700;
+    }
+
+    .hero-panel {
+      border-radius: 16px;
+      border: 1px solid #dce5e0;
+      background: var(--panel-solid);
+      padding: 18px;
+      display: grid;
+      align-content: start;
+      gap: 14px;
+    }
+
+    .hero-panel h2 {
+      font-size: 16px;
+      font-weight: 800;
       letter-spacing: -0.01em;
     }
 
-    .role a:hover { color: var(--hug); }
-
-    .meta {
-      margin-top: 4px;
-      color: var(--ink-3);
-      font-family: var(--sans);
-      font-size: 13px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
+    .signal {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: baseline;
+      border-top: 1px solid #e6ece8;
+      padding-top: 11px;
     }
 
-    .foot {
-      margin-top: 18px;
-      color: var(--ink-2);
+    .signal:first-of-type {
+      border-top: none;
+      padding-top: 0;
+    }
+
+    .signal strong {
+      font-size: 23px;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+
+    .signal span {
+      color: var(--text-muted);
+      font-size: 13px;
+      text-align: right;
+    }
+
+    .block {
+      margin-top: 22px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      backdrop-filter: blur(2px);
+      animation: reveal-up 0.7s ease forwards;
+      opacity: 0;
+    }
+
+    .block.roles {
+      animation-delay: 0.16s;
+    }
+
+    .block.culture {
+      animation-delay: 0.24s;
+    }
+
+    .block.process {
+      animation-delay: 0.32s;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .section-head h2 {
+      font-size: clamp(25px, 3vw, 34px);
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+
+    .section-head p {
+      color: var(--text-muted);
+      font-size: 15px;
+      max-width: 52ch;
+    }
+
+    .roles-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .role-card {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 16px;
+      text-decoration: none;
+      color: inherit;
+      border: 1px solid #d6dfda;
+      border-radius: var(--radius-md);
+      background: var(--panel-solid);
+      padding: 16px;
+      transition: transform 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease;
+      animation: reveal-up 0.6s ease forwards;
+      opacity: 0;
+    }
+
+    .role-card:nth-child(1) { animation-delay: 0.25s; }
+    .role-card:nth-child(2) { animation-delay: 0.3s; }
+    .role-card:nth-child(3) { animation-delay: 0.35s; }
+    .role-card:nth-child(4) { animation-delay: 0.4s; }
+
+    .role-card:hover {
+      transform: translateY(-2px);
+      border-color: #adc6bc;
+      box-shadow: 0 12px 24px rgba(18, 36, 45, 0.09);
+    }
+
+    .role-track {
+      display: inline-flex;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--brand);
+      background: var(--brand-soft);
+      border: 1px solid #efc6bc;
+      border-radius: 999px;
+      padding: 4px 9px;
+      margin-bottom: 9px;
+    }
+
+    .role-title {
+      font-size: 20px;
+      font-weight: 750;
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+
+    .role-copy {
+      color: var(--text-muted);
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+
+    .role-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      color: #687a7f;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .role-arrow {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #edf4f1;
+      color: var(--primary);
+      font-size: 19px;
+      border: 1px solid #d2e2dc;
+    }
+
+    .culture-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .culture-card {
+      border: 1px solid #d6dfda;
+      border-radius: var(--radius-md);
+      background: var(--panel-solid);
+      padding: 16px;
+    }
+
+    .culture-card h3 {
+      font-size: 17px;
+      letter-spacing: -0.01em;
+      margin-bottom: 6px;
+    }
+
+    .culture-card p {
+      color: var(--text-muted);
       font-size: 14px;
     }
 
-    @media (max-width: 860px) {
-      .app { padding: 0 20px 40px; }
-      header.top { gap: 14px; flex-direction: column; align-items: flex-start; }
-      .roles { grid-template-columns: 1fr; }
+    .process-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .step {
+      border: 1px solid #d6dfda;
+      border-radius: var(--radius-md);
+      background: var(--panel-solid);
+      padding: 15px;
+      min-height: 130px;
+    }
+
+    .step-number {
+      display: inline-flex;
+      border-radius: 999px;
+      background: var(--primary-soft);
+      border: 1px solid #c7ddd5;
+      color: var(--primary);
+      font-weight: 800;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 4px 8px;
+      margin-bottom: 8px;
+    }
+
+    .step h3 {
+      font-size: 16px;
+      letter-spacing: -0.01em;
+      margin-bottom: 5px;
+    }
+
+    .step p {
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
+    .apply-strip {
+      margin-top: 22px;
+      border-radius: var(--radius-lg);
+      border: 1px solid #c8d6d0;
+      background: linear-gradient(125deg, #e8f1ed 0%, #f8f5ef 44%, #f7e5e1 100%);
+      padding: 18px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      animation: reveal-up 0.7s ease forwards;
+      animation-delay: 0.44s;
+      opacity: 0;
+    }
+
+    .apply-strip p {
+      color: #30434a;
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .apply-strip a {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 800;
+      border-bottom: 1px solid #7f9298;
+    }
+
+    .apply-strip a:hover {
+      border-bottom-color: var(--text);
+    }
+
+    @keyframes reveal-up {
+      from {
+        opacity: 0;
+        transform: translateY(14px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 960px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .roles-grid,
+      .culture-grid,
+      .process-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .page {
+        padding: 20px 14px 42px;
+      }
+
+      .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .hero,
+      .block,
+      .apply-strip {
+        padding: 18px;
+      }
+
+      .role-card {
+        grid-template-columns: 1fr;
+      }
+
+      .role-arrow {
+        display: none;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation: none !important;
+        transition: none !important;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="app">
-    <header class="top">
+  <main class="page">
+    <header class="topbar">
       <a class="brand-link" href="index.html" aria-label="Hug Claims home">
         <span class="brand-text">Hug<span class="em">.</span><span class="small">claims</span></span>
       </a>
       <nav class="nav" aria-label="Main">
-        <a href="index.html">home</a>
-        <a href="claim.html">file a claim</a>
-        <a href="chat.html">chat</a>
+        <a href="index.html">Home</a>
+        <a href="claim.html">File a Claim</a>
+        <a href="chat.html">Chat</a>
       </nav>
     </header>
 
-    <section class="panel">
-      <h1>Careers</h1>
-      <p class="sub">We are hiring for 5 posts across technical research and deployment.</p>
-      <p class="foot" style="margin-top:0;margin-bottom:14px;">Location: Hybrid / San Francisco, CA</p>
-
-      <div class="roles" aria-label="Open roles">
-        <div class="role">
-          <a href="career-mts-post-training.html">Member of Technical Staff - Post-Training</a>
+    <section class="hero">
+      <div>
+        <span class="kicker">Careers</span>
+        <h1>Build the reliability layer for AI in insurance.</h1>
+        <p class="hero-copy">
+          HugClaim turns model failures into customer compensation and product intelligence.
+          We are hiring engineers and researchers who can ship high-integrity systems where
+          reliability, safety, and product velocity all matter.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#open-roles">View Open Roles</a>
+          <a class="btn btn-secondary" href="mailto:careers@hugclaim.com">Email Recruiting</a>
         </div>
-        <div class="role">
-          <a href="career-mts-data-analysis.html">Member of Technical Staff - Data Analysis</a>
-        </div>
-        <div class="role">
-          <a href="career-mts-multimodal.html">Member of Technical Staff - Multimodal</a>
-        </div>
-        <div class="role">
-          <a href="career-forward-deployed-engineer.html">Forward Deployed Engineer</a>
+        <div class="hero-meta">
+          <span class="meta-pill">Hybrid / San Francisco, CA</span>
+          <span class="meta-pill">Applications Open</span>
+          <span class="meta-pill">Technical IC Roles</span>
         </div>
       </div>
 
-      <p class="foot">Applications are accepted on an ongoing basis until positions are filled.</p>
+      <aside class="hero-panel" aria-label="Hiring signals">
+        <h2>What We Care About</h2>
+        <div class="signal">
+          <strong>Fast Loops</strong>
+          <span>Issue to mitigation in days, not quarters.</span>
+        </div>
+        <div class="signal">
+          <strong>High Agency</strong>
+          <span>Own outcomes across model, product, and deployment.</span>
+        </div>
+        <div class="signal">
+          <strong>Measured Quality</strong>
+          <span>Shipped improvements must show measurable reliability gains.</span>
+        </div>
+      </aside>
     </section>
-  </div>
+
+    <section class="block roles" id="open-roles" aria-label="Open roles">
+      <div class="section-head">
+        <h2>Open Roles</h2>
+        <p>
+          Each role works closely with evaluation, product, and infrastructure teams.
+          We value clear technical judgment and evidence-based execution.
+        </p>
+      </div>
+
+      <div class="roles-grid">
+        <a class="role-card" href="career-mts-post-training.html">
+          <div>
+            <span class="role-track">Model Quality</span>
+            <div class="role-title">Member of Technical Staff - Post-Training</div>
+            <div class="role-copy">Alignment tuning, mitigation strategy design, and reliability lift for known failure patterns.</div>
+            <div class="role-meta">
+              <span>IC4-IC5</span>
+              <span>Hybrid</span>
+            </div>
+          </div>
+          <span class="role-arrow" aria-hidden="true">→</span>
+        </a>
+
+        <a class="role-card" href="career-mts-data-analysis.html">
+          <div>
+            <span class="role-track">Analytics</span>
+            <div class="role-title">Member of Technical Staff - Data Analysis</div>
+            <div class="role-copy">Own telemetry, experiments, and decision frameworks that steer model and product priorities.</div>
+            <div class="role-meta">
+              <span>IC4-IC5</span>
+              <span>Hybrid</span>
+            </div>
+          </div>
+          <span class="role-arrow" aria-hidden="true">→</span>
+        </a>
+
+        <a class="role-card" href="career-mts-multimodal.html">
+          <div>
+            <span class="role-track">Multimodal</span>
+            <div class="role-title">Member of Technical Staff - Multimodal</div>
+            <div class="role-copy">Diagnose and fix failures across text, vision, and tool workflows in production contexts.</div>
+            <div class="role-meta">
+              <span>IC4-IC5</span>
+              <span>Hybrid</span>
+            </div>
+          </div>
+          <span class="role-arrow" aria-hidden="true">→</span>
+        </a>
+
+        <a class="role-card" href="career-forward-deployed-engineer.html">
+          <div>
+            <span class="role-track">Deployment</span>
+            <div class="role-title">Forward Deployed Engineer</div>
+            <div class="role-copy">Lead customer-facing deployments and convert field insights into durable product and model wins.</div>
+            <div class="role-meta">
+              <span>IC4-IC6</span>
+              <span>Hybrid</span>
+            </div>
+          </div>
+          <span class="role-arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="block culture" aria-label="How we work">
+      <div class="section-head">
+        <h2>How We Work</h2>
+        <p>Small teams, clear owners, frequent reviews, and rigorous postmortems on misses.</p>
+      </div>
+      <div class="culture-grid">
+        <article class="culture-card">
+          <h3>Ownership Over Scope</h3>
+          <p>People here drive end-to-end outcomes, not isolated tickets.</p>
+        </article>
+        <article class="culture-card">
+          <h3>Evidence First</h3>
+          <p>We rely on instrumentation, benchmarks, and user signal over opinion.</p>
+        </article>
+        <article class="culture-card">
+          <h3>Calm Execution</h3>
+          <p>We move quickly without chaos through disciplined planning and review loops.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="block process" aria-label="Interview process">
+      <div class="section-head">
+        <h2>Interview Process</h2>
+        <p>Structured and practical, focused on role-relevant judgment and execution.</p>
+      </div>
+      <div class="process-grid">
+        <article class="step">
+          <span class="step-number">Step 1</span>
+          <h3>Resume Review</h3>
+          <p>We screen for direct evidence of technical ownership and impact.</p>
+        </article>
+        <article class="step">
+          <span class="step-number">Step 2</span>
+          <h3>Technical Screen</h3>
+          <p>A focused discussion on problem-solving, architecture, and tradeoffs.</p>
+        </article>
+        <article class="step">
+          <span class="step-number">Step 3</span>
+          <h3>Onsite Loop</h3>
+          <p>Collaborative sessions across engineering, research, and product partners.</p>
+        </article>
+        <article class="step">
+          <span class="step-number">Step 4</span>
+          <h3>Final Debrief</h3>
+          <p>We align on scope, expectations, and team fit before extending an offer.</p>
+        </article>
+      </div>
+    </section>
+
+    <footer class="apply-strip">
+      <p>Apply with your resume and preferred role at <a href="mailto:careers@hugclaim.com">careers@hugclaim.com</a>.</p>
+      <a href="#open-roles">Browse positions</a>
+    </footer>
+  </main>
 </body>
 </html>
