@@ -150,6 +150,43 @@
   .field {
     margin-top: 14px;
   }
+  .choice-group {
+    display: grid;
+    gap: 8px;
+  }
+  .choice-card {
+    display: grid;
+    grid-template-columns: 16px 1fr;
+    gap: 10px;
+    align-items: center;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: rgba(255, 253, 248, .72);
+    padding: 10px 11px;
+    cursor: pointer;
+    transition: border-color .15s, background .15s, transform .15s;
+  }
+  .choice-card:hover {
+    border-color: rgba(99, 91, 255, .42);
+    background: #fffdf8;
+    transform: translateY(-1px);
+  }
+  .choice-card input {
+    width: 14px;
+    height: 14px;
+    accent-color: var(--stripe);
+    margin: 0;
+  }
+  .choice-copy strong {
+    display: block;
+    font-size: 13.5px;
+    color: var(--ink);
+  }
+  .choice-copy span {
+    display: block;
+    color: var(--ink-3);
+    font-size: 12px;
+  }
   .field label {
     display: block;
     margin-bottom: 6px;
@@ -308,8 +345,36 @@
           <input class="fake-input" id="email" type="email" value="you@example.com" />
         </div>
         <div class="field">
+          <label>Reward type</label>
+          <div class="choice-group" role="radiogroup" aria-label="Reward type">
+            <label class="choice-card">
+              <input type="radio" name="rewardType" value="cash" checked />
+              <span class="choice-copy">
+                <strong>Real cash</strong>
+                <span>Receive approved payout as direct cash back.</span>
+              </span>
+            </label>
+            <label class="choice-card">
+              <input type="radio" name="rewardType" value="credits" />
+              <span class="choice-copy">
+                <strong>AI platform credits</strong>
+                <span>Receive payout as usage credits for supported AI platforms.</span>
+              </span>
+            </label>
+          </div>
+        </div>
+        <div class="field">
           <label for="country">Country</label>
           <input class="fake-input" id="country" type="text" value="United States" />
+        </div>
+        <div class="field" id="creditProviderField" hidden>
+          <label for="creditProvider">Credit provider</label>
+          <select class="fake-input" id="creditProvider">
+            <option>OpenAI credits</option>
+            <option>Claude credits</option>
+            <option>Google AI Studio credits</option>
+            <option>Azure credits</option>
+          </select>
         </div>
         <div class="field">
           <label for="method">Receiving method</label>
@@ -324,7 +389,7 @@
     </div>
 
     <section>
-      <h2>How cash back would work</h2>
+      <h2>How payout would work</h2>
       <div class="steps">
         <div class="step">
           <div class="num">1.</div>
@@ -338,8 +403,8 @@
         </div>
         <div class="step">
           <div class="num">3.</div>
-          <h3>Receive cash back.</h3>
-          <p>If payable, the approved amount would be sent to your selected receiving method.</p>
+          <h3>Receive payout.</h3>
+          <p>If payable, the approved amount would be sent as real cash or AI platform credits, based on your selected method.</p>
         </div>
       </div>
       <p class="note">No live payment, bank, tax, or identity onboarding is performed on this page. It is interface scaffolding for demo and user-testing purposes.</p>
@@ -365,14 +430,51 @@
 <script>
   const connectBtn = document.getElementById('connectBtn');
   const statusEl = document.getElementById('status');
+  const rewardTypeInputs = Array.from(document.querySelectorAll('input[name="rewardType"]'));
+  const creditProviderField = document.getElementById('creditProviderField');
+  const creditProviderEl = document.getElementById('creditProvider');
+  const methodEl = document.getElementById('method');
+  const countryEl = document.getElementById('country');
+
+  function selectedRewardType() {
+    const selected = rewardTypeInputs.find((el) => el.checked);
+    return selected ? selected.value : 'cash';
+  }
+
+  function syncRewardTypeUi() {
+    const type = selectedRewardType();
+    const credits = type === 'credits';
+    creditProviderField.hidden = !credits;
+    if (credits) {
+      methodEl.value = 'AI credits wallet';
+      countryEl.value = 'N/A (credit payout)';
+    } else {
+      methodEl.value = 'Bank account ending •••• 4242';
+      countryEl.value = 'United States';
+    }
+  }
+
+  rewardTypeInputs.forEach((el) => {
+    el.addEventListener('change', syncRewardTypeUi);
+  });
+
   connectBtn.addEventListener('click', () => {
+    const rewardType = selectedRewardType();
+    const creditProvider = rewardType === 'credits' ? creditProviderEl.value : '';
     statusEl.classList.add('show');
     connectBtn.textContent = 'Saved';
+    statusEl.textContent = rewardType === 'credits'
+      ? `Receiving method saved. Approved claims would route as ${creditProvider}.`
+      : 'Receiving method saved. Approved cash-back claims would route here as real cash.';
     if (window.hugEvent) hugEvent('cashback_receiving_method_saved', {
+      reward_type: rewardType,
+      credit_provider: creditProvider,
       email_entered: Boolean(document.getElementById('email').value.trim()),
       country: document.getElementById('country').value.trim(),
     });
   });
+
+  syncRewardTypeUi();
 </script>
 </body>
 </html>

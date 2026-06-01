@@ -15,6 +15,7 @@
     --ink-3:   #8a8073;
     --hug:     #c44a3f;
     --hug-2:   #a83a30;
+    --hug-soft:#ecb8ad;
     --hug-bg:  #fae9e0;
     --line:    #d3c8da;
     --violet:  #635bff;
@@ -121,6 +122,67 @@
     font-size: 13px;
     margin-bottom: 18px;
   }
+  .system-login {
+    display: grid;
+    gap: 9px;
+    margin-bottom: 14px;
+  }
+  .system-login label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+  .system-login input {
+    width: 100%;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: #fff;
+    color: var(--ink);
+    padding: 10px 11px;
+    font: 500 14px var(--sans);
+    outline: none;
+    transition: border-color .14s, box-shadow .14s;
+  }
+  .system-login input:focus {
+    border-color: rgba(99, 91, 255, .55);
+    box-shadow: 0 0 0 3px rgba(99, 91, 255, .13);
+  }
+  .auth-actions {
+    display: grid;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .auth-btn {
+    width: 100%;
+    min-height: 43px;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    font: 600 11px var(--sans);
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: transform .14s, border-color .14s, background .14s, color .14s;
+  }
+  .auth-btn.primary {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .auth-btn.primary:hover {
+    background: var(--hug);
+    transform: translateY(-1px);
+  }
+  .auth-btn.guest {
+    background: rgba(255, 253, 248, .78);
+    color: var(--ink-2);
+    border-color: var(--line);
+  }
+  .auth-btn.guest:hover {
+    border-color: var(--hug-soft);
+    color: var(--hug-2);
+    transform: translateY(-1px);
+  }
   .provider-stack {
     display: grid;
     gap: 10px;
@@ -217,20 +279,24 @@
     border-radius: 14px;
     background: var(--paper-2);
     color: inherit;
-    cursor: pointer;
+    cursor: default;
     text-align: left;
     transition: border-color .16s, box-shadow .16s, transform .16s, background .16s;
     font: inherit;
   }
   .profile-preview:hover {
-    border-color: rgba(99, 91, 255, .38);
-    background: #eee7f6;
-    box-shadow: 0 14px 34px -26px rgba(40, 25, 10, .36);
-    transform: translateY(-1px);
+    transform: none;
   }
   .profile-preview.signed {
     border-color: rgba(99, 91, 255, .44);
     background: #f4effb;
+    cursor: pointer;
+  }
+  .profile-preview.signed:hover {
+    border-color: rgba(99, 91, 255, .52);
+    background: #eee7f6;
+    box-shadow: 0 14px 34px -26px rgba(40, 25, 10, .36);
+    transform: translateY(-1px);
   }
   .profile-row {
     display: flex;
@@ -344,7 +410,7 @@
   <main>
     <section>
       <h1>Set up your <em>Hug account</em>.</h1>
-      <p class="lede">Use one account for saved conversations, forum posts, claim history, and cash-back receiving settings. Google and Meta sign-in are placeholders for the next auth integration.</p>
+      <p class="lede">Use your Hug account for saved conversations, forum posts, claim history, and cash-back settings. You can also continue as a guest for quick access.</p>
       <div class="setup-list">
         <div>
           <strong>Claims should belong to the right person.</strong>
@@ -359,7 +425,17 @@
 
     <aside class="account-card">
       <h2>Continue with</h2>
-      <p class="sub">Choose a provider to connect later.</p>
+      <p class="sub">Log in to Hug or continue as guest.</p>
+      <div class="system-login">
+        <label for="systemEmail">Hug account email</label>
+        <input id="systemEmail" type="email" placeholder="you@hug.claims" autocomplete="email" />
+        <label for="systemPassword">Password</label>
+        <input id="systemPassword" type="password" placeholder="Enter password" autocomplete="current-password" />
+      </div>
+      <div class="auth-actions">
+        <button class="auth-btn primary" id="systemLoginBtn" type="button">Log in to Hug</button>
+        <button class="auth-btn guest" id="guestLoginBtn" type="button">Continue as guest</button>
+      </div>
       <div class="provider-stack">
         <button class="provider-btn" data-provider="google" type="button">
           <span class="brand-logo google-logo" aria-hidden="true"><span class="g">G</span></span>
@@ -397,10 +473,10 @@
             <span id="profileSubtitle">Not signed in. Stored only in this browser.</span>
           </span>
         </div>
-        <div class="profile-action" id="profileAction">Click to continue as yuexing</div>
+        <div class="profile-action" id="profileAction">Sign in above, or continue as guest.</div>
       </button>
-      <button class="demo-signout" id="demoSignOut" type="button" hidden>Sign out demo profile</button>
-      <p class="note" id="loginStatus">Provider connection is not active yet. This page is the front-end contract for the upcoming auth flow.</p>
+      <button class="demo-signout" id="demoSignOut" type="button" hidden>Sign out</button>
+      <p class="note" id="loginStatus">No active account yet. Log in to Hug or continue as guest.</p>
     </aside>
   </main>
 
@@ -420,13 +496,15 @@
 
 <script>
   const HUG_USER_KEY = 'hug:user';
-  const demoUser = {
-    id: 'yuexing',
-    username: 'yuexing',
-    displayName: 'Yuexing',
-    avatar: 'YU',
-    provider: 'demo-local',
-    signedIn: true
+  const DEFAULT_MEMBER_EMAIL = 'yuexing@hug.claims';
+  const guestUser = {
+    id: 'guest',
+    username: 'guest',
+    displayName: 'Guest',
+    avatar: 'GS',
+    provider: 'guest',
+    signedIn: true,
+    isGuest: true,
   };
 
   function readHugUser() {
@@ -444,9 +522,37 @@
     catch (err) { console.warn('Could not clear demo user:', err); }
   }
 
+  function avatarFromName(name) {
+    const safe = String(name || '').replace(/[^a-zA-Z0-9 ]/g, ' ').trim();
+    if (!safe) return 'HU';
+    const parts = safe.split(/\s+/).filter(Boolean);
+    if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+    return `${parts[0][0] || ''}${parts[1][0] || ''}`.toUpperCase();
+  }
+
+  function usernameFromEmail(email) {
+    const local = String(email || '').split('@')[0] || '';
+    const cleaned = local.toLowerCase().replace(/[^a-z0-9._-]/g, '');
+    return cleaned || 'member';
+  }
+
+  function buildMemberUser(email) {
+    const username = usernameFromEmail(email);
+    return {
+      id: `member-${username}`,
+      username,
+      displayName: username,
+      avatar: avatarFromName(username),
+      provider: 'hug-local',
+      signedIn: true,
+      isGuest: false,
+    };
+  }
+
   function renderProfile() {
     const user = readHugUser();
     const signedIn = Boolean(user && user.signedIn);
+    const isGuest = Boolean(user && user.isGuest);
     const card = document.getElementById('demoProfile');
     const avatar = document.getElementById('profileAvatar');
     const title = document.getElementById('profileTitle');
@@ -457,27 +563,66 @@
 
     card.classList.toggle('signed', signedIn);
     card.setAttribute('aria-pressed', signedIn ? 'true' : 'false');
-    avatar.textContent = signedIn ? (user.avatar || 'YU') : 'YU';
-    title.textContent = signedIn ? `Signed in as ${user.username || 'yuexing'}` : 'Demo local profile';
+    avatar.textContent = signedIn ? (user.avatar || 'HU') : 'HU';
+    title.textContent = signedIn ? `Signed in as ${user.username || 'member'}` : 'No active account';
     subtitle.textContent = signedIn
-      ? 'Demo account active. Claims and forum drafts can use this local identity.'
+      ? (isGuest
+        ? 'Guest mode active. Local session only in this browser.'
+        : 'Hug account active. Claims and forum drafts use this local identity.')
       : 'Not signed in. Stored only in this browser.';
-    action.textContent = signedIn ? 'Demo login active' : 'Click to continue as yuexing';
+    action.textContent = signedIn ? 'Open chat with this account' : 'Sign in above, or continue as guest.';
     signOut.hidden = !signedIn;
-    if (signedIn) status.textContent = 'You are using the local yuexing demo profile. This is not OAuth; it is browser-only fake login for demos.';
+    if (signedIn) {
+      status.textContent = isGuest
+        ? 'Guest session active. You can browse and test flows, then switch to a Hug account anytime.'
+        : 'Signed in to Hug local demo account. This is browser-only auth until OAuth backend is connected.';
+    }
   }
 
-  document.getElementById('demoProfile').addEventListener('click', () => {
-    writeHugUser(demoUser);
+  document.getElementById('systemLoginBtn').addEventListener('click', () => {
+    const emailInput = document.getElementById('systemEmail');
+    const passwordInput = document.getElementById('systemPassword');
+    const status = document.getElementById('loginStatus');
+    const email = String(emailInput.value || '').trim() || DEFAULT_MEMBER_EMAIL;
+    const password = String(passwordInput.value || '').trim();
+
+    if (!email.includes('@')) {
+      status.textContent = 'Use a valid email to log in to Hug.';
+      emailInput.focus();
+      return;
+    }
+    if (!password) {
+      status.textContent = 'Enter a password to continue.';
+      passwordInput.focus();
+      return;
+    }
+
+    const member = buildMemberUser(email);
+    writeHugUser(member);
     renderProfile();
-    if (window.hugEvent) hugEvent('demo_login_clicked', { user: demoUser.username });
+    if (window.hugEvent) hugEvent('system_login_clicked', { user: member.username, provider: 'hug-local' });
+    window.location.href = 'chat.html';
+  });
+
+  document.getElementById('guestLoginBtn').addEventListener('click', () => {
+    writeHugUser(guestUser);
+    renderProfile();
+    if (window.hugEvent) hugEvent('guest_login_clicked', { user: guestUser.username });
+    window.location.href = 'chat.html';
+  });
+
+  document.getElementById('demoProfile').addEventListener('click', () => {
+    const user = readHugUser();
+    if (user && user.signedIn) {
+      window.location.href = 'chat.html';
+    }
   });
 
   document.getElementById('demoSignOut').addEventListener('click', () => {
     clearHugUser();
     renderProfile();
-    document.getElementById('loginStatus').textContent = 'Demo profile signed out. Click the profile card to continue as yuexing again.';
-    if (window.hugEvent) hugEvent('demo_login_signed_out', { user: 'yuexing' });
+    document.getElementById('loginStatus').textContent = 'Signed out. Log in to Hug or continue as guest.';
+    if (window.hugEvent) hugEvent('demo_login_signed_out', { user: 'local' });
   });
 
   document.querySelectorAll('.provider-btn').forEach((btn) => {

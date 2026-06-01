@@ -5,28 +5,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" type="image/jpeg" href="assets/hug-logo.jpg" />
   <link rel="apple-touch-icon" href="assets/hug-logo.jpg" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,600,80&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <title>HugClaim.com Careers</title>
+  <title>hug.claims careers</title>
   <style>
     :root {
-      --bg: #f4f2ec;
-      --bg-strong: #ebe7dd;
-      --panel: rgba(255, 255, 255, 0.86);
-      --panel-solid: #ffffff;
-      --text: #12242d;
-      --text-muted: #4f6169;
-      --line: #cdd7d2;
-      --primary: #1f7a76;
-      --primary-soft: #e2f1ec;
+      --bg: #f1edf6;
+      --bg-strong: #e5ddee;
+      --panel: rgba(255, 253, 248, 0.9);
+      --panel-solid: #fffdf8;
+      --text: #1a1612;
+      --text-muted: #4b4339;
+      --line: #d3c8da;
+      --primary: #2f6b40;
+      --primary-soft: rgba(107, 142, 110, 0.16);
       --brand: #c44a3f;
-      --brand-soft: #f8e4df;
+      --brand-soft: #fae9e0;
       --radius-lg: 20px;
       --radius-md: 14px;
-      --shadow: 0 20px 48px rgba(18, 36, 45, 0.08);
-      --sans: "Manrope", "Avenir Next", "Segoe UI", "Noto Sans", sans-serif;
-      --serif: "Fraunces", "Iowan Old Style", "Times New Roman", serif;
+      --shadow: 0 20px 48px rgba(40, 25, 10, 0.12);
+      --sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+      --serif: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
     }
 
     * {
@@ -40,41 +37,35 @@
       font-family: var(--sans);
       color: var(--text);
       background:
-        radial-gradient(900px 520px at 8% -10%, #d9e8e1 0%, rgba(217, 232, 225, 0) 70%),
-        radial-gradient(700px 500px at 98% 18%, #f2ddd7 0%, rgba(242, 221, 215, 0) 72%),
-        linear-gradient(165deg, var(--bg) 0%, var(--bg-strong) 100%);
-      line-height: 1.58;
+        radial-gradient(ellipse 60% 40% at 85% -5%, rgba(132,102,178,.14) 0%, transparent 60%),
+        radial-gradient(ellipse 70% 50% at -5% 105%, rgba(196,74,63,.07) 0%, transparent 55%),
+        url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.05 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+      background-attachment: fixed;
+      line-height: 1.55;
+      font-size: 17.5px;
       -webkit-font-smoothing: antialiased;
     }
 
     body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      background-image:
-        linear-gradient(rgba(18, 36, 45, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(18, 36, 45, 0.03) 1px, transparent 1px);
-      background-size: 36px 36px;
-      mask-image: radial-gradient(circle at center, black 34%, transparent 92%);
-      opacity: 0.38;
-      z-index: 0;
+      display: none;
     }
 
     .page {
-      max-width: 1140px;
+      max-width: 1280px;
       margin: 0 auto;
-      padding: 28px 24px 64px;
+      padding: 0 32px 64px;
       position: relative;
       z-index: 1;
     }
 
-    .topbar {
+    header.top {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      gap: 18px;
-      margin-bottom: 26px;
+      align-items: baseline;
+      padding: 32px 0 24px;
+      border-bottom: 1px solid var(--line);
+      gap: 12px;
+      margin-bottom: 24px;
       animation: reveal-up 0.65s ease forwards;
     }
 
@@ -93,7 +84,8 @@
 
     .brand-text {
       font-family: var(--serif);
-      font-size: 34px;
+      font-size: 30px;
+      font-style: italic;
       line-height: 1;
       letter-spacing: -0.02em;
       color: var(--text);
@@ -106,32 +98,55 @@
 
     .brand-text .small {
       font-size: 18px;
-      color: #7b887f;
+      color: var(--text-muted);
       margin-left: 2px;
-      font-weight: 500;
+      font-weight: 400;
     }
 
-    .nav {
+    header .nav {
       display: flex;
-      gap: 18px;
+      gap: 24px;
       flex-wrap: wrap;
-      align-items: center;
+      align-items: baseline;
     }
 
-    .nav a {
+    header .nav a {
       text-decoration: none;
       color: var(--text-muted);
+      font-family: var(--serif);
+      font-style: italic;
       font-size: 14px;
-      font-weight: 600;
-      letter-spacing: 0.02em;
       border-bottom: 1px solid transparent;
-      padding-bottom: 2px;
-      transition: color 0.14s ease, border-color 0.14s ease;
+      transition: border-color 0.15s ease, color 0.15s ease;
+      padding-bottom: 1px;
     }
 
-    .nav a:hover {
-      color: var(--text);
-      border-bottom-color: var(--primary);
+    header .nav a:hover {
+      border-bottom-color: var(--brand);
+      color: var(--brand);
+    }
+
+    header .nav a.cta {
+      font-family: var(--sans);
+      font-style: normal;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      font-size: 11px;
+      background: var(--text);
+      color: var(--bg);
+      padding: 10px 18px;
+      border-radius: 999px;
+      border-bottom: 0;
+      transition: background 0.18s ease, transform 0.15s ease;
+      white-space: nowrap;
+    }
+
+    header .nav a.cta:hover {
+      background: var(--brand);
+      color: var(--bg);
+      transform: translateY(-1px);
+      border-bottom: 0;
     }
 
     .hero {
@@ -155,7 +170,7 @@
       gap: 8px;
       margin-bottom: 14px;
       background: var(--primary-soft);
-      border: 1px solid #c6e0d7;
+      border: 1px solid var(--line);
       color: var(--primary);
       border-radius: 999px;
       font-size: 11px;
@@ -207,17 +222,17 @@
 
     .btn-primary {
       background: var(--text);
-      color: #f6f4ef;
+      color: var(--bg);
       box-shadow: 0 10px 22px rgba(18, 36, 45, 0.18);
     }
 
     .btn-primary:hover {
-      background: #1c343f;
+      background: var(--brand);
     }
 
     .btn-secondary {
       border: 1px solid var(--line);
-      background: #faf9f5;
+      background: var(--panel-solid);
       color: var(--text);
     }
 
@@ -229,9 +244,9 @@
 
     .meta-pill {
       border-radius: 999px;
-      border: 1px solid #d4ddd8;
+      border: 1px solid var(--line);
       color: var(--text-muted);
-      background: rgba(255, 255, 255, 0.86);
+      background: rgba(255, 253, 248, 0.86);
       font-size: 11px;
       text-transform: uppercase;
       letter-spacing: 0.08em;
@@ -241,7 +256,7 @@
 
     .hero-panel {
       border-radius: 16px;
-      border: 1px solid #dce5e0;
+      border: 1px solid var(--line);
       background: var(--panel-solid);
       padding: 18px;
       display: grid;
@@ -260,7 +275,7 @@
       justify-content: space-between;
       gap: 10px;
       align-items: baseline;
-      border-top: 1px solid #e6ece8;
+      border-top: 1px solid var(--line);
       padding-top: 11px;
     }
 
@@ -336,7 +351,7 @@
       gap: 16px;
       text-decoration: none;
       color: inherit;
-      border: 1px solid #d6dfda;
+      border: 1px solid var(--line);
       border-radius: var(--radius-md);
       background: var(--panel-solid);
       padding: 16px;
@@ -352,7 +367,7 @@
 
     .role-card:hover {
       transform: translateY(-2px);
-      border-color: #adc6bc;
+      border-color: var(--brand);
       box-shadow: 0 12px 24px rgba(18, 36, 45, 0.09);
     }
 
@@ -364,7 +379,7 @@
       text-transform: uppercase;
       color: var(--brand);
       background: var(--brand-soft);
-      border: 1px solid #efc6bc;
+      border: 1px solid var(--line);
       border-radius: 999px;
       padding: 4px 9px;
       margin-bottom: 9px;
@@ -389,7 +404,7 @@
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
-      color: #687a7f;
+      color: var(--text-muted);
       font-size: 12px;
       font-weight: 700;
       letter-spacing: 0.04em;
@@ -403,10 +418,10 @@
       width: 36px;
       height: 36px;
       border-radius: 50%;
-      background: #edf4f1;
+      background: var(--bg-strong);
       color: var(--primary);
       font-size: 19px;
-      border: 1px solid #d2e2dc;
+      border: 1px solid var(--line);
     }
 
     .culture-grid {
@@ -416,7 +431,7 @@
     }
 
     .culture-card {
-      border: 1px solid #d6dfda;
+      border: 1px solid var(--line);
       border-radius: var(--radius-md);
       background: var(--panel-solid);
       padding: 16px;
@@ -440,7 +455,7 @@
     }
 
     .step {
-      border: 1px solid #d6dfda;
+      border: 1px solid var(--line);
       border-radius: var(--radius-md);
       background: var(--panel-solid);
       padding: 15px;
@@ -451,7 +466,7 @@
       display: inline-flex;
       border-radius: 999px;
       background: var(--primary-soft);
-      border: 1px solid #c7ddd5;
+      border: 1px solid var(--line);
       color: var(--primary);
       font-weight: 800;
       font-size: 11px;
@@ -475,8 +490,8 @@
     .apply-strip {
       margin-top: 22px;
       border-radius: var(--radius-lg);
-      border: 1px solid #c8d6d0;
-      background: linear-gradient(125deg, #e8f1ed 0%, #f8f5ef 44%, #f7e5e1 100%);
+      border: 1px solid var(--line);
+      background: linear-gradient(125deg, rgba(107,142,110,.12) 0%, rgba(255,253,248,.92) 44%, rgba(196,74,63,.10) 100%);
       padding: 18px 20px;
       display: flex;
       justify-content: space-between;
@@ -489,7 +504,7 @@
     }
 
     .apply-strip p {
-      color: #30434a;
+      color: var(--text-muted);
       font-size: 15px;
       font-weight: 600;
     }
@@ -498,7 +513,7 @@
       color: var(--text);
       text-decoration: none;
       font-weight: 800;
-      border-bottom: 1px solid #7f9298;
+      border-bottom: 1px solid var(--text-muted);
     }
 
     .apply-strip a:hover {
@@ -528,14 +543,29 @@
       }
     }
 
-    @media (max-width: 720px) {
-      .page {
-        padding: 20px 14px 42px;
-      }
-
-      .topbar {
+    @media (max-width: 820px) {
+      header.top {
         flex-direction: column;
         align-items: flex-start;
+        gap: 18px;
+        padding: 28px 0 22px;
+      }
+
+      header .nav {
+        width: 100%;
+        gap: 16px;
+      }
+
+      header .nav a.cta {
+        padding: 9px 14px;
+        font-size: 10px;
+        letter-spacing: 0.14em;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .page {
+        padding: 0 14px 42px;
       }
 
       .hero,
@@ -565,14 +595,17 @@
 </head>
 <body>
   <main class="page">
-    <header class="topbar">
+    <header class="top">
       <a class="brand-link" href="index.html" aria-label="Hug Claims home">
         <span class="brand-text">Hug<span class="em">.</span><span class="small">claims</span></span>
       </a>
       <nav class="nav" aria-label="Main">
-        <a href="index.html">Home</a>
-        <a href="claim.html">File a Claim</a>
-        <a href="chat.html">Chat</a>
+        <a href="forum.html">forum</a>
+        <a href="claim.html">file a claim</a>
+        <a href="enterprise.html">enterprise</a>
+        <a href="career.html">careers</a>
+        <a href="login.html">login</a>
+        <a href="chat.html" class="cta">try the chat &rarr;</a>
       </nav>
     </header>
 
@@ -581,7 +614,7 @@
         <span class="kicker">Careers</span>
         <h1>Build the reliability layer for AI in insurance.</h1>
         <p class="hero-copy">
-          HugClaim turns model failures into customer compensation and product intelligence.
+          HugClaims turns model failures into customer compensation and product intelligence.
           We are hiring engineers and researchers who can ship high-integrity systems where
           reliability, safety, and product velocity all matter.
         </p>
@@ -592,7 +625,7 @@
         <div class="hero-meta">
           <span class="meta-pill">Hybrid / San Francisco, CA</span>
           <span class="meta-pill">Applications Open</span>
-          <span class="meta-pill">Technical IC Roles</span>
+          <span class="meta-pill">No LeetCode Interviews</span>
         </div>
       </div>
 
@@ -629,7 +662,6 @@
             <div class="role-title">Member of Technical Staff - Post-Training</div>
             <div class="role-copy">Alignment tuning, mitigation strategy design, and reliability lift for known failure patterns.</div>
             <div class="role-meta">
-              <span>IC4-IC5</span>
               <span>Hybrid</span>
             </div>
           </div>
@@ -642,7 +674,6 @@
             <div class="role-title">Member of Technical Staff - Data Analysis</div>
             <div class="role-copy">Own telemetry, experiments, and decision frameworks that steer model and product priorities.</div>
             <div class="role-meta">
-              <span>IC4-IC5</span>
               <span>Hybrid</span>
             </div>
           </div>
@@ -655,7 +686,6 @@
             <div class="role-title">Member of Technical Staff - Multimodal</div>
             <div class="role-copy">Diagnose and fix failures across text, vision, and tool workflows in production contexts.</div>
             <div class="role-meta">
-              <span>IC4-IC5</span>
               <span>Hybrid</span>
             </div>
           </div>
@@ -668,7 +698,6 @@
             <div class="role-title">Forward Deployed Engineer</div>
             <div class="role-copy">Lead customer-facing deployments and convert field insights into durable product and model wins.</div>
             <div class="role-meta">
-              <span>IC4-IC6</span>
               <span>Hybrid</span>
             </div>
           </div>
@@ -701,28 +730,28 @@
     <section class="block process" aria-label="Interview process">
       <div class="section-head">
         <h2>Interview Process</h2>
-        <p>Structured and practical, focused on role-relevant judgment and execution.</p>
+        <p>Unconventional and practical: no LeetCode rounds. We use AI coding tasks and real workflow simulations to evaluate candidacy.</p>
       </div>
       <div class="process-grid">
         <article class="step">
           <span class="step-number">Step 1</span>
-          <h3>Resume Review</h3>
-          <p>We screen for direct evidence of technical ownership and impact.</p>
+          <h3>Signal Review</h3>
+          <p>We review your shipped work, technical depth, and ownership signal from real projects.</p>
         </article>
         <article class="step">
           <span class="step-number">Step 2</span>
-          <h3>Technical Screen</h3>
-          <p>A focused discussion on problem-solving, architecture, and tradeoffs.</p>
+          <h3>AI Coding Evaluation</h3>
+          <p>You solve an applied task with AI tools, and we evaluate reasoning, reliability, and execution quality.</p>
         </article>
         <article class="step">
           <span class="step-number">Step 3</span>
-          <h3>Onsite Loop</h3>
-          <p>Collaborative sessions across engineering, research, and product partners.</p>
+          <h3>Collaboration Loop</h3>
+          <p>Partner-style sessions across engineering, research, and product on realistic tradeoffs.</p>
         </article>
         <article class="step">
           <span class="step-number">Step 4</span>
-          <h3>Final Debrief</h3>
-          <p>We align on scope, expectations, and team fit before extending an offer.</p>
+          <h3>Final Decision</h3>
+          <p>We align quickly on role scope, impact expectations, and team fit.</p>
         </article>
       </div>
     </section>
