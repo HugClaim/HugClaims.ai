@@ -1,6 +1,14 @@
 .venv/
 __pycache__/
-data/
+# Keep generated backend outputs out of git, but allow static demo assets
+# needed by GitHub Pages pages like forum.html/chat.html.
+data/*
+!data/Sample_Housing_Contract.pdf
+!data/RAG Faithfulness Measurement Methods.json
+!data/Math.JPG
+!data/HUG Logo.jpg
+data/*.jsonl
+data/*.jsonl.*
 recordings/
 *.pyc
 *.pyo
