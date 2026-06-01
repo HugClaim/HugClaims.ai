@@ -22,9 +22,21 @@ if [ -f .env ]; then
   set +a
 fi
 
-if [ -z "${ANTHROPIC_API_KEY:-}" ]; then
-  echo "error: ANTHROPIC_API_KEY not set"
-  echo "run: export ANTHROPIC_API_KEY=... && ./run.sh"
+has_foundry_key=0
+if [ -n "${ANTHROPIC_API_KEY:-}" ] || [ -n "${ANTHROPIC_FOUNDRY_API_KEY:-}" ] || [ -n "${AZURE_FOUNDRY_API_KEY:-}" ]; then
+  has_foundry_key=1
+fi
+
+has_azure_openai=0
+if [ -n "${AZURE_OPENAI_API_KEY:-}" ] && [ -n "${AZURE_OPENAI_ENDPOINT:-}" ] && [ -n "${AZURE_OPENAI_DEPLOYMENT:-}" ]; then
+  has_azure_openai=1
+fi
+
+if [ "$has_foundry_key" -ne 1 ] && [ "$has_azure_openai" -ne 1 ]; then
+  echo "error: no LLM credentials configured"
+  echo "use ONE of:"
+  echo "  1) ANTHROPIC_API_KEY (or ANTHROPIC_FOUNDRY_API_KEY / AZURE_FOUNDRY_API_KEY)"
+  echo "  2) AZURE_OPENAI_API_KEY + AZURE_OPENAI_ENDPOINT + AZURE_OPENAI_DEPLOYMENT"
   exit 1
 fi
 

@@ -93,6 +93,7 @@ All implemented in `server.py`:
 | `/redact_for_share` | POST | extension helper: detects PII/sensitive content and returns redacted share text + replacement list (`original -> [REDACTED:TYPE]`) |
 | `/detect_failure_signal` | POST | extension auto-agent: predicts likely substantive failure, estimates verification difficulty, and returns cashback offer `$X` |
 | `/event` | POST | logs client interaction events to `data/events.jsonl` |
+| `/enterprise_grant` | POST | stores Enterprise Grant trial applications in `data/enterprise_grants.jsonl` and returns a `grant_id` reference |
 | `/export` | GET | downloads `data/events.jsonl` (optional `HUG_EXPORT_TOKEN` gate) |
 | `/events_count` | GET | returns quick count/size/path for `data/events.jsonl` |
 | `/export_extension` | GET | downloads extension-only records from `data/extension_records.jsonl` |

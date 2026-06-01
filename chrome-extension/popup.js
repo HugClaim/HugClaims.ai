@@ -1,21 +1,18 @@
 const state = {
   sessionId: `ext-${Math.random().toString(36).slice(2, 10)}`,
   sourceAI: "Other/Unknown",
+  backendUrl: "http://127.0.0.1:8000",
+  capturedImages: [],
   extraction: null,
   redaction: null
 };
 
 const el = {
-  backendUrl: document.getElementById("backendUrl"),
-  autoDetectCheck: document.getElementById("autoDetectCheck"),
   captureBtn: document.getElementById("captureBtn"),
   sourceBadge: document.getElementById("sourceBadge"),
   transcript: document.getElementById("transcript"),
   userNote: document.getElementById("userNote"),
-  analyzeBtn: document.getElementById("analyzeBtn"),
   analysisSection: document.getElementById("analysisSection"),
-  summary: document.getElementById("summary"),
-  reasons: document.getElementById("reasons"),
   severityPill: document.getElementById("severityPill"),
   confidencePill: document.getElementById("confidencePill"),
   confirmCheck: document.getElementById("confirmCheck"),
@@ -39,7 +36,7 @@ function setStatus(msg, kind = "") {
 }
 
 function backendBase() {
-  return (el.backendUrl.value || "").trim().replace(/\/$/, "");
+  return (state.backendUrl || "http://127.0.0.1:8000").trim().replace(/\/$/, "");
 }
 
 function normalizeTranscriptFormatting(text) {
@@ -64,7 +61,7 @@ async function readJsonOrThrow(resp, actionLabel) {
     const lower = raw.toLowerCase();
     if (code === 0 || lower.includes("failed to fetch") || lower.includes("networkerror")) {
       throw new Error(
-        `Cannot reach backend at ${backendBase()}. Start/restart HugInsure backend on http://127.0.0.1:8000, then retry.`
+        `Cannot reach backend at ${backendBase()}. Start/restart HugClaims.ai backend on http://127.0.0.1:8000, then retry.`
       );
     }
     if (lower.includes("fetch") && lower.includes("failed")) {
@@ -78,7 +75,7 @@ async function readJsonOrThrow(resp, actionLabel) {
     const snippet = raw.slice(0, 120).replace(/\s+/g, " ");
     if (snippet.toLowerCase().includes("<!doctype") || snippet.toLowerCase().includes("<html")) {
       throw new Error(
-        `Backend URL is not the API server (${backendBase()}). It returned HTML. Start/restart HugInsure backend on http://127.0.0.1:8000.`
+        `Backend URL is not the API server (${backendBase()}). It returned HTML. Start/restart HugClaims.ai backend on http://127.0.0.1:8000.`
       );
     }
     throw new Error(`${actionLabel} returned non-JSON response.`);
@@ -113,19 +110,14 @@ async function pingBackend() {
 }
 
 async function loadSettings() {
-  const data = await chrome.storage.local.get(["hug_backend_url", "hug_auto_detect_enabled"]);
+  const data = await chrome.storage.local.get(["hug_backend_url"]);
   if (data.hug_backend_url) {
-    el.backendUrl.value = data.hug_backend_url;
+    state.backendUrl = String(data.hug_backend_url).trim() || state.backendUrl;
   }
-  el.autoDetectCheck.checked = data.hug_auto_detect_enabled !== false;
 }
 
 async function saveSettings() {
-  const url = backendBase();
-  await chrome.storage.local.set({
-    hug_backend_url: url,
-    hug_auto_detect_enabled: !!el.autoDetectCheck.checked
-  });
+  await chrome.storage.local.set({ hug_backend_url: backendBase() });
 }
 
 function inferSourceFromUrl(url) {
@@ -134,6 +126,11 @@ function inferSourceFromUrl(url) {
   if (url.includes("claude")) return "Claude";
   if (url.includes("gemini")) return "Gemini";
   if (url.includes("copilot")) return "Copilot";
+  if (url.includes("parley.mit.edu")) return "Parley";
+  if (url.includes("meta.ai")) return "Meta AI";
+  if (url.includes("perplexity.ai")) return "Perplexity";
+  if (url.includes("poe.com")) return "Poe";
+  if (url.includes("character.ai")) return "Character.AI";
   return "Other/Unknown";
 }
 
@@ -144,7 +141,12 @@ function isSupportedChatUrl(url) {
     "chatgpt.com",
     "claude.ai",
     "gemini.google.com",
-    "copilot.microsoft.com"
+    "copilot.microsoft.com",
+    "parley.mit.edu",
+    "meta.ai",
+    "perplexity.ai",
+    "poe.com",
+    "character.ai"
   ].some((host) => url.includes(host));
 }
 
@@ -164,7 +166,7 @@ async function captureFromActiveTab() {
     throw new Error("No active tab found.");
   }
   if (!isSupportedChatUrl(tab.url || "")) {
-    throw new Error("Open ChatGPT, Claude, Gemini, or Copilot tab first.");
+    throw new Error("Open a supported LLM tab first (ChatGPT/Claude/Gemini/Copilot/Parley/Meta AI/Perplexity/Poe/Character.AI).");
   }
 
   updateSource(inferSourceFromUrl(tab.url || ""));
@@ -194,6 +196,7 @@ async function captureFromActiveTab() {
   if (resp.source_ai) {
     updateSource(resp.source_ai);
   }
+  state.capturedImages = Array.isArray(resp.images) ? resp.images : [];
 
   el.transcript.value = normalizeTranscriptFormatting(resp.transcript || "");
   if (!el.transcript.value) {
@@ -207,18 +210,22 @@ function renderExtraction(data) {
   el.analysisSection.classList.remove("hidden");
   el.resultSection.classList.add("hidden");
   el.shareSection.classList.add("hidden");
-  el.summary.textContent = data.summary || "No summary returned.";
-  el.reasons.innerHTML = "";
-  (data.reasons || []).forEach((reason) => {
-    const li = document.createElement("li");
-    li.textContent = reason;
-    el.reasons.appendChild(li);
-  });
-  el.severityPill.textContent = `Severity: ${data.severity || "-"}/5`;
+  const severity = Math.max(1, Math.min(5, Number(data.severity) || 1));
+  const predicted = predictedCashbackFromSeverity(severity);
+  el.severityPill.textContent = `Predicted cashback: $${predicted}`;
   const pct = Math.round((Number(data.confidence) || 0) * 100);
   el.confidencePill.textContent = `Confidence: ${pct}%`;
   el.confirmCheck.checked = false;
   el.submitBtn.disabled = true;
+  const summaryDraft = String(data.summary || "").trim();
+  if (summaryDraft) {
+    el.userNote.value = summaryDraft;
+  }
+}
+
+function predictedCashbackFromSeverity(severity) {
+  const level = Math.max(1, Math.min(5, Number(severity) || 1));
+  return Math.round(2 + (level - 1) * (25 / 4));
 }
 
 async function analyzeComplaint() {
@@ -232,6 +239,7 @@ async function analyzeComplaint() {
     "/extract_dissatisfaction",
     {
       transcript,
+      images: state.capturedImages,
       source_ai: state.sourceAI,
       user_note: (el.userNote.value || "").trim(),
       session_id: state.sessionId
@@ -243,11 +251,12 @@ async function analyzeComplaint() {
 
 async function submitClaim() {
   if (!state.extraction) {
-    throw new Error("Run extraction first.");
+    await analyzeComplaint();
   }
 
   const transcript = normalizeTranscriptFormatting(el.transcript.value);
   el.transcript.value = transcript;
+  const predictedCashback = predictedCashbackFromSeverity(state.extraction && state.extraction.severity);
   const data = await apiPost(
     "/submit_extension_claim",
     {
@@ -256,14 +265,13 @@ async function submitClaim() {
       summary: state.extraction.summary,
       reasons: state.extraction.reasons || [],
       severity: state.extraction.severity || 2,
+      offered_cashback: predictedCashback,
       user_note: (el.userNote.value || "").trim(),
       session_id: state.sessionId
     },
     "Submit"
   );
-  el.resultSection.classList.remove("hidden");
-  el.resultText.textContent = `${data.claim_id}: +${data.credit_amount} ${data.currency}. ${data.message}`;
-  el.shareSection.classList.add("hidden");
+  return data;
 }
 
 function renderRedaction(data) {
@@ -319,12 +327,6 @@ function escapeHtml(text) {
     .replace(/>/g, "&gt;");
 }
 
-el.backendUrl.addEventListener("change", async () => {
-  await saveSettings();
-});
-el.autoDetectCheck.addEventListener("change", async () => {
-  await saveSettings();
-});
 el.transcript.addEventListener("blur", () => {
   el.transcript.value = normalizeTranscriptFormatting(el.transcript.value);
 });
@@ -334,18 +336,6 @@ el.captureBtn.addEventListener("click", async () => {
   try {
     await captureFromActiveTab();
     setStatus("Transcript captured. Extracting dissatisfaction reasons...", "ok");
-    await saveSettings();
-    await analyzeComplaint();
-    setStatus("Extraction ready. Confirm then submit.", "ok");
-  } catch (err) {
-    setStatus(String(err.message || err), "error");
-  }
-});
-
-el.analyzeBtn.addEventListener("click", async () => {
-  setStatus("Extracting dissatisfaction reasons...");
-  try {
-    await saveSettings();
     await analyzeComplaint();
     setStatus("Extraction ready. Confirm then submit.", "ok");
   } catch (err) {
@@ -358,10 +348,26 @@ el.confirmCheck.addEventListener("change", () => {
 });
 
 el.submitBtn.addEventListener("click", async () => {
-  setStatus("Submitting claim...");
+  const predicted = predictedCashbackFromSeverity(state.extraction && state.extraction.severity);
+  setStatus(`Submitting claim ($${predicted} predicted)...`);
   try {
-    await submitClaim();
-    setStatus("Claim submitted. Credits granted.", "ok");
+    const data = await submitClaim();
+    const transcript = normalizeTranscriptFormatting(el.transcript.value);
+    await chrome.storage.local.set({
+      hug_last_claim_context: {
+        backend_url: backendBase(),
+        source_ai: state.sourceAI,
+        transcript,
+        user_note: (el.userNote.value || "").trim(),
+        session_id: state.sessionId
+      }
+    });
+    const params = new URLSearchParams({
+      claim_id: String(data.claim_id || ""),
+      credit_amount: String(data.credit_amount || 0),
+      currency: String(data.currency || "LLM_CREDITS")
+    });
+    window.location.href = `claim_result.html?${params.toString()}`;
   } catch (err) {
     setStatus(String(err.message || err), "error");
   }

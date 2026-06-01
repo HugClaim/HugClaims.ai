@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Compete With Your Persona</title>
+  <style>
+    :root {
+      --bg: #f6f7fb;
+      --panel: #ffffff;
+      --ink: #18202a;
+      --muted: #566273;
+      --line: #d7deea;
+      --accent: #0d6efd;
+      --accent-soft: #e9f1ff;
+      --good: #0a7f49;
+      --bad: #b42318;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: linear-gradient(180deg, #f1f5ff 0%, var(--bg) 35%, var(--bg) 100%);
+      color: var(--ink);
+      font-family: "IBM Plex Sans", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+    .wrap {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 20px 16px 56px;
+    }
+    .hero, .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: 0 8px 22px rgba(12, 25, 48, 0.06);
+    }
+    .hero { padding: 18px; }
+    h1 {
+      margin: 0;
+      font-size: 1.58rem;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+    }
+    .sub {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+    .meta {
+      margin-top: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+    .pill {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 4px 10px;
+      background: #fafcff;
+    }
+    .panel {
+      margin-top: 14px;
+      padding: 14px;
+    }
+    .q {
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fcfdff;
+    }
+    .q + .q { margin-top: 10px; }
+    .qhead {
+      font-weight: 600;
+      font-size: 0.97rem;
+      margin-bottom: 8px;
+    }
+    .opts {
+      display: grid;
+      gap: 8px;
+      grid-template-columns: 1fr;
+    }
+    label.opt {
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      padding: 8px 10px;
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+      cursor: pointer;
+      transition: border-color 120ms ease, background 120ms ease;
+      background: #fff;
+    }
+    label.opt:hover {
+      border-color: #b7c7ea;
+      background: #f7faff;
+    }
+    input[type="radio"] { margin-top: 2px; }
+    .controls {
+      margin-top: 14px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+    button {
+      border: 1px solid #0c58cf;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 10px;
+      padding: 9px 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    button.secondary {
+      background: #fff;
+      color: var(--ink);
+      border-color: var(--line);
+    }
+    .status { color: var(--muted); font-size: 0.92rem; }
+    .result {
+      margin-top: 14px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fff;
+      padding: 12px;
+      display: none;
+    }
+    .scoreboard {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .box {
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      padding: 8px 10px;
+      background: #fbfcff;
+    }
+    .box .k { font-size: 0.78rem; color: var(--muted); }
+    .box .v { font-size: 1.05rem; font-weight: 700; }
+    .win { color: var(--good); }
+    .lose { color: var(--bad); }
+    .detail {
+      margin-top: 10px;
+      max-height: 280px;
+      overflow: auto;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 8px;
+      background: #fcfdff;
+      font-size: 0.9rem;
+    }
+    .detail .row + .row { margin-top: 6px; }
+    a { color: var(--accent); }
+    @media (min-width: 760px) {
+      .opts { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="hero">
+      <h1>Compete With Your Persona</h1>
+      <div class="sub">15 binary trivia questions generated from <code>Persona.md</code>. You answer. Persona-agent answers from profile rules. Highest score wins.</div>
+      <div class="meta">
+        <span class="pill">questions: 15</span>
+        <span class="pill">options each: 2</span>
+        <span class="pill">source: persona/Persona.md</span>
+      </div>
+    </section>
+
+    <section class="panel">
+      <form id="quiz"></form>
+      <div class="controls">
+        <button id="submitBtn" type="button">Submit Duel</button>
+        <button id="resetBtn" class="secondary" type="button">Reset</button>
+        <span id="status" class="status"></span>
+      </div>
+      <div id="result" class="result"></div>
+    </section>
+
+    <p class="sub" style="margin-top:10px;">
+      Back to <a href="./index.html">Persona Index</a>
+    </p>
+  </main>
+
+  <script>
+    const QUESTIONS = [
+      { q: "For a straightforward request, what is preferred?", o: ["Execute directly", "Discuss at length first"], key: 0 },
+      { q: "When data integrity is involved, what matters more?", o: ["Explicit double-checking", "Fast approximate output"], key: 0 },
+      { q: "Preferred status update format?", o: ["Compact bullets with IDs and reasons", "Long narrative paragraph"], key: 0 },
+      { q: "How should artifact naming be handled?", o: ["Deterministic date/version anchors", "Ad-hoc names"], key: 0 },
+      { q: "Decision style under pressure?", o: ["Accuracy first, then speed", "Speed first, then accuracy"], key: 0 },
+      { q: "If a mismatch appears, what next?", o: ["Investigate root cause", "Ignore if output mostly looks fine"], key: 0 },
+      { q: "For derivative datasets, schema approach?", o: ["Preserve schema consistency", "Change columns as convenient"], key: 0 },
+      { q: "When request is ambiguous, default behavior?", o: ["Safe default + explicit assumptions", "Wait indefinitely for clarification"], key: 0 },
+      { q: "Acceptance criterion for data tasks?", o: ["Exact-match checks + explicit confirmation", "Single quick spot-check"], key: 0 },
+      { q: "Preferred collaboration tone?", o: ["Minimal fluff, high signal", "Verbose motivational style"], key: 0 },
+      { q: "Queue monitoring detail level?", o: ["Include reason tags like Priority/Resources", "Only report pending/running"], key: 0 },
+      { q: "What should data-task reports include?", o: ["Join key, row counts, mismatches, affected IDs", "Only final output path"], key: 0 },
+      { q: "Most aligned domain focus?", o: ["Dataset curation and label QC", "Experimental visual theming"], key: 0 },
+      { q: "Model workflow preference?", o: ["Comparative pipelines across model families", "Single model only"], key: 0 },
+      { q: "If explanation seems wrong, likely follow-up?", o: ["Request correction quickly", "Postpone correction"], key: 0 }
+    ];
+
+    // Persona-agent answers are generated from Persona.md rules. Here they map 1:1 to key.
+    const AGENT = QUESTIONS.map(q => q.key);
+
+    const quiz = document.getElementById("quiz");
+    const statusEl = document.getElementById("status");
+    const resultEl = document.getElementById("result");
+
+    function render() {
+      quiz.innerHTML = "";
+      QUESTIONS.forEach((item, i) => {
+        const block = document.createElement("div");
+        block.className = "q";
+        block.innerHTML = `
+          <div class="qhead">Q${i + 1}. ${item.q}</div>
+          <div class="opts">
+            <label class="opt"><input type="radio" name="q${i}" value="0"> <span>${item.o[0]}</span></label>
+            <label class="opt"><input type="radio" name="q${i}" value="1"> <span>${item.o[1]}</span></label>
+          </div>
+        `;
+        quiz.appendChild(block);
+      });
+      statusEl.textContent = "";
+      resultEl.style.display = "none";
+      resultEl.innerHTML = "";
+    }
+
+    function getUserAnswers() {
+      const out = [];
+      for (let i = 0; i < QUESTIONS.length; i += 1) {
+        const chosen = document.querySelector(`input[name=\"q${i}\"]:checked`);
+        if (!chosen) return null;
+        out.push(Number(chosen.value));
+      }
+      return out;
+    }
+
+    function duel() {
+      const user = getUserAnswers();
+      if (!user) {
+        statusEl.textContent = "Please answer all 15 questions before submitting.";
+        return;
+      }
+
+      const key = QUESTIONS.map(q => q.key);
+      let userScore = 0;
+      let agentScore = 0;
+      let alignment = 0;
+
+      for (let i = 0; i < QUESTIONS.length; i += 1) {
+        if (user[i] === key[i]) userScore += 1;
+        if (AGENT[i] === key[i]) agentScore += 1;
+        if (user[i] === AGENT[i]) alignment += 1;
+      }
+
+      let winner = "Tie";
+      let cls = "";
+      if (userScore > agentScore) { winner = "User Wins"; cls = "win"; }
+      else if (userScore < agentScore) { winner = "Persona Agent Wins"; cls = "lose"; }
+
+      const rows = QUESTIONS.map((q, i) => {
+        const u = q.o[user[i]];
+        const a = q.o[AGENT[i]];
+        const okU = user[i] === q.key ? "✓" : "✗";
+        const okA = AGENT[i] === q.key ? "✓" : "✗";
+        return `<div class=\"row\">Q${i + 1}: User ${okU} (${u}) | Agent ${okA} (${a})</div>`;
+      }).join("");
+
+      resultEl.innerHTML = `
+        <div><strong class="${cls}">${winner}</strong></div>
+        <div class="scoreboard">
+          <div class="box"><div class="k">User Score</div><div class="v">${userScore}/15</div></div>
+          <div class="box"><div class="k">Persona Agent Score</div><div class="v">${agentScore}/15</div></div>
+          <div class="box"><div class="k">User-Agent Alignment</div><div class="v">${alignment}/15</div></div>
+        </div>
+        <div class="detail">${rows}</div>
+      `;
+      resultEl.style.display = "block";
+      statusEl.textContent = "";
+    }
+
+    document.getElementById("submitBtn").addEventListener("click", duel);
+    document.getElementById("resetBtn").addEventListener("click", render);
+
+    render();
+  </script>
+</body>
+</html>

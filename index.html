@@ -1262,50 +1262,9 @@
   }
   .lit-grid {
     display: grid;
-    grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.95fr);
-    gap: 16px;
-  }
-  .lit-feature {
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(247, 241, 253, 0.76));
-    border: 1px solid rgba(179, 162, 198, 0.56);
-    border-radius: 18px;
-    box-shadow:
-      0 20px 38px -30px rgba(40, 25, 10, 0.25),
-      0 0 0 1px rgba(255, 255, 255, 0.35) inset;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-  }
-  .lit-figure {
-    margin: 0;
-    border-bottom: 1px solid rgba(179, 162, 198, 0.38);
-    background: linear-gradient(180deg, rgba(245, 239, 250, 0.95), rgba(252, 248, 255, 0.8));
-    padding: 12px;
-  }
-  .lit-figure img {
-    width: 100%;
-    height: auto;
-    max-height: 420px;
-    object-fit: contain;
-    display: block;
-    border-radius: 10px;
-  }
-  .lit-figure figcaption {
-    margin-top: 8px;
-    font-size: 11px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--ink-3);
-  }
-  .lit-feature-body {
-    padding: 16px 18px 16px;
-    display: grid;
-    gap: 8px;
-  }
-  .lit-list {
-    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 12px;
-    align-content: start;
+    margin-top: 16px;
   }
   .lit-card {
     background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(248, 242, 253, 0.74));
@@ -1328,7 +1287,7 @@
   }
   .lit-title {
     font-family: var(--serif);
-    font-size: 27px;
+    font-size: 20px;
     line-height: 1.15;
     letter-spacing: -0.02em;
     color: var(--ink);
@@ -1375,6 +1334,271 @@
   .lit-link:hover {
     color: var(--hug);
     border-bottom-color: var(--hug);
+  }
+  .corpus-block {
+    margin-top: 18px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(247, 241, 253, 0.74));
+    border: 1px solid rgba(179, 162, 198, 0.52);
+    border-radius: 18px;
+    box-shadow:
+      0 18px 36px -30px rgba(40, 25, 10, 0.24),
+      0 0 0 1px rgba(255, 255, 255, 0.35) inset;
+    padding: 18px 18px 16px;
+  }
+  .corpus-head h3 {
+    font-family: var(--serif);
+    font-size: 28px;
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+    margin-bottom: 6px;
+    color: var(--ink);
+  }
+  .corpus-head p {
+    color: var(--ink-2);
+    font-size: 14.5px;
+    line-height: 1.5;
+    margin-bottom: 14px;
+  }
+  .corpus-shell {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
+    gap: 14px;
+    align-items: stretch;
+  }
+  .corpus-plot {
+    position: relative;
+    min-height: 332px;
+    height: 100%;
+    border-radius: 14px;
+    border: 1px solid var(--line);
+    background:
+      radial-gradient(circle at 20% 24%, rgba(196, 74, 63, 0.12) 0, transparent 33%),
+      radial-gradient(circle at 76% 27%, rgba(45, 112, 152, 0.11) 0, transparent 34%),
+      radial-gradient(circle at 22% 72%, rgba(47, 107, 64, 0.11) 0, transparent 35%),
+      radial-gradient(circle at 72% 74%, rgba(128, 95, 168, 0.11) 0, transparent 35%),
+      radial-gradient(circle at 48% 52%, rgba(212, 130, 37, 0.11) 0, transparent 36%),
+      linear-gradient(180deg, rgba(255, 253, 248, 0.95), rgba(246, 238, 253, 0.7));
+    overflow: hidden;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.34);
+  }
+  .corpus-plot::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(26, 22, 18, 0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(26, 22, 18, 0.06) 1px, transparent 1px);
+    background-size: 34px 34px;
+    opacity: 0.26;
+    pointer-events: none;
+  }
+  .corpus-density-layer {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .corpus-blob {
+    position: absolute;
+    width: 160px;
+    height: 130px;
+    border-radius: 50%;
+    filter: blur(16px);
+    opacity: 0.22;
+  }
+  .corpus-blob.b-medicine { left: 8%;  top: 9%;  background: rgba(196, 74, 63, 0.7); }
+  .corpus-blob.b-finance  { left: 58%; top: 10%; background: rgba(45, 112, 152, 0.7); }
+  .corpus-blob.b-legal    { left: 12%; top: 58%; background: rgba(47, 107, 64, 0.7); }
+  .corpus-blob.b-math     { left: 58%; top: 60%; background: rgba(128, 95, 168, 0.7); }
+  .corpus-blob.b-coding   { left: 34%; top: 36%; background: rgba(212, 130, 37, 0.75); }
+  .corpus-blob.b-other    { left: 76%; top: 44%; background: rgba(108, 121, 142, 0.68); }
+  .corpus-dots {
+    position: absolute;
+    inset: 0;
+  }
+  .corpus-cluster-label {
+    appearance: none;
+    border: 1px solid rgba(211, 200, 218, 0.7);
+    position: absolute;
+    z-index: 3;
+    font: 700 10px var(--sans);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(26, 22, 18, 0.62);
+    background: rgba(255, 253, 248, 0.74);
+    border-radius: 999px;
+    padding: 3px 7px;
+    pointer-events: auto;
+    cursor: pointer;
+    transition: background .14s ease, color .14s ease, border-color .14s ease, transform .14s ease;
+    backdrop-filter: blur(2px);
+  }
+  .corpus-cluster-label:hover,
+  .corpus-cluster-label.is-active {
+    color: var(--ink);
+    background: rgba(132, 102, 178, 0.14);
+    border-color: rgba(132, 102, 178, 0.36);
+    transform: translateY(-1px);
+  }
+  .corpus-cluster-label:focus-visible {
+    outline: 2px solid rgba(132, 102, 178, 0.45);
+    outline-offset: 2px;
+  }
+  .corpus-cluster-label.l-medicine { left: 10%; top: 8%; }
+  .corpus-cluster-label.l-finance  { left: 66%; top: 10%; }
+  .corpus-cluster-label.l-legal    { left: 12%; top: 82%; }
+  .corpus-cluster-label.l-math     { left: 72%; top: 82%; }
+  .corpus-cluster-label.l-coding   { left: 42%; top: 47%; }
+  .corpus-cluster-label.l-other    { left: 82%; top: 49%; }
+  .corpus-dot {
+    position: absolute;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0.84;
+    transition: left .45s ease, top .45s ease, opacity .28s ease, transform .28s ease;
+  }
+  .corpus-dot.entering {
+    animation: corpusDotIn .34s ease-out;
+  }
+  .corpus-dot.leaving {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.2);
+  }
+  .corpus-dot.d-medicine { background: rgba(196, 74, 63, 0.82); box-shadow: 0 0 8px rgba(196, 74, 63, 0.36); }
+  .corpus-dot.d-finance  { background: rgba(45, 112, 152, 0.82); box-shadow: 0 0 8px rgba(45, 112, 152, 0.34); }
+  .corpus-dot.d-legal    { background: rgba(47, 107, 64, 0.82); box-shadow: 0 0 8px rgba(47, 107, 64, 0.36); }
+  .corpus-dot.d-math     { background: rgba(128, 95, 168, 0.82); box-shadow: 0 0 8px rgba(128, 95, 168, 0.34); }
+  .corpus-dot.d-coding   { background: rgba(212, 130, 37, 0.86); box-shadow: 0 0 8px rgba(212, 130, 37, 0.38); }
+  .corpus-dot.d-other    { background: rgba(108, 121, 142, 0.8); box-shadow: 0 0 8px rgba(108, 121, 142, 0.3); }
+  @keyframes corpusDotIn {
+    0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.25); }
+    100% { opacity: 0.84; transform: translate(-50%, -50%) scale(1); }
+  }
+  .corpus-side {
+    display: grid;
+    gap: 10px;
+  }
+  .corpus-kpi {
+    border: 1px solid var(--line);
+    border-radius: 11px;
+    padding: 10px 12px;
+    background: rgba(255, 253, 248, 0.84);
+  }
+  .corpus-kpi .k-label {
+    display: block;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--ink-3);
+    margin-bottom: 4px;
+    font-weight: 600;
+  }
+  .corpus-kpi strong {
+    font-family: var(--serif);
+    color: var(--ink);
+    font-size: 28px;
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+  .corpus-kpi.removed strong {
+    color: var(--hug-2);
+  }
+  .corpus-legend {
+    list-style: none;
+    margin: 0;
+    padding: 10px 12px;
+    border: 1px solid var(--line);
+    border-radius: 11px;
+    background: rgba(255, 253, 248, 0.84);
+    display: grid;
+    gap: 8px;
+  }
+  .corpus-legend li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 0;
+    color: var(--ink-2);
+    font-size: 12.5px;
+    border-radius: 9px;
+    transition: background .14s ease;
+  }
+  .corpus-legend li:hover {
+    background: rgba(132, 102, 178, 0.08);
+  }
+  .corpus-legend li::before {
+    display: none;
+  }
+  .corpus-legend .name {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .corpus-legend .swatch {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+  }
+  .corpus-legend .count {
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: 0.01em;
+  }
+  .corpus-domain-trigger {
+    appearance: none;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 999px;
+    padding: 3px 7px;
+    margin-left: -7px;
+    cursor: pointer;
+    transition: background .14s ease, color .14s ease;
+  }
+  .corpus-domain-trigger:hover,
+  .corpus-domain-trigger.is-active {
+    background: rgba(132, 102, 178, 0.12);
+    color: var(--ink);
+  }
+  .corpus-domain-trigger:focus-visible {
+    outline: 2px solid rgba(132, 102, 178, 0.45);
+    outline-offset: 2px;
+    background: rgba(132, 102, 178, 0.1);
+  }
+  .corpus-domain-gain {
+    font: 700 10px var(--sans);
+    letter-spacing: 0.08em;
+    color: var(--green-2);
+    background: rgba(47, 107, 64, 0.12);
+    border: 1px solid rgba(47, 107, 64, 0.26);
+    border-radius: 999px;
+    padding: 1px 6px;
+    opacity: 0;
+    transform: translateY(2px);
+    transition: opacity .16s ease, transform .16s ease;
+    white-space: nowrap;
+  }
+  .corpus-domain-trigger:hover .corpus-domain-gain,
+  .corpus-domain-trigger:focus-visible .corpus-domain-gain,
+  .corpus-domain-trigger.is-active .corpus-domain-gain {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .corpus-live-note {
+    border: 1px dashed rgba(179, 162, 198, 0.6);
+    border-radius: 11px;
+    padding: 9px 10px;
+    background: rgba(255, 253, 248, 0.74);
+    font-size: 12px;
+    color: var(--ink-2);
+    line-height: 1.4;
+  }
+  .corpus-live-note strong {
+    color: var(--ink);
+    font-weight: 700;
   }
 
   /* ---------- Extension ---------- */
@@ -1570,6 +1794,8 @@
     .examples h2, .how h2, .accepted-models h2, .reviews h2, .literature h2 { font-size: 30px; }
     .final h2 { font-size: 36px; }
     .ex-grid, .how-grid, .reviews-grid, .lit-grid { grid-template-columns: 1fr; }
+    .corpus-shell { grid-template-columns: 1fr; }
+    .corpus-plot { min-height: 290px; }
     .brand .mark { font-size: 24px; }
     .brand .mark .product { display: none; }
     .hero { padding: 52px 0 64px; }
@@ -1836,51 +2062,71 @@
     <div class="label">Research Results</div>
     <h2 id="literature-title">Papers our team is <em>currently doing</em>.</h2>
     <p class="lit-sub">Our paper shows Failure Is the Training Signal.</p>
-    <div class="lit-grid">
-      <article class="lit-feature">
-        <figure class="lit-figure">
-          <img
-            src="https://raw.githubusercontent.com/YuexingHao/Yuexing-Hao/main/assets/img/publications/ProbeLLM.png"
-            alt="ProbeLLM figure"
-            loading="lazy"
-          />
-          <figcaption>ProbeLLM Figure</figcaption>
-        </figure>
-        <div class="lit-feature-body">
-          <h3 class="lit-title">ProbeLLM</h3>
-          <span class="lit-status">Published in ICML 2026</span>
-          <p class="lit-desc"><strong>ProbeLLM: Automating Principled Diagnosis of LLM Failures</strong></p>
-          <p class="lit-desc">Failure Mode Map for probing and clustering recurring LLM failure patterns at scale.</p>
-          <p class="lit-authors">Yue Huang, Zhengzhe Jiang, Yuchen Ma, Yu Jiang, Xiangqi Wang, Yujun Zhou, <a href="https://yuexinghao.github.io/Yuexing-Hao/"><strong>Yuexing Hao</strong></a>, Kehan Guo, Pin-Yu Chen, Marzyeh Ghassemi, Stefan Feuerriegel, Xiangliang Zhang</p>
-          <a class="lit-link" href="https://arxiv.org/abs/2602.12966" target="_blank" rel="noopener noreferrer">Read Paper &rarr;</a>
+    <div class="corpus-block" aria-labelledby="corpus-title">
+      <div class="corpus-head">
+        <h3 id="corpus-title">Failure Mode Corpus</h3>
+        <p>Clusters show failure domains and submission density.</p>
+      </div>
+      <div class="corpus-shell">
+        <div class="corpus-plot" id="failureCorpusPlot" role="img" aria-label="Live clustered failure mode corpus with submission density">
+          <div class="corpus-density-layer" aria-hidden="true">
+            <span class="corpus-blob b-medicine"></span>
+            <span class="corpus-blob b-finance"></span>
+            <span class="corpus-blob b-legal"></span>
+            <span class="corpus-blob b-math"></span>
+            <span class="corpus-blob b-coding"></span>
+            <span class="corpus-blob b-other"></span>
+          </div>
+          <button type="button" class="corpus-cluster-label corpus-domain-source l-medicine" data-domain="medicine" data-domain-label="Medicine">Medicine</button>
+          <button type="button" class="corpus-cluster-label corpus-domain-source l-finance" data-domain="finance" data-domain-label="Finance">Finance</button>
+          <button type="button" class="corpus-cluster-label corpus-domain-source l-legal" data-domain="legal" data-domain-label="Legal">Legal</button>
+          <button type="button" class="corpus-cluster-label corpus-domain-source l-math" data-domain="math" data-domain-label="Math">Math</button>
+          <button type="button" class="corpus-cluster-label corpus-domain-source l-coding" data-domain="coding" data-domain-label="Coding">Coding</button>
+          <button type="button" class="corpus-cluster-label corpus-domain-source l-other" data-domain="other" data-domain-label="Other">Other</button>
+          <div class="corpus-dots" id="failureCorpusDots"></div>
         </div>
+        <aside class="corpus-side" aria-label="Corpus live statistics">
+          <div class="corpus-kpi">
+            <span class="k-label">Verified datapoints</span>
+            <strong id="corpusTotal">0</strong>
+          </div>
+          <div class="corpus-kpi removed">
+            <span class="k-label">Invalidated removed</span>
+            <strong id="corpusRemoved">0</strong>
+          </div>
+          <div class="corpus-live-note" id="corpusLiveNote">Streaming updates every 3s.</div>
+          <ul class="corpus-legend" id="corpusLegend"></ul>
+        </aside>
+      </div>
+    </div>
+    <div class="lit-grid">
+      <article class="lit-card">
+        <h3 class="lit-title">ProbeLLM: Automating Principled Diagnosis of LLM Failures</h3>
+        <span class="lit-status">Published in ICML 2026</span>
+        <p class="lit-authors">Yue Huang, Zhengzhe Jiang, Yuchen Ma, Yu Jiang, Xiangqi Wang, Yujun Zhou, <a href="https://yuexinghao.github.io/Yuexing-Hao/"><strong>Yuexing Hao</strong></a>, Kehan Guo, Pin-Yu Chen, Marzyeh Ghassemi, Stefan Feuerriegel, Xiangliang Zhang</p>
+        <a class="lit-link" href="https://arxiv.org/abs/2602.12966" target="_blank" rel="noopener noreferrer">Read Paper &rarr;</a>
       </article>
 
-      <div class="lit-list">
-        <article class="lit-card">
-          <h3 class="lit-title">Chain-Of-Risk</h3>
-          <span class="lit-status">Under Review (NeurIPS 2026)</span>
-          <p class="lit-desc"><strong>Chain of Risk: Safety Failures in Large Reasoning Models and Mitigation via Adaptive Multi-Principle Steering</strong></p>
-          <p class="lit-authors">Xiaomin Li, Jianheng Hou, Zheyuan Deng, Zhiwei Zhang, Taoran Li, Binghang Lu, Bing Hu, Yunhan Zhao, <a href="https://yuexinghao.github.io/Yuexing-Hao/"><strong>Yuexing Hao</strong></a></p>
-          <a class="lit-link" href="https://arxiv.org/abs/2605.05678" target="_blank" rel="noopener noreferrer">Read Paper &rarr;</a>
-        </article>
+      <article class="lit-card">
+        <h3 class="lit-title">Chain of Risk: Safety Failures in Large Reasoning Models and Mitigation via Adaptive Multi-Principle Steering</h3>
+        <span class="lit-status">Under Review (NeurIPS 2026)</span>
+        <p class="lit-authors">Xiaomin Li, Jianheng Hou, Zheyuan Deng, Zhiwei Zhang, Taoran Li, Binghang Lu, Bing Hu, Yunhan Zhao, <a href="https://yuexinghao.github.io/Yuexing-Hao/"><strong>Yuexing Hao</strong></a></p>
+        <a class="lit-link" href="https://arxiv.org/abs/2605.05678" target="_blank" rel="noopener noreferrer">Read Paper &rarr;</a>
+      </article>
 
-        <article class="lit-card">
-          <h3 class="lit-title">TrustGen</h3>
-          <span class="lit-status">Published in ICLR 2026</span>
-          <p class="lit-desc">TrustGen: A Platform of Dynamic Benchmarking on the Trustworthiness of Generative Foundation Models.</p>
-          <p class="lit-authors">Yue Huang, Chujie Gao, Siyuan Wu, Haoran Wang, Xiangqi Wang, Yujun Zhou, ... <a href="https://yuexinghao.github.io/Yuexing-Hao/"><strong>Yuexing Hao</strong></a>, ... Bo Li, Dawn Song, Xiangliang Zhang.</p>
-          <a class="lit-link" href="https://iclr.cc/virtual/2026/poster/10010583" target="_blank" rel="noopener noreferrer">View Poster &rarr;</a>
-        </article>
+      <article class="lit-card">
+        <h3 class="lit-title">TrustGen: A Platform of Dynamic Benchmarking on the Trustworthiness of Generative Foundation Models</h3>
+        <span class="lit-status">Published in ICLR 2026</span>
+        <p class="lit-authors">Yue Huang, Chujie Gao, Siyuan Wu, Haoran Wang, Xiangqi Wang, Yujun Zhou, ... <a href="https://yuexinghao.github.io/Yuexing-Hao/"><strong>Yuexing Hao</strong></a>, ... Bo Li, Dawn Song, Xiangliang Zhang</p>
+        <a class="lit-link" href="https://iclr.cc/virtual/2026/poster/10010583" target="_blank" rel="noopener noreferrer">View Poster &rarr;</a>
+      </article>
 
-        <article class="lit-card">
-          <h3 class="lit-title">MedPerturb</h3>
-          <span class="lit-status">Under Review (Nature Medicine)</span>
-          <p class="lit-desc">The MedPerturb Dataset: What Non-Content Perturbations Reveal About Human and Clinical LLM Decision Making.</p>
-          <p class="lit-authors">Abinitha Gourabathina, Haoran Zhang, <a href="https://yuexinghao.github.io/Yuexing-Hao/"><strong>Yuexing Hao</strong></a>, Walter Gerych, Marzyeh Ghassemi</p>
-          <a class="lit-link" href="https://github.com/abinithago/MedPerturb" target="_blank" rel="noopener noreferrer">View Project &rarr;</a>
-        </article>
-      </div>
+      <article class="lit-card">
+        <h3 class="lit-title">The MedPerturb Dataset: What Non-Content Perturbations Reveal About Human and Clinical LLM Decision Making</h3>
+        <span class="lit-status">Under Review (Nature Medicine)</span>
+        <p class="lit-authors">Abinitha Gourabathina, Haoran Zhang, <a href="https://yuexinghao.github.io/Yuexing-Hao/"><strong>Yuexing Hao</strong></a>, Walter Gerych, Marzyeh Ghassemi</p>
+        <a class="lit-link" href="https://medperturb.csail.mit.edu/" target="_blank" rel="noopener noreferrer">View Project &rarr;</a>
+      </article>
     </div>
   </section>
 
@@ -2121,19 +2367,389 @@
     });
   });
 
+  // ---------- Failure mode corpus live clusters ----------
+  (function initFailureCorpus() {
+    const plot = document.getElementById('failureCorpusPlot');
+    const dotsLayer = document.getElementById('failureCorpusDots');
+    const totalEl = document.getElementById('corpusTotal');
+    const removedEl = document.getElementById('corpusRemoved');
+    const legendEl = document.getElementById('corpusLegend');
+    const liveNoteEl = document.getElementById('corpusLiveNote');
+    if (!plot || !dotsLayer || !totalEl || !removedEl || !legendEl || !liveNoteEl) return;
+
+    const heroTotalEl = document.getElementById('heroVerifiedClaims');
+
+    const domains = [
+      { id: 'medicine', label: 'Medicine', center: [19, 24], spread: [8.8, 7.6] },
+      { id: 'finance',  label: 'Finance',  center: [76, 27], spread: [9.2, 7.8] },
+      { id: 'legal',    label: 'Legal',    center: [23, 72], spread: [8.6, 8.0] },
+      { id: 'math',     label: 'Math',     center: [72, 73], spread: [9.0, 7.8] },
+      { id: 'coding',   label: 'Coding',   center: [48, 50], spread: [10.2, 9.0] },
+      { id: 'other',    label: 'Other',    center: [79, 48], spread: [15.5, 11.5] },
+    ];
+    const colorMap = {
+      medicine: 'rgba(196, 74, 63, 0.92)',
+      finance:  'rgba(45, 112, 152, 0.92)',
+      legal:    'rgba(47, 107, 64, 0.92)',
+      math:     'rgba(128, 95, 168, 0.92)',
+      coding:   'rgba(212, 130, 37, 0.95)',
+      other:    'rgba(108, 121, 142, 0.9)',
+    };
+    const state = {
+      points: [],
+      nextId: 1,
+      removed: 0,
+      targetCounts: null,
+    };
+    const domainImprovements = {};
+    let activeDomainId = null;
+    let defaultCorpusNoteHtml = liveNoteEl.innerHTML;
+    const domainIds = domains.map((d) => d.id);
+
+    function randn() {
+      let u = 0; let v = 0;
+      while (u === 0) u = Math.random();
+      while (v === 0) v = Math.random();
+      return Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+    }
+    function clamp(value, min, max) {
+      return Math.max(min, Math.min(max, value));
+    }
+    function getHeroVerifiedTotal() {
+      if (!heroTotalEl) return 1286;
+      const raw = heroTotalEl.dataset.value || heroTotalEl.textContent || '1286';
+      const parsed = parseInt(String(raw).replace(/[^\d]/g, ''), 10);
+      return Number.isFinite(parsed) && parsed > 0 ? parsed : 1286;
+    }
+    function emptyCounts() {
+      return Object.fromEntries(domainIds.map((id) => [id, 0]));
+    }
+    function sumCounts(counts) {
+      return domainIds.reduce((sum, id) => sum + (counts[id] || 0), 0);
+    }
+    function shuffle(list) {
+      const arr = list.slice();
+      for (let i = arr.length - 1; i > 0; i -= 1) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+    function buildRandomTargetCounts(total) {
+      const counts = emptyCounts();
+      if (total <= 0) return counts;
+
+      const highThreshold = 201;
+      let highWanted = 6;
+      if (total < highThreshold * 6) {
+        highWanted = 5;
+      }
+      if (total < highThreshold * 5 + 40) {
+        highWanted = 4;
+      }
+      if (total < highThreshold * 4 + 60) {
+        highWanted = Math.max(1, Math.floor(total / highThreshold));
+      }
+
+      const shuffled = shuffle(domainIds);
+      const highIds = shuffled.slice(0, highWanted);
+      const lowIds = shuffled.slice(highWanted);
+      const lowFloor = lowIds.length ? Math.min(60, Math.max(18, Math.floor(total * 0.02))) : 0;
+
+      highIds.forEach((id) => { counts[id] = highThreshold; });
+      lowIds.forEach((id) => { counts[id] = lowFloor; });
+
+      let baseline = sumCounts(counts);
+      if (baseline > total) {
+        // Edge fallback when total is too small to satisfy >200 preferences.
+        domainIds.forEach((id) => { counts[id] = 0; });
+        baseline = 0;
+      }
+
+      let remaining = total - baseline;
+      while (remaining > 0) {
+        const id = domainIds[Math.floor(Math.random() * domainIds.length)];
+        const chunk = Math.min(remaining, 1 + Math.floor(Math.random() * 28));
+        counts[id] += chunk;
+        remaining -= chunk;
+      }
+
+      return counts;
+    }
+    function adjustCountsToTotal(current, total) {
+      const counts = { ...(current || emptyCounts()) };
+      let diff = total - sumCounts(counts);
+
+      while (diff > 0) {
+        const id = domainIds[Math.floor(Math.random() * domainIds.length)];
+        counts[id] += 1;
+        diff -= 1;
+      }
+      while (diff < 0) {
+        const removable = domainIds.filter((id) => counts[id] > 1);
+        if (!removable.length) break;
+        const id = removable[Math.floor(Math.random() * removable.length)];
+        counts[id] -= 1;
+        diff += 1;
+      }
+
+      return counts;
+    }
+    function randomImprovementPct() {
+      return 3 + Math.floor(Math.random() * 35); // 3..37
+    }
+    function setActiveDomainSource(domainId) {
+      document.querySelectorAll('.corpus-domain-source.is-active').forEach((el) => el.classList.remove('is-active'));
+      if (!domainId) return;
+      document.querySelectorAll(`.corpus-domain-source[data-domain="${domainId}"]`).forEach((el) => el.classList.add('is-active'));
+    }
+    function clearActiveDomainPreview() {
+      activeDomainId = null;
+      setActiveDomainSource(null);
+      liveNoteEl.innerHTML = defaultCorpusNoteHtml;
+    }
+    function previewDomainImprovement(trigger, forceNew = true) {
+      const domainId = trigger.dataset.domain;
+      const domainLabel = trigger.dataset.domainLabel || domainId;
+      if (!domainId) return;
+      if (forceNew || !domainImprovements[domainId]) {
+        domainImprovements[domainId] = randomImprovementPct();
+      }
+      const pct = domainImprovements[domainId];
+      activeDomainId = domainId;
+      setActiveDomainSource(domainId);
+      const gainEl = trigger.querySelector('.corpus-domain-gain');
+      if (gainEl) gainEl.textContent = `+${pct}%`;
+      legendEl.querySelectorAll(`.corpus-domain-trigger[data-domain="${domainId}"] .corpus-domain-gain`).forEach((el) => {
+        el.textContent = `+${pct}%`;
+      });
+      liveNoteEl.innerHTML = `<strong>${domainLabel}:</strong> LLM performance improved +${pct}%`;
+    }
+    function pointForDomain(domain, entering) {
+      const isOther = domain.id === 'other';
+      const jitterBoost = (1 + Math.random() * 1.25) * (isOther ? 1.15 : 1);
+      const isClusterOutlier = Math.random() < (isOther ? 0.35 : 0.28);
+      const isGlobalOutlier = Math.random() < (isOther ? 0.16 : 0.11);
+      let x = domain.center[0] + randn() * domain.spread[0] * jitterBoost;
+      let y = domain.center[1] + randn() * domain.spread[1] * jitterBoost;
+      if (isClusterOutlier) {
+        x += randn() * (domain.spread[0] * 1.5) + (Math.random() - 0.5) * 18;
+        y += randn() * (domain.spread[1] * 1.5) + (Math.random() - 0.5) * 18;
+      }
+      if (isGlobalOutlier) {
+        x = 2 + Math.random() * 96;
+        y = 4 + Math.random() * 92;
+      }
+      x = clamp(x, 2.4, 97.6);
+      y = clamp(y, 4.4, 95.6);
+      const size = Math.round(clamp(1.8 + Math.random() * 11.4, 2, 14));
+      const el = document.createElement('span');
+      el.className = `corpus-dot d-${domain.id}${entering ? ' entering' : ''}`;
+      el.style.left = `${x}%`;
+      el.style.top = `${y}%`;
+      el.style.width = `${size}px`;
+      el.style.height = `${size}px`;
+      dotsLayer.appendChild(el);
+      if (entering) {
+        setTimeout(() => el.classList.remove('entering'), 380);
+      }
+      return {
+        id: state.nextId++,
+        domain: domain.id,
+        x,
+        y,
+        size,
+        el,
+      };
+    }
+    function countsByDomain() {
+      const counts = Object.fromEntries(domains.map((d) => [d.id, 0]));
+      state.points.forEach((p) => { counts[p.domain] += 1; });
+      return counts;
+    }
+    function removePoints(points) {
+      if (!points.length) return 0;
+      const ids = new Set(points.map((p) => p.id));
+      state.points = state.points.filter((p) => !ids.has(p.id));
+      points.forEach((p) => {
+        if (!p || !p.el) return;
+        p.el.classList.add('leaving');
+        state.removed += 1;
+        setTimeout(() => p.el.remove(), 320);
+      });
+      return points.length;
+    }
+    function removeRandomPoints(count, domainId = null) {
+      const pool = domainId ? state.points.filter((p) => p.domain === domainId) : state.points.slice();
+      if (!pool.length || count <= 0) return 0;
+      const selected = [];
+      const used = new Set();
+      while (selected.length < count && selected.length < pool.length) {
+        const idx = Math.floor(Math.random() * pool.length);
+        const candidate = pool[idx];
+        if (used.has(candidate.id)) continue;
+        used.add(candidate.id);
+        selected.push(candidate);
+      }
+      return removePoints(selected);
+    }
+    function addPoints(domainId, count, entering) {
+      if (count <= 0) return 0;
+      const domain = domains.find((d) => d.id === domainId);
+      if (!domain) return 0;
+      for (let i = 0; i < count; i += 1) {
+        state.points.push(pointForDomain(domain, entering));
+      }
+      return count;
+    }
+    function rebalanceToTarget(targetCounts, entering) {
+      let removed = 0;
+      let added = 0;
+      const current = countsByDomain();
+
+      domains.forEach((d) => {
+        const diff = (current[d.id] || 0) - (targetCounts[d.id] || 0);
+        if (diff > 0) {
+          removed += removeRandomPoints(diff, d.id);
+        }
+      });
+
+      const afterRemove = countsByDomain();
+      domains.forEach((d) => {
+        const diff = (targetCounts[d.id] || 0) - (afterRemove[d.id] || 0);
+        if (diff > 0) {
+          added += addPoints(d.id, diff, entering);
+        }
+      });
+
+      return { added, removed };
+    }
+    function renderLegend() {
+      const counts = countsByDomain();
+      legendEl.innerHTML = domains.map((d) => (
+        `<li><button type="button" class="name corpus-domain-source corpus-domain-trigger${activeDomainId === d.id ? ' is-active' : ''}" data-domain="${d.id}" data-domain-label="${d.label}"><span class="swatch" style="background:${colorMap[d.id]}"></span><span>${d.label}</span><span class="corpus-domain-gain">${domainImprovements[d.id] ? `+${domainImprovements[d.id]}%` : '+--%'}</span></button><span class="count">${new Intl.NumberFormat('en-US').format(counts[d.id])}</span></li>`
+      )).join('');
+      totalEl.textContent = new Intl.NumberFormat('en-US').format(getHeroVerifiedTotal());
+      removedEl.textContent = new Intl.NumberFormat('en-US').format(state.removed);
+      if (activeDomainId) {
+        setActiveDomainSource(activeDomainId);
+      }
+    }
+    function nudgeExisting() {
+      state.points.forEach((p) => {
+        const chaosAmp = Math.random() < 0.24 ? 2.35 : 1;
+        p.x = clamp(p.x + randn() * 0.74 * chaosAmp + (Math.random() - 0.5) * 0.26, 2.5, 97.5);
+        p.y = clamp(p.y + randn() * 0.74 * chaosAmp + (Math.random() - 0.5) * 0.26, 4.5, 95.5);
+        if (Math.random() < 0.038) {
+          p.x = clamp(p.x + randn() * 3.4, 2.5, 97.5);
+          p.y = clamp(p.y + randn() * 3.4, 4.5, 95.5);
+        }
+        p.el.style.left = `${p.x}%`;
+        p.el.style.top = `${p.y}%`;
+      });
+    }
+    function syncCorpusToHero(entering, mode = 'drift') {
+      const targetTotal = getHeroVerifiedTotal();
+      if (!state.targetCounts || mode === 'reshuffle') {
+        state.targetCounts = buildRandomTargetCounts(targetTotal);
+      } else {
+        state.targetCounts = adjustCountsToTotal(state.targetCounts, targetTotal);
+      }
+      return rebalanceToTarget(state.targetCounts, entering);
+    }
+    function tickCorpus() {
+      const invalidatedRemoved = removeRandomPoints(6 + Math.floor(Math.random() * 7));
+      const syncDelta = syncCorpusToHero(true, 'reshuffle');
+      const totalRemoved = invalidatedRemoved + syncDelta.removed;
+      const feedRemoved = Math.max(1, totalRemoved);
+      const minFeedAdded = feedRemoved * 3;
+      const feedAdded = Math.max(minFeedAdded + Math.floor(Math.random() * 11), syncDelta.added);
+      defaultCorpusNoteHtml = `<strong>Last update:</strong> +${feedAdded} verified, -${feedRemoved} removed`;
+      nudgeExisting();
+      renderLegend();
+      if (!activeDomainId) {
+        liveNoteEl.innerHTML = defaultCorpusNoteHtml;
+      } else {
+        const trigger = legendEl.querySelector(`.corpus-domain-trigger[data-domain="${activeDomainId}"]`);
+        if (trigger) {
+          previewDomainImprovement(trigger, false);
+        } else {
+          clearActiveDomainPreview();
+        }
+      }
+    }
+
+    legendEl.addEventListener('mouseover', (event) => {
+      const trigger = event.target.closest('.corpus-domain-trigger');
+      if (!trigger || !legendEl.contains(trigger)) return;
+      if (activeDomainId === trigger.dataset.domain) return;
+      previewDomainImprovement(trigger, true);
+    });
+    legendEl.addEventListener('focusin', (event) => {
+      const trigger = event.target.closest('.corpus-domain-trigger');
+      if (!trigger || !legendEl.contains(trigger)) return;
+      previewDomainImprovement(trigger, true);
+    });
+    legendEl.addEventListener('mouseleave', clearActiveDomainPreview);
+    legendEl.addEventListener('focusout', () => {
+      if (!legendEl.matches(':focus-within')) {
+        clearActiveDomainPreview();
+      }
+    });
+    plot.addEventListener('mouseover', (event) => {
+      const trigger = event.target.closest('.corpus-cluster-label');
+      if (!trigger || !plot.contains(trigger)) return;
+      if (activeDomainId === trigger.dataset.domain) return;
+      previewDomainImprovement(trigger, true);
+    });
+    plot.addEventListener('focusin', (event) => {
+      const trigger = event.target.closest('.corpus-cluster-label');
+      if (!trigger || !plot.contains(trigger)) return;
+      previewDomainImprovement(trigger, true);
+    });
+    plot.addEventListener('mouseleave', () => {
+      if (!legendEl.matches(':hover')) {
+        clearActiveDomainPreview();
+      }
+    });
+    plot.addEventListener('focusout', () => {
+      if (!plot.matches(':focus-within') && !legendEl.matches(':focus-within')) {
+        clearActiveDomainPreview();
+      }
+    });
+
+    syncCorpusToHero(false, 'reshuffle');
+    renderLegend();
+    window.hugSyncCorpusToHero = function hugSyncCorpusToHero() {
+      syncCorpusToHero(true, 'drift');
+      renderLegend();
+    };
+    setInterval(tickCorpus, 3000);
+  }());
+
   function formatInt(n) {
     return new Intl.NumberFormat('en-US').format(n);
   }
 
   const heroVerifiedClaimsEl = document.getElementById('heroVerifiedClaims');
+  const corpusTotalEl = document.getElementById('corpusTotal');
+  function syncCorpusTotalFromHero() {
+    if (!heroVerifiedClaimsEl || !corpusTotalEl) return;
+    corpusTotalEl.textContent = heroVerifiedClaimsEl.textContent;
+  }
   function tickHeroVerifiedClaims() {
     if (!heroVerifiedClaimsEl) return;
     const current = parseInt(heroVerifiedClaimsEl.dataset.value || '1286', 10) || 1286;
     const next = current + 1;
     heroVerifiedClaimsEl.dataset.value = String(next);
     heroVerifiedClaimsEl.textContent = formatInt(next);
+    syncCorpusTotalFromHero();
+    if (typeof window.hugSyncCorpusToHero === 'function') {
+      window.hugSyncCorpusToHero();
+    }
   }
 
+  syncCorpusTotalFromHero();
   setInterval(tickHeroVerifiedClaims, 2000);
 
   const ELIGIBLE_CAPTION_NAMES = ['UAKEC', 'NIVAR', 'MILOX', 'SAREM', 'QATEN', 'RUVIK', 'LEONA', 'DYLAN', 'MARA', 'KAI'];

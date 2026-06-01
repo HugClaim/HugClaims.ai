@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Personal Wiki</title>
+  <style>
+    :root {
+      --bg: #f8f7f4;
+      --paper: #ffffff;
+      --ink: #1e1f23;
+      --muted: #5c6470;
+      --line: #d9dce3;
+      --accent: #1f5fbf;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: radial-gradient(circle at top right, #eef3ff 0%, var(--bg) 42%);
+      color: var(--ink);
+      font-family: Charter, "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, serif;
+      line-height: 1.55;
+    }
+
+    .wrap {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 28px 20px 42px;
+    }
+
+    .card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 22px 20px;
+      box-shadow: 0 10px 24px rgba(17, 24, 39, 0.06);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 2rem;
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+    }
+
+    .subtitle {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    .meta {
+      margin-top: 14px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-family: "IBM Plex Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    .pill {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 5px 10px;
+      background: #fafbfe;
+    }
+
+    section {
+      margin-top: 22px;
+      padding-top: 14px;
+      border-top: 1px solid var(--line);
+    }
+
+    h2 {
+      margin: 0 0 10px;
+      font-size: 1.08rem;
+      letter-spacing: 0.01em;
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    li + li { margin-top: 6px; }
+
+    p { margin: 0; }
+
+    .grid {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    }
+
+    .mini {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 10px 12px;
+      background: #fcfcff;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(31, 95, 191, 0.35);
+    }
+
+    a:hover { border-bottom-color: currentColor; }
+
+    footer {
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 520px) {
+      h1 { font-size: 1.72rem; }
+      .card { padding: 18px 16px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <article class="card">
+      <header>
+        <h1>Personal Wiki</h1>
+        <p class="subtitle">A concise profile of working style, priorities, and collaboration rules.</p>
+        <div class="meta">
+          <span class="pill">last updated: 2026-05-15</span>
+          <span class="pill">focus: medical-ai ops</span>
+          <span class="pill">mode: verification-first</span>
+        </div>
+      </header>
+
+      <section>
+        <h2>Summary</h2>
+        <p>Detail-oriented builder focused on reliable medical-AI data operations, explicit validation, and fast correction loops.</p>
+      </section>
+
+      <section>
+        <h2>Operating Principles</h2>
+        <ul>
+          <li>Verify key fields with row-level checks before sign-off.</li>
+          <li>Treat blanks and mismatches as issues to resolve, not ignore.</li>
+          <li>Keep source-of-truth lineage when creating derivative artifacts.</li>
+          <li>Report with concrete evidence: IDs, counts, file paths.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Typical Workflow</h2>
+        <ul>
+          <li>Request transformation or status pull.</li>
+          <li>Run exact-match validation on join keys and target columns.</li>
+          <li>Patch source/logic if mismatches are found.</li>
+          <li>Rebuild and confirm zero mismatches.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Collaboration Contract</h2>
+        <div class="grid">
+          <div class="mini">Communication stays concise and high signal.</div>
+          <div class="mini">Assumptions and edge cases are surfaced early.</div>
+          <div class="mini">Delivery includes verification metrics, not just files.</div>
+          <div class="mini">Done-and-checked is preferred over speculative proposals.</div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Mini Game</h2>
+        <ul>
+          <li><a href="./persona_trivia.html">Compete With Your Persona (15-question trivia duel)</a></li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Example Page</h2>
+        <ul>
+          <li><a href="./examples/Yuexing_Example.md">Yuexing_Example.md</a></li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Source Documents</h2>
+        <ul>
+          <li><a href="./Persona.md">Persona.md</a></li>
+          <li><a href="./Personal_Wiki.md">Personal_Wiki.md</a></li>
+          <li><a href="./examples/Yuexing_Example.md">Example: Yuexing_Example.md</a></li>
+          <li><a href="./evidence/session_2026-05-15.md">Evidence: session_2026-05-15.md</a></li>
+        </ul>
+      </section>
+
+      <footer>
+        For periodic updates, store dated revisions under <code>snapshots/</code>.
+      </footer>
+    </article>
+  </main>
+</body>
+</html>

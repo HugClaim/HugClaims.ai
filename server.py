@@ -220,7 +220,7 @@ ALLOWED_ORIGINS = [
     origin.strip()
     for origin in os.environ.get(
         "ALLOWED_ORIGINS",
-        "https://yuexinghao.github.io,http://127.0.0.1:8000,http://localhost:8000",
+        "https://yuexinghao.github.io,https://hugclaim.com,https://www.hugclaim.com,http://127.0.0.1:8000,http://localhost:8000",
     ).split(",")
     if origin.strip()
 ]
@@ -569,8 +569,10 @@ DATA_DIR = HERE / "data"
 DATA_DIR.mkdir(exist_ok=True)
 EVENTS_FILE = DATA_DIR / "events.jsonl"
 EXTENSION_RECORDS_FILE = DATA_DIR / "extension_records.jsonl"
+ENTERPRISE_GRANTS_FILE = DATA_DIR / "enterprise_grants.jsonl"
 _events_lock = asyncio.Lock()
 _extension_records_lock = asyncio.Lock()
+_enterprise_grants_lock = asyncio.Lock()
 _extension_seen_fingerprints: set[str] = set()
 _extension_seen_loaded = False
 
@@ -671,6 +673,100 @@ def _norm_list(values: Any, each_limit: int = 200) -> list[str]:
         if t:
             out.append(t)
     return out
+
+
+ENTERPRISE_GRANT_STREAMS = {
+    "data_licensing",
+    "enterprise_audits",
+    "both",
+}
+ENTERPRISE_GRANT_TIERS = {
+    "starter_or_departmental",
+    "growth_or_enterprise",
+    "frontier_or_enterprise_plus",
+    "custom_or_regulated",
+}
+ENTERPRISE_GRANT_TEAM_SIZES = {
+    "1_20",
+    "21_100",
+    "101_500",
+    "500_plus",
+}
+ENTERPRISE_GRANT_TIMELINES = {
+    "immediate",
+    "this_quarter",
+    "next_quarter",
+    "exploratory",
+}
+_WORK_EMAIL_RE = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
+
+
+async def log_enterprise_grant(payload: dict[str, Any], *, request: Optional[Request] = None) -> dict[str, Any]:
+    """Append one grant application record to data/enterprise_grants.jsonl."""
+    record: dict[str, Any] = {
+        "grant_id": f"HCG-{_uuid.uuid4().hex[:10].upper()}",
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+        **payload,
+    }
+    if request is not None:
+        record["ip"] = request.client.host if request.client else None
+        record["user_agent"] = request.headers.get("user-agent")
+    try:
+        async with _enterprise_grants_lock:
+            with ENTERPRISE_GRANTS_FILE.open("a", encoding="utf-8") as f:
+                f.write(json.dumps(record, ensure_ascii=False, default=str) + "\n")
+    except Exception as e:
+        print(f"[hug] enterprise grant write error: {type(e).__name__}: {e}", flush=True)
+        raise HTTPException(500, "unable to persist grant request")
+    return record
+
+
+def normalize_enterprise_grant(req: "EnterpriseGrantRequest") -> dict[str, Any]:
+    full_name = _norm_text(req.full_name, 140)
+    work_email = _norm_text(req.work_email, 254).lower()
+    company_name = _norm_text(req.company_name, 180)
+    role_title = _norm_text(req.role_title, 140)
+    stream = _norm_text(req.stream, 80)
+    target_tier = _norm_text(req.target_tier, 80)
+    team_size = _norm_text(req.team_size, 40)
+    timeline = _norm_text(req.timeline, 40)
+    llm_stack = _norm_text(req.llm_stack, 4000)
+    trial_objective = _norm_text(req.trial_objective, 6000)
+
+    if not full_name:
+        raise HTTPException(400, "full_name is required")
+    if not work_email or not _WORK_EMAIL_RE.match(work_email):
+        raise HTTPException(400, "work_email must be a valid company email")
+    if not company_name:
+        raise HTTPException(400, "company_name is required")
+    if not role_title:
+        raise HTTPException(400, "role_title is required")
+    if stream not in ENTERPRISE_GRANT_STREAMS:
+        raise HTTPException(400, "invalid stream")
+    if target_tier not in ENTERPRISE_GRANT_TIERS:
+        raise HTTPException(400, "invalid target_tier")
+    if team_size not in ENTERPRISE_GRANT_TEAM_SIZES:
+        raise HTTPException(400, "invalid team_size")
+    if timeline not in ENTERPRISE_GRANT_TIMELINES:
+        raise HTTPException(400, "invalid timeline")
+    if not trial_objective:
+        raise HTTPException(400, "trial_objective is required")
+    if not req.attest:
+        raise HTTPException(400, "attest must be true")
+
+    return {
+        "full_name": full_name,
+        "work_email": work_email,
+        "company_name": company_name,
+        "role_title": role_title,
+        "stream": stream,
+        "target_tier": target_tier,
+        "team_size": team_size,
+        "timeline": timeline,
+        "llm_stack": llm_stack,
+        "trial_objective": trial_objective,
+        "attest": True,
+    }
 
 
 def extension_dedupe_key_payload(record_type: str, source_ai: Optional[str], transcript: Optional[str], payload: dict) -> dict:
@@ -948,6 +1044,20 @@ class EventIn(BaseModel):
     session_id: Optional[str] = None
     timestamp: Optional[str] = None  # client-side wall clock; server still stamps its own
     payload: dict[str, Any] = Field(default_factory=dict)
+
+
+class EnterpriseGrantRequest(BaseModel):
+    full_name: str
+    work_email: str
+    company_name: str
+    role_title: str
+    stream: str
+    target_tier: str
+    team_size: str
+    timeline: str
+    llm_stack: Optional[str] = None
+    trial_objective: str
+    attest: bool = False
 
 
 async def rate_answer(question: str, answer: str) -> dict:
@@ -1860,6 +1970,29 @@ async def event(evt: EventIn, request: Request):
         client_timestamp=evt.timestamp,
     )
     return {"ok": True, "event_id": rec["event_id"]}
+
+
+@app.post("/enterprise_grant")
+async def enterprise_grant(req: EnterpriseGrantRequest, request: Request):
+    payload = normalize_enterprise_grant(req)
+    record = await log_enterprise_grant(payload, request=request)
+    await log_event(
+        "enterprise_grant_submitted",
+        page="enterprise-grant.html",
+        payload={
+            "grant_id": record["grant_id"],
+            "stream": payload["stream"],
+            "target_tier": payload["target_tier"],
+            "team_size": payload["team_size"],
+            "timeline": payload["timeline"],
+        },
+        request=request,
+    )
+    return {
+        "ok": True,
+        "grant_id": record["grant_id"],
+        "submitted_at": record["timestamp"],
+    }
 
 
 @app.get("/api/azure_models")
