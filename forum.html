@@ -1574,6 +1574,21 @@
   }
   renderLocalForumPosts();
 
+  function commentCountForPost(post) {
+    return post ? post.querySelectorAll('.comments > .comment').length : 0;
+  }
+  function setCommentCountLabel(post) {
+    if (!post) return;
+    const btn = post.querySelector('.toggle-comments');
+    if (!btn) return;
+    const n = commentCountForPost(post);
+    btn.textContent = `${n} comment${n === 1 ? '' : 's'}`;
+  }
+  function refreshAllCommentCountLabels() {
+    document.querySelectorAll('.post').forEach(setCommentCountLabel);
+  }
+  refreshAllCommentCountLabels();
+
   // Helper: identify a post by its title for analytics
   function postKey(post) {
     const h3 = post.querySelector('h3');
@@ -1661,8 +1676,9 @@
     });
   });
 
-  // Comment vote-mini (toggle, increment)
-  document.querySelectorAll('.vote-mini').forEach((btn) => {
+  function bindVoteMini(btn) {
+    if (!btn || btn.dataset.bound === '1') return;
+    btn.dataset.bound = '1';
     btn.addEventListener('click', () => {
       const m = btn.textContent.match(/(\d+)/);
       const n = m ? parseInt(m[1], 10) : 0;
@@ -1672,7 +1688,9 @@
         target: 'comment', voted: isVoted, post: postKey(btn.closest('.post'))
       });
     });
-  });
+  }
+  // Comment vote-mini (toggle, increment)
+  document.querySelectorAll('.vote-mini').forEach(bindVoteMini);
 
   // Sort dropdown — re-orders posts in the DOM by chosen key
   const postsContainer = document.getElementById('posts');
@@ -1726,15 +1744,10 @@
       `;
       c.querySelector('p').textContent = txt;
       row.parentNode.insertBefore(c, row);
+      setCommentCountLabel(row.closest('.post'));
       input.value = '';
       // re-bind vote-mini for the new comment
-      c.querySelector('.vote-mini').addEventListener('click', () => {
-        const b = c.querySelector('.vote-mini');
-        const m = b.textContent.match(/(\d+)/);
-        const n = m ? parseInt(m[1], 10) : 0;
-        const isVoted = b.classList.toggle('voted');
-        b.textContent = '▲ ' + (isVoted ? n + 1 : n - 1);
-      });
+      bindVoteMini(c.querySelector('.vote-mini'));
     };
     btn.addEventListener('click', submit);
     input.addEventListener('keydown', (e) => {
