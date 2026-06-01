@@ -12,6 +12,10 @@
   --ok-soft: rgba(107, 142, 110, 0.14);
   --err: #a23a31;
   --err-soft: rgba(196, 74, 63, 0.12);
+  --btn-grad-soft: linear-gradient(135deg, rgba(255, 253, 248, 0.96), rgba(239, 231, 252, 0.9));
+  --btn-grad-soft-hover: linear-gradient(135deg, rgba(255, 253, 248, 1), rgba(228, 214, 250, 0.96));
+  --btn-grad-primary: linear-gradient(135deg, #635bff 0%, #7f78ff 48%, #5f53f7 100%);
+  --btn-grad-primary-hover: linear-gradient(135deg, #554de9 0%, #776fff 48%, #5146e2 100%);
 }
 
 * {
@@ -51,10 +55,11 @@ header h1 {
 .brand img {
   width: 26px;
   height: 26px;
-  border-radius: 7px;
-  object-fit: cover;
-  border: 1px solid var(--line);
-  box-shadow: 0 3px 10px rgba(58, 44, 84, 0.18);
+  border-radius: 0;
+  object-fit: contain;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
 }
 
 header p {
@@ -73,6 +78,17 @@ header p {
 }
 
 .panel.hidden {
+  display: none;
+}
+
+#analysisSection {
+  display: grid;
+  gap: 8px;
+  padding-top: 2px;
+  border-top: 1px dashed var(--line);
+}
+
+#analysisSection.hidden {
   display: none;
 }
 
@@ -126,29 +142,56 @@ button {
   border: 1px solid var(--line);
   border-radius: 999px;
   padding: 8px 12px;
-  background: rgba(255, 253, 248, 0.92);
+  background: var(--btn-grad-soft);
+  background-size: 180% 180%;
+  background-position: 0% 50%;
   color: #322a45;
   cursor: pointer;
-  transition: transform 0.16s, border-color 0.16s, background 0.16s;
+  transition: transform 0.16s, border-color 0.2s, background-position 0.25s ease, box-shadow 0.2s ease;
 }
 
 button:hover {
   transform: translateY(-1px);
+  background: var(--btn-grad-soft-hover);
+  background-position: 100% 50%;
+  box-shadow: 0 8px 18px rgba(52, 34, 88, 0.14);
+}
+
+button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(99, 91, 255, 0.18), 0 8px 18px rgba(52, 34, 88, 0.14);
+}
+
+button:active {
+  transform: translateY(0);
+  background-position: 100% 50%;
 }
 
 button.primary {
   border-color: var(--violet);
-  background: linear-gradient(135deg, #635bff, #7f78ff);
+  background: var(--btn-grad-primary);
+  background-size: 180% 180%;
+  background-position: 0% 50%;
   color: #fff;
+  box-shadow: 0 10px 20px rgba(81, 70, 226, 0.28);
 }
 
 button.primary:hover {
-  background: linear-gradient(135deg, #5750ec, #736cff);
+  background: var(--btn-grad-primary-hover);
+  background-position: 100% 50%;
+  box-shadow: 0 14px 26px rgba(81, 70, 226, 0.34);
+}
+
+button.primary:active {
+  box-shadow: 0 8px 16px rgba(81, 70, 226, 0.24);
 }
 
 button:disabled {
   opacity: 0.55;
   cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+  background-position: 0% 50%;
 }
 
 .row {

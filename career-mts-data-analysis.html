@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="icon" type="image/jpeg" href="assets/hug-logo.jpg" />
-  <link rel="apple-touch-icon" href="assets/hug-logo.jpg" />
+  <link rel="icon" type="image/png" href="assets/hug-logo.png" />
+  <link rel="apple-touch-icon" href="assets/hug-logo.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT@9..144,600,80&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -53,11 +53,13 @@
       padding: 26px 20px 56px;
     }
 
-    .topbar {
+    header.top {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      gap: 18px;
+      align-items: baseline;
+      padding: 32px 0 24px;
+      border-bottom: 1px solid var(--line);
+      gap: 12px;
       margin-bottom: 22px;
     }
 
@@ -94,26 +96,50 @@
       font-weight: 500;
     }
 
-    .nav {
+    header .nav {
       display: flex;
-      gap: 16px;
+      gap: 24px;
       flex-wrap: wrap;
-      align-items: center;
+      align-items: baseline;
     }
 
-    .nav a {
+    header .nav a {
       text-decoration: none;
       color: var(--text-muted);
+      font-family: var(--serif);
+      font-style: italic;
       font-size: 14px;
-      font-weight: 600;
       border-bottom: 1px solid transparent;
-      padding-bottom: 2px;
-      transition: color 0.14s ease, border-color 0.14s ease;
+      padding-bottom: 1px;
+      transition: border-color 0.15s ease, color 0.15s ease;
     }
 
-    .nav a:hover {
-      color: var(--text);
-      border-bottom-color: var(--primary);
+    header .nav a:hover {
+      color: var(--brand);
+      border-bottom-color: var(--brand);
+    }
+
+    header .nav a.cta {
+      font-family: var(--sans);
+      font-style: normal;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      font-size: 11px;
+      background: var(--text);
+      color: #f6f4ef;
+      padding: 10px 18px;
+      border-radius: 999px;
+      border-bottom: 0;
+      transition: background 0.18s ease, transform 0.15s ease;
+      white-space: nowrap;
+    }
+
+    header .nav a.cta:hover {
+      background: var(--brand);
+      color: #f6f4ef;
+      transform: translateY(-1px);
+      border-bottom: 0;
     }
 
     .hero {
@@ -385,14 +411,29 @@
       }
     }
 
+    @media (max-width: 820px) {
+      header.top {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 18px;
+        padding: 28px 0 22px;
+      }
+
+      header .nav {
+        width: 100%;
+        gap: 16px;
+      }
+
+      header .nav a.cta {
+        padding: 9px 14px;
+        font-size: 10px;
+        letter-spacing: 0.14em;
+      }
+    }
+
     @media (max-width: 720px) {
       .page {
         padding: 18px 14px 40px;
-      }
-
-      .topbar {
-        flex-direction: column;
-        align-items: flex-start;
       }
 
       .hero,
@@ -406,14 +447,17 @@
 </head>
 <body>
   <main class="page">
-    <header class="topbar">
+    <header class="top">
       <a class="brand-link" href="index.html" aria-label="Hug Claims home">
         <span class="brand-text">Hug<span class="em">.</span><span class="small">claims</span></span>
       </a>
       <nav class="nav" aria-label="Main">
-        <a href="career.html">Careers</a>
-        <a href="index.html">Home</a>
-        <a href="chat.html">Chat</a>
+        <a href="forum.html">forum</a>
+        <a href="claim.html">file a claim</a>
+        <a href="enterprise.html">enterprise</a>
+        <a href="career.html">careers</a>
+        <a href="login.html">login</a>
+        <a href="chat.html" class="cta">try the chat &rarr;</a>
       </nav>
     </header>
 

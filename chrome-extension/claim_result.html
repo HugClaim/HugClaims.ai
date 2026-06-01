@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HugClaims.ai · Claim Submitted</title>
+  <link rel="stylesheet" href="popup.css" />
+  <link rel="stylesheet" href="claim_result.css" />
+</head>
+<body>
+  <main class="app result-app">
+    <section class="panel result-panel">
+      <div class="result-brand">
+        <img src="assets/hug-logo.png" alt="HugClaims.ai logo" />
+        <div class="wordmark">Hug<span class="dot">.</span><span class="small">claims.ai</span></div>
+      </div>
+      <h1>Claim Submitted</h1>
+      <p class="amount-line"><span class="currency">$</span><span id="amountValue">0</span></p>
+      <p class="subtle">cashback</p>
+      <p id="claimLine" class="claim-line">Claim ID: -</p>
+
+      <div class="payment-cta">
+        <p class="subtle payment-title">Set up payment</p>
+        <div class="payment-icons">
+          <a class="pay-icon pay-stripe" id="payStripe" href="#" title="Set up payment" aria-label="Set up payment">S</a>
+        </div>
+      </div>
+
+      <div class="redact-block">
+        <p id="redactStatus" class="subtle">Checking personal information...</p>
+        <p id="redactRisk" class="subtle hidden">Risk: -</p>
+        <div id="redactionEmpty" class="subtle hidden">No sensitive items detected.</div>
+        <ul id="redactionList" class="redaction-list"></ul>
+        <textarea id="redactedText" readonly class="hidden"></textarea>
+      </div>
+      <div class="row compact result-actions">
+        <button id="backBtn" type="button">Back</button>
+      </div>
+    </section>
+  </main>
+  <script src="claim_result.js"></script>
+</body>
+</html>

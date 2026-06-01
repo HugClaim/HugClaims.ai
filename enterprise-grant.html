@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="icon" type="image/jpeg" href="assets/hug-logo.jpg" />
-  <link rel="apple-touch-icon" href="assets/hug-logo.jpg" />
+  <link rel="icon" type="image/png" href="assets/hug-logo.png" />
+  <link rel="apple-touch-icon" href="assets/hug-logo.png" />
   <title>hug.claims - Enterprise Grant Application</title>
   <style>
     :root {
@@ -279,6 +279,11 @@
       transform: translateY(-1px);
       background: #2d2720;
     }
+    .btn:disabled {
+      opacity: 0.62;
+      cursor: progress;
+      transform: none;
+    }
     .actions .note {
       color: var(--ink-3);
       font-size: 12px;
@@ -295,6 +300,11 @@
     }
     .grant-result.show {
       display: block;
+    }
+    .grant-result.error {
+      border-color: rgba(153, 49, 41, 0.55);
+      background: rgba(196, 74, 63, 0.1);
+      color: #7d2d28;
     }
 
     footer.bottom {
@@ -465,25 +475,82 @@
     </footer>
   </div>
 
+  <script src="hug-config.js"></script>
   <script>
+    const HUG_API_BASE = (window.HUG_API_BASE || '').replace(/\/+$/, '');
+    const hugApiUrl = (path) => `${HUG_API_BASE}${path}`;
     const grantForm = document.getElementById('grantForm');
     const grantResult = document.getElementById('grantResult');
+    const grantSubmitBtn = grantForm.querySelector('button[type="submit"]');
+    const defaultSubmitText = grantSubmitBtn ? grantSubmitBtn.textContent : '';
 
-    function makeGrantRef() {
-      const n = Math.floor(Math.random() * 900000) + 100000;
-      return `HCG-${n}`;
+    function setSubmitting(isSubmitting) {
+      if (!grantSubmitBtn) return;
+      grantSubmitBtn.disabled = isSubmitting;
+      grantSubmitBtn.textContent = isSubmitting ? 'submitting...' : defaultSubmitText;
     }
 
-    grantForm.addEventListener('submit', (event) => {
+    function showResult(message, tone) {
+      grantResult.textContent = message;
+      grantResult.classList.add('show');
+      grantResult.classList.toggle('error', tone === 'error');
+      window.scrollTo({
+        top: grantResult.getBoundingClientRect().top + window.scrollY - 120,
+        behavior: 'smooth',
+      });
+    }
+
+    grantForm.addEventListener('submit', async (event) => {
       event.preventDefault();
       const formData = new FormData(grantForm);
-      const name = String(formData.get('full_name') || '').trim() || 'Team';
-      const company = String(formData.get('company_name') || '').trim() || 'your organization';
-      const ref = makeGrantRef();
-      grantResult.textContent = `Application received. Thanks ${name}. Your Hug Claims Enterprise Grant request for ${company} is now in review. Reference: ${ref}.`;
-      grantResult.classList.add('show');
-      grantForm.reset();
-      window.scrollTo({ top: grantResult.getBoundingClientRect().top + window.scrollY - 120, behavior: 'smooth' });
+      const payload = {
+        full_name: String(formData.get('full_name') || '').trim(),
+        work_email: String(formData.get('work_email') || '').trim(),
+        company_name: String(formData.get('company_name') || '').trim(),
+        role_title: String(formData.get('role_title') || '').trim(),
+        stream: String(formData.get('stream') || '').trim(),
+        target_tier: String(formData.get('target_tier') || '').trim(),
+        team_size: String(formData.get('team_size') || '').trim(),
+        timeline: String(formData.get('timeline') || '').trim(),
+        llm_stack: String(formData.get('llm_stack') || '').trim(),
+        trial_objective: String(formData.get('trial_objective') || '').trim(),
+        attest: formData.get('attest') === 'on',
+      };
+      const name = payload.full_name || 'Team';
+      const company = payload.company_name || 'your organization';
+
+      setSubmitting(true);
+      try {
+        const resp = await fetch(hugApiUrl('/enterprise_grant'), {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        let data = null;
+        try { data = await resp.json(); } catch (_) {}
+        if (!resp.ok || !data || !data.ok) {
+          const detail = data && typeof data.detail === 'string'
+            ? data.detail
+            : `request failed (${resp.status})`;
+          throw new Error(detail);
+        }
+        const ref = String(data.grant_id || '').trim() || 'pending';
+        showResult(
+          `Application received. Thanks ${name}. Your Hug Claims Enterprise Grant request for ${company} is now in review. Reference: ${ref}.`,
+          'success',
+        );
+        grantForm.reset();
+      } catch (error) {
+        const detail = error instanceof Error && error.message
+          ? error.message
+          : 'network error';
+        showResult(
+          `We could not submit your grant request right now (${detail}). Please try again shortly.`,
+          'error',
+        );
+      } finally {
+        setSubmitting(false);
+      }
     });
   </script>
 </body>

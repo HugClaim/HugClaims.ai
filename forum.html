@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="icon" type="image/jpeg" href="assets/hug-logo.jpg" />
-<link rel="apple-touch-icon" href="assets/hug-logo.jpg" />
+<link rel="icon" type="image/png" href="assets/hug-logo.png" />
+<link rel="apple-touch-icon" href="assets/hug-logo.png" />
 <title>hug. — community claims</title>
 <style>
   :root {
@@ -498,6 +498,61 @@
     letter-spacing: 0.16em;
     color: var(--ink-3);
   }
+  .evidence-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 10px;
+    margin: 12px 0 14px;
+  }
+  .evidence-card {
+    display: block;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: rgba(255, 253, 248, 0.92);
+    color: var(--ink);
+    text-decoration: none;
+    padding: 10px;
+    transition: transform .16s, border-color .16s, box-shadow .16s;
+  }
+  .evidence-card:hover {
+    transform: translateY(-1px);
+    border-color: var(--hug-soft);
+    box-shadow: 0 12px 28px -24px rgba(40, 25, 10, 0.3);
+  }
+  .evidence-thumb {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 8px;
+    border: 1px solid var(--paper-3);
+    object-fit: cover;
+    background: var(--paper-2);
+    margin-bottom: 8px;
+  }
+  .evidence-doc {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 52px;
+    border-radius: 8px;
+    border: 1px solid var(--hug-soft);
+    background: var(--hug-bg);
+    color: var(--hug);
+    font: 700 11px var(--sans);
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+  }
+  .evidence-card strong {
+    display: block;
+    font-size: 13px;
+    margin-bottom: 3px;
+  }
+  .evidence-card span {
+    display: block;
+    color: var(--ink-3);
+    font-size: 12px;
+    line-height: 1.45;
+  }
   s.struck {
     color: var(--hug-2);
     text-decoration: line-through;
@@ -755,6 +810,34 @@
     color: var(--ink-2);
     margin-bottom: 6px;
   }
+  .comment-media {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 8px;
+    margin: 8px 0 10px;
+  }
+  .comment-media-item {
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: rgba(255, 253, 248, 0.8);
+    overflow: hidden;
+  }
+  .comment-media-item img {
+    width: 100%;
+    height: 110px;
+    object-fit: cover;
+    display: block;
+    background: var(--paper-2);
+  }
+  .comment-media-item a {
+    display: block;
+    text-decoration: none;
+    color: var(--ink-2);
+    font-size: 12.5px;
+    padding: 8px 10px;
+    line-height: 1.45;
+  }
+  .comment-media-item a:hover { color: var(--hug); }
   .comment-foot {
     display: flex;
     gap: 14px;
@@ -809,12 +892,14 @@
   /* Add comment row */
   .add-comment {
     display: flex;
+    align-items: center;
+    flex-wrap: wrap;
     gap: 10px;
     margin-top: 10px;
     padding: 6px 0 0;
   }
-  .add-comment input {
-    flex: 1;
+  .add-comment > input {
+    flex: 1 1 240px;
     background: var(--paper);
     border: 1px solid var(--line);
     border-radius: 999px;
@@ -824,9 +909,9 @@
     outline: none;
     transition: border-color .15s;
   }
-  .add-comment input:focus { border-color: var(--hug); }
-  .add-comment input::placeholder { color: var(--ink-3); font-style: italic; }
-  .add-comment button {
+  .add-comment > input:focus { border-color: var(--hug); }
+  .add-comment > input::placeholder { color: var(--ink-3); font-style: italic; }
+  .add-comment > button {
     background: var(--ink);
     color: var(--paper);
     border: 0;
@@ -838,7 +923,72 @@
     cursor: pointer;
     transition: background .15s, transform .15s;
   }
-  .add-comment button:hover { background: var(--hug); transform: translateY(-1px); }
+  .add-comment > button:hover { background: var(--hug); transform: translateY(-1px); }
+  .composer-tools {
+    flex: 1 0 100%;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 2px;
+    color: var(--ink-3);
+    font-size: 12px;
+  }
+  .attach-label {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 11px 5px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: var(--ink-2);
+    cursor: pointer;
+    font: 500 11px var(--sans);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    transition: border-color .15s, color .15s;
+  }
+  .attach-label:hover {
+    border-color: var(--hug-soft);
+    color: var(--hug);
+  }
+  .attach-label input {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .attach-hint {
+    font-size: 11.5px;
+    color: var(--ink-3);
+  }
+  .attach-list {
+    flex: 1 0 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .attach-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 3px 8px;
+    font-size: 11.5px;
+    color: var(--ink-2);
+    background: rgba(255, 253, 248, 0.8);
+  }
+  .attach-chip .remove {
+    border: 0;
+    background: transparent;
+    color: var(--ink-3);
+    cursor: pointer;
+    padding: 0;
+    font-size: 14px;
+    line-height: 1;
+  }
+  .attach-chip .remove:hover { color: var(--hug); }
 
   /* ---------- Footer ---------- */
   footer.bottom {
@@ -880,7 +1030,7 @@
 
   <section class="page-head">
     <h1>What others <em>caught</em>.</h1>
-    <p class="lede">Verified AI mistakes from the community. Read the diffs, weigh in, learn what to watch for &mdash; and earn cash back when your own corrections hold up.</p>
+    <p class="lede">Verified AI mistakes from the community. Read the diffs, open attached evidence docs/images, weigh in, learn what to watch for &mdash; and earn cash back when your own corrections hold up.</p>
     <div class="stat-row">
       <span><span class="num" id="verifiedClaims" data-value="1284">1,284</span> verified claims</span>
       <span><span class="num" id="paidOut" data-value="31470">$31,470</span> paid out</span>
@@ -1055,12 +1205,24 @@
         <span class="time">5h ago</span>
         <span class="status verified">verified <span class="amt">$24</span></span>
       </div>
-      <h3>AI told me to get an MRI for what turned out to be allergies</h3>
+      <h3>AI told me to get an MRI for what turned out to be allergies and sinus inflammation</h3>
       <div class="excerpt">
         <em class="q">gpt said:</em>
-        &ldquo;Persistent headaches plus dizziness <s class="struck">point to a brain tumor</s><ins class="correction">are most often allergies, sinus pressure, or vestibular issues</ins>. <s class="struck">Get an MRI today</s><ins class="correction">try antihistamines first; escalate to imaging only if symptoms persist beyond 2 weeks</ins>.&rdquo;
+        &ldquo;Persistent headaches plus dizziness <s class="struck">point to a brain tumor and need same-day MRI</s><ins class="correction">are usually allergy/sinus related unless red flags are present</ins>. <s class="struck">Skip primary care and go straight to imaging</s><ins class="correction">start with PCP or ENT exam, trial antihistamine + nasal steroid, then escalate to imaging if symptoms persist or worsen</ins>.&rdquo;
       </div>
-      <p class="context">Asked about two weeks of headaches + dizziness. GPT immediately flagged tumor and pushed for imaging. ENT ruled it out the same day &mdash; classic seasonal allergy presentation. Three days of Allegra and I&rsquo;m fine.</p>
+      <p class="context">I asked after 12 days of pressure headaches, light dizziness, and clogged ears during high pollen counts. GPT jumped to tumor risk and suggested urgent MRI + neuro referral before basic allergy workup. My ENT exam showed swollen nasal passages, postnasal drip, and no focal neurologic deficits; we treated for allergic rhinitis/sinus inflammation first. Within 72 hours on Allegra + fluticasone the headaches resolved and the dizziness tapered off.</p>
+      <div class="evidence-grid" aria-label="Attached medical evidence">
+        <a class="evidence-card" href="data/Allergy_Diagnosis_Report.txt" target="_blank" rel="noopener">
+          <span class="evidence-doc">TXT</span>
+          <strong>ENT diagnosis report</strong>
+          <span>Visit summary documenting allergic rhinitis/sinus pressure and no MRI red flags.</span>
+        </a>
+        <a class="evidence-card" href="data/allergy-symptom-log.svg" target="_blank" rel="noopener">
+          <img class="evidence-thumb" src="data/allergy-symptom-log.svg" alt="Symptom timeline chart for headache, dizziness, and pollen index" />
+          <strong>Symptom timeline image</strong>
+          <span>Headache severity drops after antihistamine + nasal steroid treatment starts.</span>
+        </a>
+      </div>
       <div class="post-foot">
         <button class="vote-pill" data-votes="129"><span class="arrow">&#9650;</span> <span class="v">129</span></button>
         <button class="meta-link toggle-comments">31 comments</button>
@@ -1472,6 +1634,69 @@
       .replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;');
   }
+  function fileExtension(name) {
+    const m = String(name || '').toLowerCase().match(/\.([a-z0-9]+)$/);
+    return m ? m[1].toUpperCase() : 'FILE';
+  }
+  function isImageLike(name, mime) {
+    const type = String(mime || '').toLowerCase();
+    const n = String(name || '').toLowerCase();
+    return type.startsWith('image/') || /\.(png|jpe?g|gif|webp|svg|bmp|avif)$/i.test(n);
+  }
+  function formatFileSize(bytes) {
+    const n = Number(bytes);
+    if (!Number.isFinite(n) || n <= 0) return '';
+    if (n < 1024) return `${n} B`;
+    if (n < 1024 * 1024) return `${(n / 1024).toFixed(1)} KB`;
+    return `${(n / (1024 * 1024)).toFixed(1)} MB`;
+  }
+  function normalizeAttachments(raw) {
+    if (!Array.isArray(raw)) return [];
+    return raw
+      .map((item) => {
+        if (!item) return null;
+        if (typeof item === 'string') {
+          const cleanHref = item.trim();
+          if (!cleanHref) return null;
+          const fallbackName = cleanHref.split('/').pop() || 'Attachment';
+          return { href: cleanHref, name: fallbackName, mime: '' };
+        }
+        const href = String(item.href || item.url || item.path || '').trim();
+        if (!href) return null;
+        return {
+          href,
+          name: String(item.name || item.label || href.split('/').pop() || 'Attachment'),
+          mime: String(item.mime || item.type || ''),
+          note: String(item.note || item.caption || item.description || ''),
+        };
+      })
+      .filter(Boolean);
+  }
+  function renderAttachmentCards(raw, label) {
+    const attachments = normalizeAttachments(raw);
+    if (!attachments.length) return '';
+    const cards = attachments.map((att) => {
+      const image = isImageLike(att.name, att.mime);
+      const ext = fileExtension(att.name);
+      const note = att.note || (image ? 'image attachment' : 'document attachment');
+      return image
+        ? `
+          <a class="evidence-card" href="${escapeHtml(att.href)}" target="_blank" rel="noopener">
+            <img class="evidence-thumb" src="${escapeHtml(att.href)}" alt="${escapeHtml(att.name)}" loading="lazy" />
+            <strong>${escapeHtml(att.name)}</strong>
+            <span>${escapeHtml(note)}</span>
+          </a>
+        `
+        : `
+          <a class="evidence-card" href="${escapeHtml(att.href)}" target="_blank" rel="noopener">
+            <span class="evidence-doc">${escapeHtml(ext)}</span>
+            <strong>${escapeHtml(att.name)}</strong>
+            <span>${escapeHtml(note)}</span>
+          </a>
+        `;
+    }).join('');
+    return `<div class="evidence-grid" aria-label="${escapeHtml(label || 'Attached evidence')}">${cards}</div>`;
+  }
   function tokenize(text) {
     return String(text).split(/(\s+|[^\w\s]+)/).filter(t => t !== '');
   }
@@ -1523,6 +1748,7 @@
     const edits = Array.isArray(post.edits) ? post.edits : [];
     const first = edits[0] || {};
     const diff = first.original && first.edited ? renderDiff(diffWords(first.original, first.edited)) : '';
+    const attachments = renderAttachmentCards(post.attachments, 'submitted evidence');
     const context = post.context || (edits.length > 1
       ? `Posted from claim ${post.ref || 'HUG'} with ${edits.length} edited AI responses.`
       : `Posted from claim ${post.ref || 'HUG'} with the submitted correction ready for community review.`);
@@ -1545,6 +1771,7 @@
           ${escapeHtml(first.original || 'Original AI response saved in the submitted claim.')}
         </div>
         ${diff ? `<div class="forum-diff"><strong>submitted correction</strong>${diff}</div>` : ''}
+        ${attachments}
         <p class="context">${escapeHtml(context)}</p>
         <div class="post-foot">
           <button class="vote-pill" data-votes="0"><span class="arrow">&#9650;</span> <span class="v">0</span></button>
@@ -1738,38 +1965,145 @@
     if (window.hugEvent) hugEvent('forum_sort_changed', { sort: mode });
   });
 
-  // "Post" comment input — append a new comment locally
-  document.querySelectorAll('.add-comment').forEach((row) => {
+  function renderCommentAttachment(file) {
+    const item = document.createElement('div');
+    item.className = 'comment-media-item';
+    const blobUrl = URL.createObjectURL(file);
+    if (isImageLike(file.name, file.type)) {
+      const img = document.createElement('img');
+      img.src = blobUrl;
+      img.alt = file.name || 'Attached image';
+      item.appendChild(img);
+    }
+    const link = document.createElement('a');
+    link.href = blobUrl;
+    link.target = '_blank';
+    link.rel = 'noopener';
+    const size = formatFileSize(file.size);
+    link.textContent = size ? `${file.name} (${size})` : file.name;
+    item.appendChild(link);
+    return item;
+  }
+
+  // "Post" comment input — append a new comment locally with optional files
+  document.querySelectorAll('.add-comment').forEach((row, index) => {
     const input = row.querySelector('input');
-    const btn   = row.querySelector('button');
+    const btn = row.querySelector('button');
+    if (!input || !btn) return;
+
+    const selectedFiles = [];
+    const tools = document.createElement('div');
+    tools.className = 'composer-tools';
+    const attachLabel = document.createElement('label');
+    attachLabel.className = 'attach-label';
+    attachLabel.innerHTML = '<span>attach files</span>';
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.id = `commentAttach${index}`;
+    fileInput.accept = 'image/*,.pdf,.doc,.docx,.txt,.md,.rtf,.csv';
+    fileInput.multiple = true;
+    attachLabel.appendChild(fileInput);
+    const attachHint = document.createElement('span');
+    attachHint.className = 'attach-hint';
+    attachHint.textContent = 'Images and documents are supported.';
+    tools.appendChild(attachLabel);
+    tools.appendChild(attachHint);
+
+    const attachList = document.createElement('div');
+    attachList.className = 'attach-list';
+    row.appendChild(tools);
+    row.appendChild(attachList);
+
+    function renderSelectedFiles() {
+      attachList.innerHTML = '';
+      if (!selectedFiles.length) return;
+      selectedFiles.forEach((file, i) => {
+        const chip = document.createElement('span');
+        chip.className = 'attach-chip';
+        const size = formatFileSize(file.size);
+        chip.appendChild(document.createTextNode(size ? `${file.name} (${size})` : file.name));
+        const removeBtn = document.createElement('button');
+        removeBtn.type = 'button';
+        removeBtn.className = 'remove';
+        removeBtn.textContent = '×';
+        removeBtn.setAttribute('aria-label', `Remove ${file.name}`);
+        removeBtn.addEventListener('click', () => {
+          selectedFiles.splice(i, 1);
+          renderSelectedFiles();
+        });
+        chip.appendChild(removeBtn);
+        attachList.appendChild(chip);
+      });
+    }
+
+    fileInput.addEventListener('change', () => {
+      const files = Array.from(fileInput.files || []);
+      files.forEach((file) => {
+        const dupe = selectedFiles.some((f) =>
+          f.name === file.name && f.size === file.size && f.lastModified === file.lastModified);
+        if (!dupe) selectedFiles.push(file);
+      });
+      fileInput.value = '';
+      renderSelectedFiles();
+    });
+
     const submit = () => {
       const txt = input.value.trim();
-      if (!txt) return;
+      if (!txt && !selectedFiles.length) return;
+
       if (window.hugEvent) hugEvent('comment_posted', {
         text: txt,
         post: postKey(row.closest('.post')),
+        attachments: selectedFiles.map(f => ({
+          name: f.name,
+          size: f.size,
+          type: f.type || fileExtension(f.name),
+        })),
       });
+
       const c = document.createElement('div');
       c.className = 'comment';
-      c.innerHTML = `
-        <span class="avatar c1">YOU</span>
-        <div class="comment-body">
-          <div class="comment-head">
-            <span class="author">@you</span>
-            <span class="time">just now</span>
-          </div>
-          <p></p>
-          <div class="comment-foot">
-            <button class="vote-mini">&#9650; 0</button>
-            <button class="reply-mini">reply</button>
-          </div>
+
+      const avatar = document.createElement('span');
+      avatar.className = 'avatar c1';
+      avatar.textContent = 'YOU';
+      c.appendChild(avatar);
+
+      const body = document.createElement('div');
+      body.className = 'comment-body';
+      body.innerHTML = `
+        <div class="comment-head">
+          <span class="author">@you</span>
+          <span class="time">just now</span>
         </div>
       `;
-      c.querySelector('p').textContent = txt;
+      if (txt) {
+        const p = document.createElement('p');
+        p.textContent = txt;
+        body.appendChild(p);
+      }
+      if (selectedFiles.length) {
+        const media = document.createElement('div');
+        media.className = 'comment-media';
+        selectedFiles.forEach((file) => {
+          media.appendChild(renderCommentAttachment(file));
+        });
+        body.appendChild(media);
+      }
+      const foot = document.createElement('div');
+      foot.className = 'comment-foot';
+      foot.innerHTML = `
+        <button class="vote-mini">&#9650; 0</button>
+        <button class="reply-mini">reply</button>
+      `;
+      body.appendChild(foot);
+      c.appendChild(body);
+
       row.parentNode.insertBefore(c, row);
       setCommentCountLabel(row.closest('.post'));
       input.value = '';
-      // re-bind vote-mini for the new comment
+      selectedFiles.length = 0;
+      renderSelectedFiles();
       bindVoteMini(c.querySelector('.vote-mini'));
     };
     btn.addEventListener('click', submit);

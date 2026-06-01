@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="icon" type="image/jpeg" href="assets/hug-logo.jpg" />
-<link rel="apple-touch-icon" href="assets/hug-logo.jpg" />
+<link rel="icon" type="image/png" href="assets/hug-logo.png" />
+<link rel="apple-touch-icon" href="assets/hug-logo.png" />
 <title>hug. — answer insurance</title>
 <style>
   :root {
@@ -1463,6 +1463,7 @@
   let isRecordingVoice = false;
   let voiceBaseText = '';
   let voiceFinalText = '';
+  let composerInputSource = 'none';
 
   function setVoiceRecording(on) {
     isRecordingVoice = on;
@@ -1487,7 +1488,13 @@
     recognition.lang = 'en-US';
 
     recognition.addEventListener('start', () => {
-      voiceBaseText = ta.value.trim();
+      if (composerInputSource === 'voice') {
+        ta.value = '';
+        voiceBaseText = '';
+        resizeComposerText();
+      } else {
+        voiceBaseText = ta.value.trim();
+      }
       voiceFinalText = '';
       setVoiceRecording(true);
       if (window.hugEvent) hugEvent('voice_input_started', {});
@@ -1501,12 +1508,14 @@
         else interim = `${interim} ${text}`.trim();
       }
       ta.value = [voiceBaseText, voiceFinalText, interim].filter(Boolean).join(' ');
+      composerInputSource = 'voice';
       resizeComposerText();
     });
 
     recognition.addEventListener('end', () => {
       setVoiceRecording(false);
       ta.value = ta.value.trim();
+      composerInputSource = ta.value ? 'voice' : 'none';
       resizeComposerText();
       if (window.hugEvent) hugEvent('voice_input_stopped', { transcript_length: ta.value.length });
     });
@@ -1923,7 +1932,10 @@
   });
 
   /* ---------- composer ---------- */
-  ta.addEventListener('input', resizeComposerText);
+  ta.addEventListener('input', () => {
+    resizeComposerText();
+    if (!isRecordingVoice) composerInputSource = ta.value.trim() ? 'manual' : 'none';
+  });
 
   function escapeHtml(raw) {
     return String(raw || '')
@@ -2177,6 +2189,7 @@
     convo.appendChild(userEl);
     if (programmaticText === null) {
       ta.value = '';
+      composerInputSource = 'none';
       resizeComposerText();
       pendingImage = null;
       showPreview();

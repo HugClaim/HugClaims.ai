@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "HugInsure Claim Helper",
+  "name": "HugClaims.ai Claim Helper",
   "version": "0.1.0",
-  "description": "Capture unsatisfying LLM responses, extract complaint reasons, and submit HugInsure credit claims.",
+  "description": "Capture unsatisfying LLM responses, extract complaint reasons, and submit HugClaims.ai credit claims.",
   "permissions": ["activeTab", "storage", "tabs", "clipboardWrite", "scripting"],
   "host_permissions": [
     "https://chat.openai.com/*",
@@ -10,24 +10,30 @@
     "https://claude.ai/*",
     "https://gemini.google.com/*",
     "https://copilot.microsoft.com/*",
+    "https://parley.mit.edu/*",
+    "https://meta.ai/*",
+    "https://www.meta.ai/*",
+    "https://www.perplexity.ai/*",
+    "https://poe.com/*",
+    "https://character.ai/*",
     "http://127.0.0.1:8000/*",
     "http://localhost:8000/*"
   ],
   "action": {
-    "default_title": "HugInsure",
+    "default_title": "HugClaims.ai",
     "default_popup": "popup.html",
     "default_icon": {
-      "16": "assets/hug-logo.jpg",
-      "32": "assets/hug-logo.jpg",
-      "48": "assets/hug-logo.jpg",
-      "128": "assets/hug-logo.jpg"
+      "16": "assets/hug-logo.png",
+      "32": "assets/hug-logo.png",
+      "48": "assets/hug-logo.png",
+      "128": "assets/hug-logo.png"
     }
   },
   "icons": {
-    "16": "assets/hug-logo.jpg",
-    "32": "assets/hug-logo.jpg",
-    "48": "assets/hug-logo.jpg",
-    "128": "assets/hug-logo.jpg"
+    "16": "assets/hug-logo.png",
+    "32": "assets/hug-logo.png",
+    "48": "assets/hug-logo.png",
+    "128": "assets/hug-logo.png"
   },
   "background": {
     "service_worker": "background.js"
@@ -39,7 +45,13 @@
         "https://chatgpt.com/*",
         "https://claude.ai/*",
         "https://gemini.google.com/*",
-        "https://copilot.microsoft.com/*"
+        "https://copilot.microsoft.com/*",
+        "https://parley.mit.edu/*",
+        "https://meta.ai/*",
+        "https://www.meta.ai/*",
+        "https://www.perplexity.ai/*",
+        "https://poe.com/*",
+        "https://character.ai/*"
       ],
       "js": ["content.js"],
       "run_at": "document_idle"

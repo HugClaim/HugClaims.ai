@@ -3,27 +3,20 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>HugInsure</title>
+  <title>HugClaims.ai</title>
   <link rel="stylesheet" href="popup.css" />
 </head>
 <body>
   <main class="app">
     <header>
       <div class="brand">
-        <img src="assets/hug-logo.jpg" alt="HugInsure logo" />
-        <h1>HugInsure</h1>
+        <img src="assets/hug-logo.png" alt="HugClaims.ai logo" />
+        <h1>HugClaims.ai</h1>
       </div>
       <p>Claim LLM credits when an answer misses.</p>
     </header>
 
     <section class="panel">
-      <label for="backendUrl">Backend URL</label>
-      <input id="backendUrl" type="url" value="http://127.0.0.1:8000" />
-      <label class="confirm">
-        <input id="autoDetectCheck" type="checkbox" checked />
-        Auto-detect likely LLM failures and show in-page signal with cashback offer.
-      </label>
-
       <div class="row">
         <button id="captureBtn" type="button">Capture From Tab</button>
         <span id="sourceBadge" class="badge">Source: Unknown</span>
@@ -32,25 +25,21 @@
       <label for="transcript">Conversation Transcript</label>
       <textarea id="transcript" placeholder="Captured transcript appears here, or paste manually."></textarea>
 
-      <label for="userNote">Why are you unhappy? (optional)</label>
-      <textarea id="userNote" placeholder="Example: It gave the wrong dosage and missed kidney-risk warnings."></textarea>
+      <label for="userNote">Here are the AI Failures...</label>
+      <textarea id="userNote" placeholder="Your complaint will be auto-filled after analysis. You can edit it."></textarea>
 
-      <button id="analyzeBtn" type="button" class="primary">Extract Why</button>
-    </section>
-
-    <section id="analysisSection" class="panel hidden">
-      <h2>Extracted Complaint</h2>
-      <p id="summary"></p>
-      <ul id="reasons"></ul>
-      <div class="row compact">
-        <span id="severityPill" class="pill">Severity: -</span>
-        <span id="confidencePill" class="pill">Confidence: -</span>
+      <div id="analysisSection" class="hidden">
+        <h2>Claim Check</h2>
+        <div class="row compact">
+          <span id="severityPill" class="pill">Predicted cashback: -</span>
+          <span id="confidencePill" class="pill">Confidence: -</span>
+        </div>
+        <label class="confirm">
+          <input id="confirmCheck" type="checkbox" />
+          I confirm this complaint.
+        </label>
+        <button id="submitBtn" type="button" class="primary" disabled>Confirm + Submit</button>
       </div>
-      <label class="confirm">
-        <input id="confirmCheck" type="checkbox" />
-        I confirm this summary matches my complaint.
-      </label>
-      <button id="submitBtn" type="button" class="primary" disabled>Confirm + Submit</button>
     </section>
 
     <section id="resultSection" class="panel hidden">
