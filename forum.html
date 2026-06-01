@@ -1574,6 +1574,29 @@
   }
   renderLocalForumPosts();
 
+  function shuffleLeaderboardExceptFirst() {
+    const board = document.querySelector('.leaderboard');
+    if (!board) return;
+    const rows = Array.from(board.querySelectorAll('.leader-row'));
+    if (rows.length <= 2) return;
+
+    const pinned = rows[0];
+    const rest = rows.slice(1);
+    for (let i = rest.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [rest[i], rest[j]] = [rest[j], rest[i]];
+    }
+
+    rest.forEach((row, idx) => {
+      board.appendChild(row);
+      const rankEl = row.querySelector('.leader-rank');
+      if (rankEl) rankEl.textContent = `${idx + 2}.`;
+    });
+    const pinnedRankEl = pinned.querySelector('.leader-rank');
+    if (pinnedRankEl) pinnedRankEl.textContent = '1.';
+  }
+  shuffleLeaderboardExceptFirst();
+
   function commentCountForPost(post) {
     return post ? post.querySelectorAll('.comments > .comment').length : 0;
   }
