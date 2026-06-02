@@ -122,7 +122,14 @@
       letter-spacing: -0.03em;
       line-height: 1.08;
       margin-bottom: 10px;
-      max-width: 22ch;
+      max-width: none;
+    }
+    .hero h1 .hero-question {
+      display: block;
+      white-space: nowrap;
+    }
+    .hero h1 .hero-question + .hero-question {
+      margin-top: 2px;
     }
     .hero h1 em {
       color: var(--green-2);
@@ -131,12 +138,6 @@
     .hero p {
       color: var(--ink-2);
       max-width: 78ch;
-    }
-    .hero-pricing-note {
-      margin-top: 8px;
-      font-size: 12px;
-      color: var(--ink-3);
-      letter-spacing: 0.01em;
     }
     .hero-trial {
       margin-top: 14px;
@@ -147,6 +148,14 @@
       font-weight: 600;
       font-size: 13px;
       letter-spacing: 0.01em;
+    }
+    .hero-trial a {
+      color: inherit;
+      text-decoration-color: color-mix(in oklab, var(--green-2) 55%, #ffffff);
+      text-underline-offset: 2px;
+    }
+    .hero-trial a:hover {
+      text-decoration-color: var(--green-2);
     }
     .hero-trial .dot {
       width: 8px;
@@ -161,6 +170,675 @@
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 20px;
       margin: 20px 0;
+    }
+
+    .corpus-bridge {
+      margin: 18px 0 6px;
+      border: 1px solid rgba(179, 162, 198, 0.62);
+      border-radius: 20px;
+      background: linear-gradient(180deg, rgba(247, 241, 253, 0.82), rgba(255, 255, 255, 0.9));
+      box-shadow:
+        0 20px 38px -34px rgba(40, 25, 10, 0.24),
+        0 0 0 1px rgba(255, 255, 255, 0.36) inset;
+      padding: 20px;
+    }
+    .corpus-bridge .bridge-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--ink-3);
+      margin-bottom: 6px;
+      font-weight: 700;
+    }
+    .corpus-bridge h2 {
+      font-family: var(--serif);
+      font-weight: 340;
+      font-size: clamp(24px, 3.3vw, 36px);
+      letter-spacing: -0.02em;
+      line-height: 1.12;
+      margin-bottom: 7px;
+    }
+    .corpus-bridge p {
+      color: var(--ink-2);
+      font-size: 14px;
+      max-width: 80ch;
+    }
+    .bridge-grid {
+      margin-top: 12px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .bridge-card {
+      border: 1px solid rgba(179, 162, 198, 0.72);
+      border-radius: 14px;
+      background: #fff;
+      padding: 12px 12px 10px;
+    }
+    .bridge-card .card-kicker {
+      font-size: 10px;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+    .bridge-card h3 {
+      font-family: var(--serif);
+      font-size: 21px;
+      letter-spacing: -0.02em;
+      line-height: 1.14;
+      margin-bottom: 6px;
+    }
+    .bridge-card ul {
+      list-style: none;
+      display: grid;
+      gap: 6px;
+      font-size: 13px;
+      color: var(--ink-2);
+    }
+    .bridge-card li {
+      padding-left: 14px;
+      position: relative;
+    }
+    .bridge-card li::before {
+      content: "";
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--green-2);
+      position: absolute;
+      left: 1px;
+      top: 8px;
+    }
+
+    .corpus-figure-block {
+      margin-top: 14px;
+      border: 1px solid rgba(179, 162, 198, 0.66);
+      border-radius: 16px;
+      background: rgba(255, 253, 248, 0.92);
+      padding: 12px;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.42);
+    }
+    .corpus-figure-head h3 {
+      font-family: var(--serif);
+      font-size: 24px;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 4px;
+    }
+    .corpus-figure-head p {
+      margin: 0 0 10px;
+      font-size: 13px;
+      color: var(--ink-2);
+    }
+    .corpus-shell {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      align-items: stretch;
+    }
+    .corpus-portal {
+      border: 1px solid rgba(179, 162, 198, 0.68);
+      border-radius: 13px;
+      overflow: hidden;
+      background: rgba(250, 246, 255, 0.92);
+      box-shadow: 0 12px 26px -24px rgba(40, 25, 10, 0.34);
+    }
+    .corpus-portal-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      padding: 7px 10px;
+      border-bottom: 1px solid rgba(179, 162, 198, 0.55);
+      background: linear-gradient(180deg, rgba(241, 233, 251, 0.95), rgba(253, 249, 255, 0.9));
+      color: var(--ink-2);
+      font-size: 10.5px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+    .corpus-portal-title {
+      font-family: var(--mono);
+      letter-spacing: 0.09em;
+      color: var(--ink);
+    }
+    .corpus-portal-lights {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .corpus-portal-lights .light {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+      border: 1px solid rgba(80, 64, 101, 0.18);
+    }
+    .corpus-portal-lights .l-red { background: rgba(196, 74, 63, 0.76); }
+    .corpus-portal-lights .l-yellow { background: rgba(226, 168, 44, 0.76); }
+    .corpus-portal-lights .l-green { background: rgba(47, 107, 64, 0.76); }
+    .corpus-portal-status {
+      color: var(--green-2);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+    }
+    .corpus-plot {
+      position: relative;
+      min-height: 350px;
+      height: 100%;
+      border-radius: 0;
+      border: 0;
+      background:
+        radial-gradient(circle at 20% 24%, rgba(196, 74, 63, 0.12) 0, transparent 33%),
+        radial-gradient(circle at 76% 27%, rgba(45, 112, 152, 0.11) 0, transparent 34%),
+        radial-gradient(circle at 22% 72%, rgba(47, 107, 64, 0.11) 0, transparent 35%),
+        radial-gradient(circle at 72% 74%, rgba(128, 95, 168, 0.11) 0, transparent 35%),
+        radial-gradient(circle at 48% 52%, rgba(212, 130, 37, 0.11) 0, transparent 36%),
+        linear-gradient(180deg, rgba(255, 253, 248, 0.95), rgba(246, 238, 253, 0.7));
+      overflow: hidden;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.34);
+    }
+    .corpus-plot::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(26, 22, 18, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(26, 22, 18, 0.06) 1px, transparent 1px);
+      background-size: 34px 34px;
+      opacity: 0.26;
+      pointer-events: none;
+    }
+    .corpus-scene {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+    }
+    .corpus-density-layer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+    .corpus-blob {
+      position: absolute;
+      width: 160px;
+      height: 130px;
+      border-radius: 50%;
+      filter: blur(16px);
+      opacity: 0.22;
+    }
+    .corpus-blob.b-medicine { left: 8%;  top: 9%;  background: rgba(196, 74, 63, 0.7); }
+    .corpus-blob.b-finance  { left: 58%; top: 10%; background: rgba(45, 112, 152, 0.7); }
+    .corpus-blob.b-legal    { left: 12%; top: 58%; background: rgba(47, 107, 64, 0.7); }
+    .corpus-blob.b-math     { left: 58%; top: 60%; background: rgba(128, 95, 168, 0.7); }
+    .corpus-blob.b-coding   { left: 34%; top: 36%; background: rgba(212, 130, 37, 0.75); }
+    .corpus-blob.b-other    { left: 76%; top: 44%; background: rgba(108, 121, 142, 0.68); }
+    .corpus-dots {
+      position: absolute;
+      inset: 0;
+    }
+    .corpus-cluster-label {
+      appearance: none;
+      border: 1px solid rgba(211, 200, 218, 0.7);
+      position: absolute;
+      z-index: 3;
+      font: 700 10px var(--sans);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(26, 22, 18, 0.62);
+      background: rgba(255, 253, 248, 0.74);
+      border-radius: 999px;
+      padding: 3px 7px;
+      cursor: pointer;
+      transition: background .14s ease, color .14s ease, border-color .14s ease, transform .14s ease;
+      backdrop-filter: blur(2px);
+    }
+    .corpus-cluster-label:hover,
+    .corpus-cluster-label.is-active {
+      color: var(--ink);
+      background: rgba(132, 102, 178, 0.14);
+      border-color: rgba(132, 102, 178, 0.36);
+      transform: translateY(-1px);
+    }
+    .corpus-cluster-label:focus-visible {
+      outline: 2px solid rgba(132, 102, 178, 0.45);
+      outline-offset: 2px;
+    }
+    .corpus-cluster-label.l-medicine { left: 10%; top: 8%; }
+    .corpus-cluster-label.l-finance  { left: 66%; top: 10%; }
+    .corpus-cluster-label.l-legal    { left: 12%; top: 82%; }
+    .corpus-cluster-label.l-math     { left: 72%; top: 82%; }
+    .corpus-cluster-label.l-coding   { left: 42%; top: 47%; }
+    .corpus-cluster-label.l-other    { left: 82%; top: 49%; }
+    .corpus-dot {
+      position: absolute;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      opacity: 0.84;
+      transition: left .45s ease, top .45s ease, opacity .28s ease, transform .28s ease;
+    }
+    .corpus-dot.entering {
+      animation: corpusDotIn .34s ease-out;
+    }
+    .corpus-dot.leaving {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.2);
+    }
+    .corpus-dot.d-medicine { background: rgba(196, 74, 63, 0.82); box-shadow: 0 0 8px rgba(196, 74, 63, 0.36); }
+    .corpus-dot.d-finance  { background: rgba(45, 112, 152, 0.82); box-shadow: 0 0 8px rgba(45, 112, 152, 0.34); }
+    .corpus-dot.d-legal    { background: rgba(47, 107, 64, 0.82); box-shadow: 0 0 8px rgba(47, 107, 64, 0.36); }
+    .corpus-dot.d-math     { background: rgba(128, 95, 168, 0.82); box-shadow: 0 0 8px rgba(128, 95, 168, 0.34); }
+    .corpus-dot.d-coding   { background: rgba(212, 130, 37, 0.86); box-shadow: 0 0 8px rgba(212, 130, 37, 0.38); }
+    .corpus-dot.d-other    { background: rgba(108, 121, 142, 0.8); box-shadow: 0 0 8px rgba(108, 121, 142, 0.3); }
+    @keyframes corpusDotIn {
+      0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.25); }
+      100% { opacity: 0.84; transform: translate(-50%, -50%) scale(1); }
+    }
+    .corpus-side {
+      display: grid;
+      gap: 9px;
+    }
+    .portal-tabs {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px;
+      border: 1px solid rgba(179, 162, 198, 0.56);
+      border-radius: 999px;
+      background: rgba(247, 241, 253, 0.9);
+      width: fit-content;
+    }
+    .portal-tab {
+      appearance: none;
+      border: 0;
+      border-radius: 999px;
+      background: transparent;
+      color: var(--ink-2);
+      font: 700 10px var(--sans);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 4px 9px;
+      cursor: pointer;
+      transition: background .14s ease, color .14s ease;
+    }
+    .portal-tab:hover {
+      background: rgba(132, 102, 178, 0.12);
+      color: var(--ink);
+    }
+    .portal-tab.is-active {
+      background: rgba(132, 102, 178, 0.2);
+      color: var(--ink);
+    }
+    .portal-tab:focus-visible {
+      outline: 2px solid rgba(132, 102, 178, 0.42);
+      outline-offset: 1px;
+    }
+    .portal-card {
+      border: 1px solid rgba(179, 162, 198, 0.62);
+      border-radius: 12px;
+      background: linear-gradient(180deg, rgba(255, 253, 248, 0.95), rgba(250, 246, 255, 0.92));
+      padding: 8px;
+      display: none;
+      gap: 7px;
+      box-shadow: 0 12px 24px -24px rgba(40, 25, 10, 0.32);
+    }
+    .portal-card.is-active {
+      display: grid;
+    }
+    .portal-card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+    .portal-card-head .title {
+      color: var(--ink);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 700;
+    }
+    .portal-card-head .badge {
+      border: 1px solid rgba(47, 107, 64, 0.35);
+      color: var(--green-2);
+      background: rgba(47, 107, 64, 0.12);
+      border-radius: 999px;
+      padding: 1px 8px;
+      font-size: 8.5px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .portal-card-head .badge.soft {
+      border-color: rgba(179, 162, 198, 0.5);
+      color: var(--ink-2);
+      background: rgba(241, 233, 251, 0.72);
+    }
+    .portal-kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+    .portal-stage-strip {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 5px;
+    }
+    .portal-stage-strip .stage {
+      border: 1px solid rgba(179, 162, 198, 0.54);
+      border-radius: 8px;
+      background: rgba(248, 243, 255, 0.8);
+      color: var(--ink-2);
+      font-size: 9.5px;
+      line-height: 1.2;
+      padding: 4px 6px;
+      letter-spacing: 0.03em;
+    }
+    .portal-stage-strip .stage.done {
+      border-color: rgba(47, 107, 64, 0.35);
+      background: rgba(47, 107, 64, 0.12);
+      color: #2f6b40;
+    }
+    .corpus-kpi {
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      padding: 7px 9px;
+      background: rgba(255, 253, 248, 0.84);
+    }
+    .corpus-kpi .k-label {
+      display: block;
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--ink-3);
+      margin-bottom: 4px;
+      font-weight: 600;
+    }
+    .corpus-kpi strong {
+      font-family: var(--serif);
+      color: var(--ink);
+      font-size: 22px;
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+    .corpus-kpi.removed strong {
+      color: var(--hug-2);
+    }
+    .corpus-side .corpus-live-note { margin: 0; }
+    .corpus-side .corpus-train-panel {
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      padding: 0;
+      gap: 8px;
+      box-shadow: none;
+    }
+    .corpus-side .corpus-legend {
+      align-self: stretch;
+      margin: 0;
+      border: 0;
+      background: transparent;
+      padding: 0;
+      gap: 6px;
+    }
+    .corpus-side .corpus-legend li {
+      border: 1px solid rgba(179, 162, 198, 0.46);
+      border-radius: 8px;
+      background: rgba(255, 253, 248, 0.8);
+      padding: 3px 6px;
+      font-size: 11px;
+    }
+    .corpus-side .corpus-legend li:hover {
+      background: rgba(245, 238, 255, 0.88);
+    }
+    .corpus-legend {
+      list-style: none;
+      margin: 0;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      background: rgba(255, 253, 248, 0.84);
+      display: grid;
+      gap: 8px;
+    }
+    .corpus-legend li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-left: 0;
+      color: var(--ink-2);
+      font-size: 12.5px;
+      border-radius: 9px;
+      transition: background .14s ease;
+    }
+    .corpus-legend li:hover {
+      background: rgba(132, 102, 178, 0.08);
+    }
+    .corpus-legend li::before {
+      display: none;
+    }
+    .corpus-legend .name {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .corpus-legend .swatch {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+    }
+    .corpus-legend .count {
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: 0.01em;
+    }
+    .corpus-domain-trigger {
+      appearance: none;
+      border: 0;
+      background: transparent;
+      color: inherit;
+      font: inherit;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 999px;
+      padding: 3px 7px;
+      margin-left: -7px;
+      cursor: pointer;
+      transition: background .14s ease, color .14s ease;
+    }
+    .corpus-domain-trigger:hover,
+    .corpus-domain-trigger.is-active {
+      background: rgba(132, 102, 178, 0.12);
+      color: var(--ink);
+    }
+    .corpus-domain-trigger:focus-visible {
+      outline: 2px solid rgba(132, 102, 178, 0.45);
+      outline-offset: 2px;
+      background: rgba(132, 102, 178, 0.1);
+    }
+    .corpus-domain-gain {
+      font: 700 10px var(--sans);
+      letter-spacing: 0.08em;
+      color: var(--green-2);
+      background: rgba(47, 107, 64, 0.12);
+      border: 1px solid rgba(47, 107, 64, 0.26);
+      border-radius: 999px;
+      padding: 1px 6px;
+      opacity: 0;
+      transform: translateY(2px);
+      transition: opacity .16s ease, transform .16s ease;
+      white-space: nowrap;
+    }
+    .corpus-domain-trigger:hover .corpus-domain-gain,
+    .corpus-domain-trigger:focus-visible .corpus-domain-gain,
+    .corpus-domain-trigger.is-active .corpus-domain-gain {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .corpus-live-note {
+      border: 1px dashed rgba(179, 162, 198, 0.6);
+      border-radius: 11px;
+      padding: 7px 8px;
+      background: rgba(255, 253, 248, 0.74);
+      font-size: 11px;
+      color: var(--ink-2);
+      line-height: 1.4;
+    }
+    .corpus-live-note strong {
+      color: var(--ink);
+      font-weight: 700;
+    }
+    .corpus-train-panel {
+      border: 1px solid rgba(179, 162, 198, 0.68);
+      border-radius: 11px;
+      background: rgba(250, 246, 255, 0.92);
+      padding: 10px 11px 11px;
+      display: grid;
+      gap: 9px;
+    }
+    .corpus-train-head {
+      display: grid;
+      gap: 3px;
+    }
+    .corpus-train-head strong {
+      color: var(--ink);
+      font-size: 12px;
+      letter-spacing: 0.03em;
+    }
+    .corpus-train-head span {
+      color: var(--ink-2);
+      font-size: 10.5px;
+      line-height: 1.35;
+    }
+    .corpus-train-controls {
+      display: grid;
+      gap: 8px;
+    }
+    .corpus-train-field {
+      display: grid;
+      gap: 4px;
+    }
+    .corpus-train-field label {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 8px;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.11em;
+      font-weight: 700;
+      color: var(--ink-3);
+    }
+    .corpus-train-field select,
+    .corpus-train-field input[type="range"] {
+      width: 100%;
+    }
+    .corpus-train-field select {
+      appearance: none;
+      border: 1px solid rgba(179, 162, 198, 0.78);
+      border-radius: 8px;
+      padding: 6px 8px;
+      font: 600 11px var(--sans);
+      color: var(--ink);
+      background: rgba(255, 253, 248, 0.95);
+    }
+    .corpus-train-field input[type="range"] {
+      accent-color: #6f57a2;
+      cursor: pointer;
+    }
+    .corpus-train-summary {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 7px;
+    }
+    .corpus-train-kpi {
+      border: 1px solid rgba(179, 162, 198, 0.58);
+      border-radius: 9px;
+      background: rgba(255, 253, 248, 0.86);
+      padding: 7px 8px;
+      display: grid;
+      gap: 2px;
+    }
+    .corpus-train-kpi .label {
+      font-size: 9.5px;
+      color: var(--ink-3);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 700;
+    }
+    .corpus-train-kpi strong {
+      color: var(--ink);
+      font: 700 16px/1 var(--serif);
+      letter-spacing: -0.02em;
+    }
+    .corpus-train-kpi .stat {
+      font-size: 9px;
+      color: var(--ink-3);
+      letter-spacing: 0.02em;
+      line-height: 1.25;
+    }
+    .corpus-train-domain-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 6px;
+    }
+    .corpus-train-domain-list li {
+      border: 1px solid rgba(179, 162, 198, 0.5);
+      border-radius: 8px;
+      background: rgba(255, 253, 248, 0.84);
+      padding: 4px 6px;
+      display: grid;
+      gap: 3px;
+    }
+    .corpus-train-domain-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 10px;
+      color: var(--ink-2);
+    }
+    .corpus-train-domain-top .name {
+      font-weight: 600;
+      color: var(--ink);
+    }
+    .corpus-train-domain-top .delta {
+      font-size: 9px;
+      color: var(--green-2);
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      white-space: normal;
+      line-height: 1.25;
+      text-align: right;
+      max-width: 62%;
+    }
+    .corpus-train-bar {
+      height: 6px;
+      border-radius: 999px;
+      background: rgba(210, 198, 224, 0.55);
+      position: relative;
+      overflow: hidden;
+    }
+    .corpus-train-bar .base,
+    .corpus-train-bar .after {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      border-radius: 999px;
+    }
+    .corpus-train-bar .base {
+      background: rgba(137, 113, 171, 0.42);
+    }
+    .corpus-train-bar .after {
+      background: linear-gradient(90deg, rgba(47, 107, 64, 0.78), rgba(55, 129, 77, 0.9));
+      transition: width .35s ease;
     }
     .stream {
       border: 1px solid rgba(179, 162, 198, 0.56);
@@ -381,6 +1059,265 @@
         0 0 0 1px rgba(255, 255, 255, 0.38) inset;
       padding: 20px;
     }
+
+    .sample-data {
+      margin-top: 10px;
+      border: 1px solid rgba(132, 102, 178, 0.38);
+      border-radius: 18px;
+      background: linear-gradient(180deg, rgba(252, 249, 255, 0.84), rgba(255, 255, 255, 0.92));
+      box-shadow:
+        0 20px 34px -34px rgba(60, 45, 90, 0.28),
+        0 0 0 1px rgba(255, 255, 255, 0.36) inset;
+      padding: 16px;
+    }
+    .sample-data h3 {
+      font-family: var(--serif);
+      font-weight: 360;
+      font-size: clamp(22px, 2.9vw, 34px);
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-bottom: 6px;
+    }
+    .sample-data p {
+      font-size: 13px;
+      color: var(--ink-2);
+      margin-bottom: 10px;
+    }
+    .sample-actions {
+      margin-bottom: 10px;
+    }
+    .sample-download-btn {
+      appearance: none;
+      border: 1px solid var(--ink);
+      border-radius: 999px;
+      background: var(--ink);
+      color: #fff;
+      padding: 8px 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-size: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform .14s ease, background .15s ease;
+    }
+    .sample-download-btn:hover {
+      transform: translateY(-1px);
+      background: #2d2720;
+    }
+    .sample-download-btn:disabled {
+      opacity: 0.56;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .sample-table-wrap {
+      position: relative;
+      overflow-x: auto;
+      border: 1px solid rgba(179, 162, 198, 0.64);
+      border-radius: 12px;
+      background: #fff;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65);
+    }
+    .sample-table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 1360px;
+      font-size: 13px;
+      color: var(--ink-2);
+      table-layout: auto;
+    }
+    .sample-table col.col-time {
+      width: 190px;
+    }
+    .sample-table col.col-source {
+      width: 155px;
+    }
+    .sample-table col.col-domain {
+      width: 120px;
+    }
+    .sample-table col.col-difficulty {
+      width: 122px;
+    }
+    .sample-table col.col-confidence {
+      width: 96px;
+    }
+    .sample-table col.col-cashback {
+      width: 150px;
+    }
+    .sample-table col.col-summary {
+      width: 30%;
+    }
+    .sample-table col.col-edits {
+      width: 40%;
+    }
+    .sample-table th,
+    .sample-table td {
+      text-align: left;
+      padding: 10px 12px;
+      border-bottom: 1px solid rgba(211, 200, 218, 0.62);
+      vertical-align: top;
+      white-space: normal;
+      line-height: 1.35;
+    }
+    .sample-table thead th {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      background: rgba(248, 243, 255, 0.96);
+      color: var(--ink);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 700;
+      border-bottom: 1px solid rgba(179, 162, 198, 0.72);
+      backdrop-filter: blur(3px);
+    }
+    .sample-table tbody tr:nth-child(even) {
+      background: rgba(251, 247, 255, 0.48);
+    }
+    .sample-table tbody tr:hover {
+      background: rgba(245, 238, 255, 0.7);
+    }
+    .sample-table td.time {
+      width: 165px;
+      color: var(--ink-3);
+      white-space: nowrap;
+      font-size: 12px;
+      letter-spacing: 0.01em;
+    }
+    .sample-table td.numeric {
+      width: 74px;
+      text-align: center;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .sample-table td.difficulty {
+      text-align: center;
+    }
+    .difficulty-meter {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      vertical-align: middle;
+    }
+    .difficulty-meter .block {
+      width: 12px;
+      height: 12px;
+      border-radius: 3px;
+      border: 1px solid rgba(179, 162, 198, 0.62);
+      background: rgba(236, 228, 245, 0.48);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+    }
+    .difficulty-meter .block.on {
+      background: linear-gradient(180deg, rgba(132, 102, 178, 0.84), rgba(110, 82, 154, 0.9));
+      border-color: rgba(95, 72, 135, 0.78);
+    }
+    .sample-table td.cashback {
+      width: 110px;
+      text-align: right;
+      white-space: nowrap;
+      font-weight: 700;
+      color: var(--green-2);
+      letter-spacing: 0.01em;
+    }
+    .sample-pill {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 2px 8px;
+      font-size: 10.5px;
+      line-height: 1.2;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      border: 1px solid transparent;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .sample-pill.ai {
+      background: rgba(132, 102, 178, 0.14);
+      border-color: rgba(132, 102, 178, 0.3);
+      color: #5f4b82;
+    }
+    .sample-pill.domain {
+      background: rgba(47, 107, 64, 0.12);
+      border-color: rgba(47, 107, 64, 0.26);
+      color: #2f6b40;
+    }
+    .sample-table td.summary {
+      white-space: normal;
+      min-width: 360px;
+      line-height: 1.35;
+    }
+    .sample-table td.edit-snippet {
+      white-space: normal;
+      min-width: 520px;
+      line-height: 1.35;
+      font-size: 12px;
+      border-left: 1px dashed rgba(179, 162, 198, 0.6);
+    }
+    .sample-table td.edit-snippet .edit-meta {
+      margin-bottom: 6px;
+    }
+    .sample-table td.edit-snippet .edit-count {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      border: 1px solid rgba(179, 162, 198, 0.7);
+      background: rgba(245, 239, 252, 0.92);
+      color: var(--ink-2);
+      font: 600 10.5px var(--sans);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      white-space: nowrap;
+    }
+    .sample-table thead th.edit-col {
+      border-left: 1px dashed rgba(179, 162, 198, 0.75);
+    }
+    .sample-table td.edit-snippet .fragment {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      color: var(--ink-2);
+    }
+    .sample-table td.edit-snippet .dots {
+      color: var(--ink-3);
+      letter-spacing: 0.04em;
+      font-family: var(--mono);
+    }
+    .sample-table td.edit-snippet .bad {
+      color: #7a1f1a;
+      background: rgba(196, 74, 63, 0.16);
+      border: 1px solid rgba(196, 74, 63, 0.26);
+      border-radius: 6px;
+      padding: 1px 5px;
+      margin: 0 2px;
+      text-decoration: line-through;
+      text-decoration-thickness: 1.6px;
+      text-decoration-color: rgba(122, 31, 26, 0.85);
+    }
+    .sample-table td.edit-snippet .good {
+      color: #1f5530;
+      background: rgba(47, 107, 64, 0.16);
+      border: 1px solid rgba(47, 107, 64, 0.3);
+      border-radius: 6px;
+      padding: 1px 5px;
+      margin: 0 2px;
+    }
+    .sample-table td.edit-snippet .arrow {
+      color: var(--ink-3);
+      font-weight: 700;
+      font-size: 12px;
+      line-height: 1;
+    }
+    .sample-table tbody tr:last-child td {
+      border-bottom: 0;
+    }
+    .sample-table tbody tr.sample-row-leaving {
+      opacity: 0;
+      transform: translateY(-14px);
+      transition: transform .18s ease, opacity .18s ease;
+    }
     .trial h3 {
       font-family: var(--serif);
       font-weight: 350;
@@ -499,6 +1436,10 @@
 
     @media (max-width: 1040px) {
       .streams { grid-template-columns: 1fr; }
+      .corpus-side { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .portal-card.portal-card-metrics,
+      .portal-card.portal-card-training,
+      .portal-card.portal-card-legend { grid-column: span 2; }
     }
     @media (max-width: 760px) {
       .app { padding: 0 16px 34px; }
@@ -506,8 +1447,15 @@
         flex-direction: column;
         align-items: flex-start;
       }
+      .hero h1 .hero-question { white-space: normal; }
+      .corpus-side { grid-template-columns: 1fr; }
+      .portal-card.portal-card-metrics,
+      .portal-card.portal-card-training,
+      .portal-card.portal-card-legend { grid-column: span 1; }
+      .portal-stage-strip { grid-template-columns: 1fr; }
+      .bridge-grid { grid-template-columns: 1fr; }
       .trial-grid { grid-template-columns: 1fr; }
-      .hero, .stream-head, .trial { padding: 16px; }
+      .hero, .corpus-bridge, .stream-head, .trial { padding: 16px; }
       .tiers { padding: 10px; }
       .tiers::before { display: none; }
       .tier-card,
@@ -538,19 +1486,205 @@
 
     <section class="hero" aria-labelledby="enterprise-pricing-title">
       <div class="kicker">for enterprise users</div>
-      <h1 id="enterprise-pricing-title">Enterprise pricing for <em>data licensing</em> and <em>audit coverage</em>.</h1>
-      <p>Choose the stream that fits your deployment model. Data Licensing is built for model teams training and evaluating systems. Enterprise Audits is built for organizations deploying LLMs internally with governance and compliance requirements.</p>
-      <p class="hero-pricing-note">Quarterly pricing is modeled at approximately a 15% premium versus annualized quarterly rates.</p>
-      <div class="hero-trial"><span class="dot" aria-hidden="true"></span> One-month free trial available for qualified enterprise teams.</div>
+      <h1 id="enterprise-pricing-title">
+        <span class="hero-question">Building a <em>self-evolving agent</em>?</span>
+        <span class="hero-question">LLM looks good but not <em>trustworthy</em> enough?</span>
+        <span class="hero-question">Worry about <em>real-world deployment</em>?</span>
+      </h1>
+      <p>Hug Claims helps teams turn failure cases into practical improvement loops: data licensing for training and evaluation coverage, and audit coverage for deployment governance and compliance readiness.</p>
+      <div class="hero-trial"><span class="dot" aria-hidden="true"></span> <a href="#enterprise-grant">Enterprise Grant available for qualified enterprise teams.</a></div>
     </section>
 
+    <!--
+    <section class="corpus-bridge" aria-labelledby="failure-corpus-title">
+      <div class="bridge-label">why this exists</div>
+      <h2 id="failure-corpus-title">Failure Mode Corpus powers both <em>data licensing</em> and <em>audit coverage</em>.</h2>
+      <p>The Failure Mode Corpus is the shared evidence layer behind our enterprise offering. Every validated failure item includes taxonomy labels, severity, domain context, and remediation traceability so teams can train safer systems and prove governance decisions.</p>
+      <div class="corpus-figure-block" aria-labelledby="failure-corpus-figure-title">
+        <div class="corpus-figure-head">
+          <h3 id="failure-corpus-figure-title">Failure Data Cluster</h3>
+          <p>Interactive post-training portal for failure data triage, model tuning, and domain lift tracking.</p>
+        </div>
+        <div class="corpus-shell">
+          <div class="corpus-portal">
+            <div class="corpus-portal-top">
+              <span class="corpus-portal-lights" aria-hidden="true"><span class="light l-red"></span><span class="light l-yellow"></span><span class="light l-green"></span></span>
+              <span class="corpus-portal-title">failure-corpus.posttrain.workspace</span>
+              <span class="corpus-portal-status">live cluster stream</span>
+            </div>
+            <div class="corpus-plot" id="enterpriseCorpusPlot" role="img" aria-label="Clustered failure mode corpus with domain density">
+              <div class="corpus-scene" id="enterpriseCorpusScene">
+                <div class="corpus-density-layer" aria-hidden="true">
+                  <span class="corpus-blob b-medicine"></span>
+                  <span class="corpus-blob b-finance"></span>
+                  <span class="corpus-blob b-legal"></span>
+                  <span class="corpus-blob b-math"></span>
+                  <span class="corpus-blob b-coding"></span>
+                  <span class="corpus-blob b-other"></span>
+                </div>
+                <button type="button" class="corpus-cluster-label corpus-domain-source l-medicine" data-domain="medicine" data-domain-label="Medicine">Medicine</button>
+                <button type="button" class="corpus-cluster-label corpus-domain-source l-finance" data-domain="finance" data-domain-label="Finance">Finance</button>
+                <button type="button" class="corpus-cluster-label corpus-domain-source l-legal" data-domain="legal" data-domain-label="Legal">Legal</button>
+                <button type="button" class="corpus-cluster-label corpus-domain-source l-math" data-domain="math" data-domain-label="Math">Math</button>
+                <button type="button" class="corpus-cluster-label corpus-domain-source l-coding" data-domain="coding" data-domain-label="Coding">Coding</button>
+                <button type="button" class="corpus-cluster-label corpus-domain-source l-other" data-domain="other" data-domain-label="Other (e.g., music, travel, education)">Other</button>
+                <div class="corpus-dots" id="enterpriseCorpusDots"></div>
+              </div>
+            </div>
+          </div>
+          <aside class="corpus-side" aria-label="Enterprise corpus statistics">
+            <div class="corpus-kpi k-total">
+              <span class="k-label">Verified datapoints</span>
+              <strong id="enterpriseCorpusTotal">0</strong>
+            </div>
+            <div class="corpus-kpi removed k-removed">
+              <span class="k-label">Invalidated removed</span>
+              <strong id="enterpriseCorpusRemoved">0</strong>
+            </div>
+            <div class="corpus-live-note" id="enterpriseCorpusLiveNote">Streaming updates every 3s.</div>
+            <ul class="corpus-legend" id="enterpriseCorpusLegend"></ul>
+          </aside>
+        </div>
+      </div>
+      <div class="bridge-grid">
+        <article class="bridge-card">
+          <div class="card-kicker">why data licensing</div>
+          <h3>Licensed corpus for model improvement</h3>
+          <ul>
+            <li><strong>Provenance and usage rights:</strong> reduce legal uncertainty in training and evaluation workflows.</li>
+            <li><strong>Hard-negative coverage:</strong> target known failure modes your benchmark set usually misses.</li>
+            <li><strong>Regression control:</strong> keep model releases anchored to consistent failure taxonomy slices.</li>
+          </ul>
+        </article>
+        <article class="bridge-card">
+          <div class="card-kicker">why audit coverage</div>
+          <h3>Operational oversight after deployment</h3>
+          <ul>
+            <li><strong>Shared risk taxonomy:</strong> audit production behavior against the same corpus used in evaluation.</li>
+            <li><strong>Defensible reporting:</strong> retain evidence trails for internal governance and regulator review.</li>
+            <li><strong>Continuous monitoring:</strong> detect recurrence patterns before failures become incidents.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+    -->
+
+    <section class="corpus-bridge" aria-labelledby="failure-corpus-figure-title">
+      <div class="corpus-figure-block">
+        <div class="corpus-figure-head">
+          <h3 id="failure-corpus-figure-title">Failure Data Cluster</h3>
+          <p>Interactive post-training portal for failure data triage, model tuning, and domain lift tracking.</p>
+        </div>
+        <div class="corpus-shell">
+          <div class="corpus-portal">
+            <div class="corpus-portal-top">
+              <span class="corpus-portal-lights" aria-hidden="true"><span class="light l-red"></span><span class="light l-yellow"></span><span class="light l-green"></span></span>
+              <span class="corpus-portal-title">failure-corpus.posttrain.workspace</span>
+              <span class="corpus-portal-status">live cluster stream</span>
+            </div>
+            <div class="corpus-plot" id="enterpriseCorpusPlot" role="img" aria-label="Clustered failure mode corpus with domain density">
+              <div class="corpus-scene" id="enterpriseCorpusScene">
+                <div class="corpus-density-layer" aria-hidden="true">
+                  <span class="corpus-blob b-medicine"></span>
+                  <span class="corpus-blob b-finance"></span>
+                  <span class="corpus-blob b-legal"></span>
+                  <span class="corpus-blob b-math"></span>
+                  <span class="corpus-blob b-coding"></span>
+                  <span class="corpus-blob b-other"></span>
+                </div>
+                <button type="button" class="corpus-cluster-label corpus-domain-source l-medicine" data-domain="medicine" data-domain-label="Medicine">Medicine</button>
+                <button type="button" class="corpus-cluster-label corpus-domain-source l-finance" data-domain="finance" data-domain-label="Finance">Finance</button>
+                <button type="button" class="corpus-cluster-label corpus-domain-source l-legal" data-domain="legal" data-domain-label="Legal">Legal</button>
+                <button type="button" class="corpus-cluster-label corpus-domain-source l-math" data-domain="math" data-domain-label="Math">Math</button>
+                <button type="button" class="corpus-cluster-label corpus-domain-source l-coding" data-domain="coding" data-domain-label="Coding">Coding</button>
+                <button type="button" class="corpus-cluster-label corpus-domain-source l-other" data-domain="other" data-domain-label="Other (e.g., music, travel, education)">Other</button>
+                <div class="corpus-dots" id="enterpriseCorpusDots"></div>
+              </div>
+            </div>
+          </div>
+          <aside class="corpus-side" aria-label="Enterprise corpus statistics">
+            <div class="portal-tabs" role="tablist" aria-label="Portal views">
+              <button type="button" class="portal-tab is-active" role="tab" aria-selected="true" data-portal-tab="metrics">Snapshot</button>
+              <button type="button" class="portal-tab" role="tab" aria-selected="false" data-portal-tab="training">Trainer</button>
+              <button type="button" class="portal-tab" role="tab" aria-selected="false" data-portal-tab="legend">Domain Lift</button>
+            </div>
+            <section class="portal-card portal-card-metrics is-active" data-portal-panel="metrics" aria-label="Pipeline snapshot">
+              <div class="portal-card-head">
+                <span class="title">Pipeline Snapshot</span>
+                <span class="badge">post-train ready</span>
+              </div>
+              <div class="portal-kpi-grid">
+                <div class="corpus-kpi k-total">
+                  <span class="k-label">Verified datapoints</span>
+                  <strong id="enterpriseCorpusTotal">0</strong>
+                </div>
+                <div class="corpus-kpi removed k-removed">
+                  <span class="k-label">Invalidated removed</span>
+                  <strong id="enterpriseCorpusRemoved">0</strong>
+                </div>
+              </div>
+              <div class="portal-stage-strip" aria-label="Post-training pipeline stages">
+                <span class="stage done">1. Collect failures</span>
+                <span class="stage done">2. Curate + validate</span>
+                <span class="stage done">3. Post-train model</span>
+                <span class="stage done">4. Regression check</span>
+              </div>
+              <div class="corpus-live-note" id="enterpriseCorpusLiveNote">Streaming updates every 3s.</div>
+            </section>
+            <section class="portal-card portal-card-training" data-portal-panel="training" aria-label="Training controls and gains">
+              <div class="portal-card-head">
+                <span class="title">Training Controls</span>
+                <span class="badge soft" id="enterpriseTrainCoverageBadge">40% coverage</span>
+              </div>
+              <div class="corpus-train-panel" aria-label="Post-training performance simulator">
+                <div class="corpus-train-head">
+                  <strong>Post-Training Simulator</strong>
+                  <span>See how targeted post-training on failure data improves domain performance.</span>
+                </div>
+                <div class="corpus-train-controls">
+                  <div class="corpus-train-field">
+                    <label for="enterpriseTrainModel"><span>Model</span></label>
+                    <select id="enterpriseTrainModel" aria-label="Choose base model">
+                      <option value="gpt55">GPT 5.5</option>
+                      <option value="claude48">Claude Opus 4.8</option>
+                      <option value="gemini35flash">Gemini 3.5 Flash</option>
+                    </select>
+                  </div>
+                  <div class="corpus-train-field">
+                    <label for="enterpriseTrainCoverage"><span>Failure Data Coverage</span><span id="enterpriseTrainCoverageValue">40%</span></label>
+                    <input id="enterpriseTrainCoverage" type="range" min="0" max="100" step="5" value="40" />
+                  </div>
+                </div>
+                <div class="corpus-train-summary">
+                  <div class="corpus-train-kpi">
+                    <span class="label">Baseline Accuracy</span>
+                    <strong id="enterpriseTrainBaseline">--</strong>
+                    <span class="stat" id="enterpriseTrainBaselineStat">(accuracy, 95% CI: --)</span>
+                  </div>
+                  <div class="corpus-train-kpi">
+                    <span class="label">Post-Train Accuracy</span>
+                    <strong id="enterpriseTrainAfter">--</strong>
+                    <span class="stat" id="enterpriseTrainAfterStat">(accuracy, 95% CI: --)</span>
+                  </div>
+                </div>
+                <ul class="corpus-train-domain-list" id="enterpriseTrainDomainList"></ul>
+              </div>
+            </section>
+            <section class="portal-card portal-card-legend" data-portal-panel="legend" aria-label="Domain risk and lift map">
+              <div class="portal-card-head">
+                <span class="title">Domain Risk + Lift</span>
+                <span class="badge soft">live</span>
+              </div>
+              <ul class="corpus-legend" id="enterpriseCorpusLegend"></ul>
+            </section>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!--
     <section class="streams" aria-label="Enterprise pricing streams">
       <article class="stream">
-        <div class="stream-head">
-          <div class="stream-label">stream one</div>
-          <h2>Enterprise Data Licensing</h2>
-          <p>Verified LLM failure datasets delivered as feeds for training, evaluation, and model risk analysis.</p>
-        </div>
         <div class="tiers">
           <details class="tier-card">
             <summary class="tier-top">
@@ -629,11 +1763,6 @@
       </article>
 
       <article class="stream">
-        <div class="stream-head">
-          <div class="stream-label">stream two</div>
-          <h2>Enterprise Audits</h2>
-          <p>Operational oversight for LLM deployments, with risk reporting, taxonomy governance, and compliance alignment.</p>
-        </div>
         <div class="tiers">
           <details class="tier-card">
             <summary class="tier-top">
@@ -710,8 +1839,47 @@
         </div>
       </article>
     </section>
+    -->
 
-    <section class="trial" aria-labelledby="trial-title">
+    <section class="sample-data" aria-labelledby="sample-data-title">
+      <h3 id="sample-data-title">Sample Failure Modes Data</h3>
+      <div class="sample-actions">
+        <button type="button" class="sample-download-btn" id="downloadLicensingSubsetBtn">Failure Sample Data Download</button>
+      </div>
+      <div class="sample-table-wrap">
+        <table class="sample-table" aria-label="Sample data licensing failure mode rows">
+          <colgroup>
+            <col class="col-time" />
+            <col class="col-source" />
+            <col class="col-domain" />
+            <col class="col-difficulty" />
+            <col class="col-confidence" />
+            <col class="col-cashback" />
+            <col class="col-summary" />
+            <col class="col-edits" />
+          </colgroup>
+          <thead>
+            <tr>
+              <th>Observed Time (UTC)</th>
+              <th>Source AI</th>
+              <th>Domain</th>
+              <th>Difficulty</th>
+              <th>Confidence</th>
+              <th>User Cashback Amount</th>
+              <th class="summary-col">Failure Summary</th>
+              <th class="edit-col">Failure Edits</th>
+            </tr>
+          </thead>
+          <tbody id="licensingSampleBody">
+            <tr>
+              <td colspan="8">Loading sample rows...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="enterprise-grant" class="trial" aria-labelledby="trial-title">
       <h3 id="trial-title">Hug Claims <em>Enterprise Grant</em></h3>
       <p>Apply for the Enterprise Grant to receive your one-month free trial. We run the onboarding and integration sprint so your team can validate data quality and risk visibility before signing an annual contract.</p>
       <div class="trial-grid">
@@ -745,5 +1913,809 @@
       <div><em>enterprise user pricing</em></div>
     </footer>
   </div>
+  <script>
+    (function initEnterpriseFailureCorpus() {
+      const plot = document.getElementById('enterpriseCorpusPlot');
+      const dotsLayer = document.getElementById('enterpriseCorpusDots');
+      const totalEl = document.getElementById('enterpriseCorpusTotal');
+      const removedEl = document.getElementById('enterpriseCorpusRemoved');
+      const legendEl = document.getElementById('enterpriseCorpusLegend');
+      const liveNoteEl = document.getElementById('enterpriseCorpusLiveNote');
+      const trainModelEl = document.getElementById('enterpriseTrainModel');
+      const trainCoverageEl = document.getElementById('enterpriseTrainCoverage');
+      const trainCoverageValueEl = document.getElementById('enterpriseTrainCoverageValue');
+      const trainCoverageBadgeEl = document.getElementById('enterpriseTrainCoverageBadge');
+      const trainBaselineEl = document.getElementById('enterpriseTrainBaseline');
+      const trainAfterEl = document.getElementById('enterpriseTrainAfter');
+      const trainBaselineStatEl = document.getElementById('enterpriseTrainBaselineStat');
+      const trainAfterStatEl = document.getElementById('enterpriseTrainAfterStat');
+      const trainDomainListEl = document.getElementById('enterpriseTrainDomainList');
+      const portalTabEls = Array.from(document.querySelectorAll('.portal-tab[data-portal-tab]'));
+      const portalPanelEls = Array.from(document.querySelectorAll('.portal-card[data-portal-panel]'));
+      if (!plot || !dotsLayer || !totalEl || !removedEl || !legendEl || !liveNoteEl) return;
+
+      const renderedDotTotal = 1286;
+      const domains = [
+        { id: 'medicine', label: 'Medicine', center: [19, 24], spread: [8.8, 7.6] },
+        { id: 'finance', label: 'Finance', center: [76, 27], spread: [9.2, 7.8] },
+        { id: 'legal', label: 'Legal', center: [23, 72], spread: [8.6, 8.0] },
+        { id: 'math', label: 'Math', center: [72, 73], spread: [9.0, 7.8] },
+        { id: 'coding', label: 'Coding', center: [48, 50], spread: [10.2, 9.0] },
+        { id: 'other', label: 'Other (e.g., music, travel, education)', center: [79, 48], spread: [15.5, 11.5] },
+      ];
+      const colorMap = {
+        medicine: 'rgba(196, 74, 63, 0.92)',
+        finance: 'rgba(45, 112, 152, 0.92)',
+        legal: 'rgba(47, 107, 64, 0.92)',
+        math: 'rgba(128, 95, 168, 0.92)',
+        coding: 'rgba(212, 130, 37, 0.95)',
+        other: 'rgba(108, 121, 142, 0.9)',
+      };
+      const domainIds = domains.map((d) => d.id);
+      const state = { points: [], nextId: 1, removed: 0, targetCounts: null };
+      const domainImprovements = {};
+      let activeDomainId = null;
+      let defaultNoteHtml = liveNoteEl.innerHTML;
+      const modelProfiles = {
+        gpt55: {
+          label: 'GPT 5.5',
+          baselinePass: 73.2,
+          domainBase: { medicine: 70.9, finance: 74.6, legal: 72.3, math: 78.1, coding: 76.5, other: 71.4 },
+          domainLiftPotential: { medicine: 9.8, finance: 8.1, legal: 10.4, math: 6.5, coding: 7.4, other: 8.7 },
+        },
+        claude48: {
+          label: 'Claude Opus 4.8',
+          baselinePass: 71.8,
+          domainBase: { medicine: 69.8, finance: 73.2, legal: 75.2, math: 73.6, coding: 75.8, other: 70.4 },
+          domainLiftPotential: { medicine: 10.5, finance: 7.3, legal: 8.8, math: 7.9, coding: 8.5, other: 8.2 },
+        },
+        gemini35flash: {
+          label: 'Gemini 3.5 Flash',
+          baselinePass: 69.5,
+          domainBase: { medicine: 67.7, finance: 70.6, legal: 69.8, math: 72.9, coding: 71.8, other: 68.2 },
+          domainLiftPotential: { medicine: 11.2, finance: 8.9, legal: 10.1, math: 8.2, coding: 8.6, other: 9.4 },
+        },
+      };
+      const trainState = {
+        model: 'gpt55',
+        coverage: 40,
+      };
+
+      function randn() {
+        let u = 0;
+        let v = 0;
+        while (u === 0) u = Math.random();
+        while (v === 0) v = Math.random();
+        return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+      }
+      function clamp(value, min, max) {
+        return Math.max(min, Math.min(max, value));
+      }
+      function formatInt(n) {
+        return new Intl.NumberFormat('en-US').format(n);
+      }
+      function formatPct(n) {
+        return `${n.toFixed(1)}%`;
+      }
+      function formatCiRange(ci) {
+        return `${formatPct(ci.low)}-${formatPct(ci.high)}`;
+      }
+      function emptyCounts() {
+        return Object.fromEntries(domainIds.map((id) => [id, 0]));
+      }
+      function sumCounts(counts) {
+        return domainIds.reduce((sum, id) => sum + (counts[id] || 0), 0);
+      }
+      function getRenderTotal() {
+        return renderedDotTotal;
+      }
+      function getDisplayTotal() {
+        return renderedDotTotal;
+      }
+      function scaleCountsToTotal(counts, total) {
+        const safeTotal = Math.max(0, Number.parseInt(String(total), 10) || 0);
+        const scaled = emptyCounts();
+        if (safeTotal === 0) return scaled;
+        const baseTotal = sumCounts(counts);
+        if (baseTotal <= 0) {
+          const per = Math.floor(safeTotal / domainIds.length);
+          let remainder = safeTotal - (per * domainIds.length);
+          domainIds.forEach((id) => { scaled[id] = per; });
+          let idx = 0;
+          while (remainder > 0) {
+            scaled[domainIds[idx % domainIds.length]] += 1;
+            idx += 1;
+            remainder -= 1;
+          }
+          return scaled;
+        }
+        const fractions = [];
+        let allocated = 0;
+        domainIds.forEach((id) => {
+          const exact = ((counts[id] || 0) / baseTotal) * safeTotal;
+          const floor = Math.floor(exact);
+          scaled[id] = floor;
+          allocated += floor;
+          fractions.push({ id, frac: exact - floor });
+        });
+        let remainder = safeTotal - allocated;
+        fractions.sort((a, b) => b.frac - a.frac);
+        let cursor = 0;
+        while (remainder > 0) {
+          scaled[fractions[cursor % fractions.length].id] += 1;
+          cursor += 1;
+          remainder -= 1;
+        }
+        return scaled;
+      }
+      function displayCountsByDomain() {
+        return scaleCountsToTotal(countsByDomain(), getDisplayTotal());
+      }
+      function currentProfile() {
+        return modelProfiles[trainState.model] || modelProfiles.gpt55;
+      }
+      function coverageFactor() {
+        const normalized = Math.max(0, Math.min(1, trainState.coverage / 100));
+        return Math.pow(normalized, 0.82);
+      }
+      function domainBaseScore(domainId) {
+        const profile = currentProfile();
+        return profile.domainBase[domainId] || profile.baselinePass;
+      }
+      function domainLiftPoints(domainId) {
+        const profile = currentProfile();
+        const maxLift = profile.domainLiftPotential[domainId] || 7.5;
+        return maxLift * coverageFactor();
+      }
+      function domainPostScore(domainId) {
+        return Math.min(99.4, domainBaseScore(domainId) + domainLiftPoints(domainId));
+      }
+      function domainRelativeGainPct(domainId) {
+        const before = domainBaseScore(domainId);
+        const after = domainPostScore(domainId);
+        return Math.max(0, ((after - before) / Math.max(before, 1)) * 100);
+      }
+      function effectiveSampleSize(rawCount) {
+        const safeCount = Math.max(1, Number.parseInt(String(rawCount), 10) || 1);
+        const coverageWeight = 0.06 + (trainState.coverage / 450);
+        return Math.max(80, Math.round(safeCount * coverageWeight));
+      }
+      function confidenceInterval(scorePct, sampleSize) {
+        const p = clamp(scorePct / 100, 0.01, 0.99);
+        const n = Math.max(1, sampleSize);
+        const halfWidth = clamp(1.96 * Math.sqrt((p * (1 - p)) / n) * 100, 0.35, 8.5);
+        return {
+          low: clamp(scorePct - halfWidth, 0, 100),
+          high: clamp(scorePct + halfWidth, 0, 100),
+        };
+      }
+      function weightedModelScores() {
+        const counts = displayCountsByDomain();
+        const totalCount = sumCounts(counts);
+        if (!totalCount) {
+          const baseline = domainIds.reduce((acc, id) => acc + domainBaseScore(id), 0) / domainIds.length;
+          const after = domainIds.reduce((acc, id) => acc + domainPostScore(id), 0) / domainIds.length;
+          return { baseline, after, delta: after - baseline };
+        }
+        let baselineWeighted = 0;
+        let afterWeighted = 0;
+        domainIds.forEach((id) => {
+          const weight = counts[id] || 0;
+          baselineWeighted += domainBaseScore(id) * weight;
+          afterWeighted += domainPostScore(id) * weight;
+        });
+        const baseline = baselineWeighted / totalCount;
+        const after = afterWeighted / totalCount;
+        return { baseline, after, delta: after - baseline };
+      }
+      function refreshDomainImprovements() {
+        domainIds.forEach((id) => {
+          domainImprovements[id] = Number(domainRelativeGainPct(id).toFixed(1));
+        });
+      }
+      function updateDefaultLiveNote(feedAdded, feedRemoved) {
+        const scores = weightedModelScores();
+        const profile = currentProfile();
+        const relativeGainPct = Math.max(0, ((scores.after - scores.baseline) / Math.max(scores.baseline, 1)) * 100);
+        const overallSample = effectiveSampleSize(sumCounts(displayCountsByDomain()));
+        const afterCi = confidenceInterval(scores.after, overallSample);
+        const simulationLine = `<strong>Post-train:</strong> ${profile.label} ${formatPct(scores.baseline)} → ${formatPct(scores.after)} (+${relativeGainPct.toFixed(1)}% accuracy, 95% CI ${formatCiRange(afterCi)})`;
+        if (typeof feedAdded === 'number' && typeof feedRemoved === 'number') {
+          defaultNoteHtml = `<strong>Last update:</strong> +${feedAdded} verified, -${feedRemoved} removed<br>${simulationLine}`;
+        } else {
+          defaultNoteHtml = `${simulationLine}<br><strong>Corpus stream:</strong> updates every 3s`;
+        }
+        if (!activeDomainId) {
+          liveNoteEl.innerHTML = defaultNoteHtml;
+        }
+      }
+      function renderTrainingPanel() {
+        if (!trainModelEl || !trainCoverageEl || !trainCoverageValueEl || !trainBaselineEl || !trainAfterEl || !trainDomainListEl) return;
+        trainModelEl.value = trainState.model;
+        trainCoverageEl.value = String(trainState.coverage);
+        trainCoverageValueEl.textContent = `${trainState.coverage}%`;
+        if (trainCoverageBadgeEl) {
+          trainCoverageBadgeEl.textContent = `${trainState.coverage}% coverage`;
+        }
+        const scores = weightedModelScores();
+        trainBaselineEl.textContent = formatPct(scores.baseline);
+        trainAfterEl.textContent = formatPct(scores.after);
+        const overallSample = effectiveSampleSize(sumCounts(displayCountsByDomain()));
+        const baselineCi = confidenceInterval(scores.baseline, overallSample);
+        const afterCi = confidenceInterval(scores.after, overallSample);
+        if (trainBaselineStatEl) {
+          trainBaselineStatEl.textContent = `(accuracy, 95% CI: ${formatCiRange(baselineCi)})`;
+        }
+        if (trainAfterStatEl) {
+          trainAfterStatEl.textContent = `(accuracy, 95% CI: ${formatCiRange(afterCi)})`;
+        }
+        const displayCounts = displayCountsByDomain();
+        trainDomainListEl.innerHTML = domains.map((domain) => {
+          const baseline = domainBaseScore(domain.id);
+          const after = domainPostScore(domain.id);
+          const relativeGainPct = Math.max(0, ((after - baseline) / Math.max(baseline, 1)) * 100);
+          const domainSample = effectiveSampleSize(displayCounts[domain.id] || 1);
+          const domainCi = confidenceInterval(after, domainSample);
+          const baseWidth = clamp((baseline - 45) * 2.2, 6, 96);
+          const afterWidth = clamp((after - 45) * 2.2, baseWidth, 98);
+          return `<li><div class="corpus-train-domain-top"><span class="name">${domain.label}</span><span class="delta">+${relativeGainPct.toFixed(1)}% (accuracy, 95% CI: ${formatCiRange(domainCi)})</span></div><div class="corpus-train-bar"><span class="base" style="width:${baseWidth}%"></span><span class="after" style="width:${afterWidth}%"></span></div></li>`;
+        }).join('');
+        if (!activeDomainId) {
+          liveNoteEl.innerHTML = defaultNoteHtml;
+        }
+      }
+      function setActivePortalPanel(panelId) {
+        if (!portalPanelEls.length || !portalTabEls.length) return;
+        portalPanelEls.forEach((panel) => {
+          const isActive = panel.dataset.portalPanel === panelId;
+          panel.classList.toggle('is-active', isActive);
+          panel.hidden = !isActive;
+        });
+        portalTabEls.forEach((tab) => {
+          const isActive = tab.dataset.portalTab === panelId;
+          tab.classList.toggle('is-active', isActive);
+          tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
+          tab.tabIndex = isActive ? 0 : -1;
+        });
+      }
+      function shuffle(list) {
+        const arr = list.slice();
+        for (let i = arr.length - 1; i > 0; i -= 1) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+      }
+      function buildRandomTargetCounts(total) {
+        const counts = emptyCounts();
+        if (total <= 0) return counts;
+
+        const highThreshold = 201;
+        let highWanted = 6;
+        if (total < highThreshold * 6) highWanted = 5;
+        if (total < highThreshold * 5 + 40) highWanted = 4;
+        if (total < highThreshold * 4 + 60) {
+          highWanted = Math.max(1, Math.floor(total / highThreshold));
+        }
+
+        const shuffled = shuffle(domainIds);
+        const highIds = shuffled.slice(0, highWanted);
+        const lowIds = shuffled.slice(highWanted);
+        const lowFloor = lowIds.length ? Math.min(60, Math.max(18, Math.floor(total * 0.02))) : 0;
+
+        highIds.forEach((id) => { counts[id] = highThreshold; });
+        lowIds.forEach((id) => { counts[id] = lowFloor; });
+
+        let baseline = sumCounts(counts);
+        if (baseline > total) {
+          domainIds.forEach((id) => { counts[id] = 0; });
+          baseline = 0;
+        }
+
+        let remaining = total - baseline;
+        while (remaining > 0) {
+          const id = domainIds[Math.floor(Math.random() * domainIds.length)];
+          const chunk = Math.min(remaining, 1 + Math.floor(Math.random() * 28));
+          counts[id] += chunk;
+          remaining -= chunk;
+        }
+
+        return counts;
+      }
+      function adjustCountsToTotal(current, total) {
+        const counts = { ...(current || emptyCounts()) };
+        let diff = total - sumCounts(counts);
+        while (diff > 0) {
+          const id = domainIds[Math.floor(Math.random() * domainIds.length)];
+          counts[id] += 1;
+          diff -= 1;
+        }
+        while (diff < 0) {
+          const removable = domainIds.filter((id) => counts[id] > 1);
+          if (!removable.length) break;
+          const id = removable[Math.floor(Math.random() * removable.length)];
+          counts[id] -= 1;
+          diff += 1;
+        }
+        return counts;
+      }
+      function setActiveDomainSource(domainId) {
+        document.querySelectorAll('.corpus-domain-source.is-active').forEach((el) => el.classList.remove('is-active'));
+        if (!domainId) return;
+        document.querySelectorAll(`.corpus-domain-source[data-domain="${domainId}"]`).forEach((el) => el.classList.add('is-active'));
+      }
+      function clearActiveDomainPreview() {
+        activeDomainId = null;
+        setActiveDomainSource(null);
+        liveNoteEl.innerHTML = defaultNoteHtml;
+      }
+      function previewDomainImprovement(trigger, forceNew) {
+        const domainId = trigger.dataset.domain;
+        const domainLabel = trigger.dataset.domainLabel || domainId;
+        if (!domainId) return;
+        if (forceNew || !domainImprovements[domainId]) {
+          domainImprovements[domainId] = domainRelativeGainPct(domainId);
+        }
+        const pct = domainImprovements[domainId];
+        const profile = currentProfile();
+        activeDomainId = domainId;
+        setActiveDomainSource(domainId);
+        const gainEl = trigger.querySelector('.corpus-domain-gain');
+        if (gainEl) gainEl.textContent = `+${pct}%`;
+        legendEl.querySelectorAll(`.corpus-domain-trigger[data-domain="${domainId}"] .corpus-domain-gain`).forEach((el) => {
+          el.textContent = `+${pct}%`;
+        });
+        liveNoteEl.innerHTML = `<strong>${domainLabel}:</strong> ${profile.label} improves +${pct}% after post-training at ${trainState.coverage}% coverage`;
+      }
+      function pointForDomain(domain, entering) {
+        const isOther = domain.id === 'other';
+        const jitterBoost = (1 + Math.random() * 1.25) * (isOther ? 1.15 : 1);
+        const isClusterOutlier = Math.random() < (isOther ? 0.35 : 0.28);
+        const isGlobalOutlier = Math.random() < (isOther ? 0.16 : 0.11);
+        let x = domain.center[0] + randn() * domain.spread[0] * jitterBoost;
+        let y = domain.center[1] + randn() * domain.spread[1] * jitterBoost;
+        if (isClusterOutlier) {
+          x += randn() * (domain.spread[0] * 1.5) + (Math.random() - 0.5) * 18;
+          y += randn() * (domain.spread[1] * 1.5) + (Math.random() - 0.5) * 18;
+        }
+        if (isGlobalOutlier) {
+          x = 2 + Math.random() * 96;
+          y = 4 + Math.random() * 92;
+        }
+        x = clamp(x, 2.4, 97.6);
+        y = clamp(y, 4.4, 95.6);
+        const size = Math.round(clamp(1.8 + Math.random() * 11.4, 2, 14));
+        const el = document.createElement('span');
+        el.className = `corpus-dot d-${domain.id}${entering ? ' entering' : ''}`;
+        el.style.left = `${x}%`;
+        el.style.top = `${y}%`;
+        el.style.width = `${size}px`;
+        el.style.height = `${size}px`;
+        dotsLayer.appendChild(el);
+        if (entering) setTimeout(() => el.classList.remove('entering'), 380);
+        return { id: state.nextId++, domain: domain.id, x, y, el };
+      }
+      function countsByDomain() {
+        const counts = Object.fromEntries(domains.map((d) => [d.id, 0]));
+        state.points.forEach((p) => { counts[p.domain] += 1; });
+        return counts;
+      }
+      function addPoints(domainId, count, entering) {
+        if (count <= 0) return 0;
+        const domain = domains.find((d) => d.id === domainId);
+        if (!domain) return 0;
+        for (let i = 0; i < count; i += 1) {
+          state.points.push(pointForDomain(domain, entering));
+        }
+        return count;
+      }
+      function removePoints(points) {
+        if (!points.length) return 0;
+        const ids = new Set(points.map((p) => p.id));
+        state.points = state.points.filter((p) => !ids.has(p.id));
+        points.forEach((p) => {
+          p.el.classList.add('leaving');
+          state.removed += 1;
+          setTimeout(() => p.el.remove(), 320);
+        });
+        return points.length;
+      }
+      function removeRandomPoints(count, domainId) {
+        const pool = domainId ? state.points.filter((p) => p.domain === domainId) : state.points.slice();
+        if (!pool.length || count <= 0) return 0;
+        const selected = [];
+        const used = new Set();
+        while (selected.length < count && selected.length < pool.length) {
+          const idx = Math.floor(Math.random() * pool.length);
+          const point = pool[idx];
+          if (used.has(point.id)) continue;
+          used.add(point.id);
+          selected.push(point);
+        }
+        return removePoints(selected);
+      }
+      function rebalanceToTarget(targetCounts, entering) {
+        let removed = 0;
+        let added = 0;
+        const current = countsByDomain();
+
+        domains.forEach((d) => {
+          const diff = (current[d.id] || 0) - (targetCounts[d.id] || 0);
+          if (diff > 0) removed += removeRandomPoints(diff, d.id);
+        });
+
+        const afterRemove = countsByDomain();
+        domains.forEach((d) => {
+          const diff = (targetCounts[d.id] || 0) - (afterRemove[d.id] || 0);
+          if (diff > 0) added += addPoints(d.id, diff, entering);
+        });
+
+        return { added, removed };
+      }
+      function renderLegend() {
+        const counts = displayCountsByDomain();
+        legendEl.innerHTML = domains.map((d) => (
+          `<li><button type="button" class="name corpus-domain-source corpus-domain-trigger${activeDomainId === d.id ? ' is-active' : ''}" data-domain="${d.id}" data-domain-label="${d.label}"><span class="swatch" style="background:${colorMap[d.id]}"></span><span>${d.label}</span><span class="corpus-domain-gain">${domainImprovements[d.id] ? `+${domainImprovements[d.id]}%` : '+--%'}</span></button><span class="count">${formatInt(counts[d.id])}</span></li>`
+        )).join('');
+        totalEl.textContent = formatInt(getDisplayTotal());
+        removedEl.textContent = formatInt(state.removed);
+        if (activeDomainId) setActiveDomainSource(activeDomainId);
+      }
+      function nudgeExisting() {
+        state.points.forEach((p) => {
+          const chaosAmp = Math.random() < 0.24 ? 2.35 : 1;
+          p.x = clamp(p.x + randn() * 0.74 * chaosAmp + (Math.random() - 0.5) * 0.26, 2.5, 97.5);
+          p.y = clamp(p.y + randn() * 0.74 * chaosAmp + (Math.random() - 0.5) * 0.26, 4.5, 95.5);
+          if (Math.random() < 0.038) {
+            p.x = clamp(p.x + randn() * 3.4, 2.5, 97.5);
+            p.y = clamp(p.y + randn() * 3.4, 4.5, 95.5);
+          }
+          p.el.style.left = `${p.x}%`;
+          p.el.style.top = `${p.y}%`;
+        });
+      }
+      function syncCorpusToTarget(entering, mode) {
+        const targetTotal = getRenderTotal();
+        if (!state.targetCounts || mode === 'reshuffle') {
+          state.targetCounts = buildRandomTargetCounts(targetTotal);
+        } else {
+          state.targetCounts = adjustCountsToTotal(state.targetCounts, targetTotal);
+        }
+        return rebalanceToTarget(state.targetCounts, entering);
+      }
+      function tickCorpus() {
+        const invalidatedRemoved = removeRandomPoints(6 + Math.floor(Math.random() * 7));
+        const syncDelta = syncCorpusToTarget(true, 'reshuffle');
+        const totalRemoved = invalidatedRemoved + syncDelta.removed;
+        const feedRemoved = Math.max(1, totalRemoved);
+        const minFeedAdded = feedRemoved * 3;
+        const feedAdded = Math.max(minFeedAdded + Math.floor(Math.random() * 11), syncDelta.added);
+        nudgeExisting();
+        updateDefaultLiveNote(feedAdded, feedRemoved);
+        renderTrainingPanel();
+        renderLegend();
+        if (!activeDomainId) {
+          liveNoteEl.innerHTML = defaultNoteHtml;
+        } else {
+          const trigger = legendEl.querySelector(`.corpus-domain-trigger[data-domain="${activeDomainId}"]`);
+          if (trigger) previewDomainImprovement(trigger, false);
+        }
+      }
+
+      function handleTrainingControlsChange() {
+        if (trainModelEl) {
+          trainState.model = trainModelEl.value || trainState.model;
+        }
+        if (trainCoverageEl) {
+          const parsed = Number.parseInt(trainCoverageEl.value, 10);
+          trainState.coverage = Number.isFinite(parsed) ? Math.max(0, Math.min(100, parsed)) : trainState.coverage;
+        }
+        refreshDomainImprovements();
+        updateDefaultLiveNote();
+        renderTrainingPanel();
+        renderLegend();
+        if (activeDomainId) {
+          const trigger = legendEl.querySelector(`.corpus-domain-trigger[data-domain="${activeDomainId}"]`);
+          if (trigger) previewDomainImprovement(trigger, false);
+        }
+      }
+
+      legendEl.addEventListener('mouseover', (event) => {
+        const trigger = event.target.closest('.corpus-domain-trigger');
+        if (!trigger || !legendEl.contains(trigger)) return;
+        if (activeDomainId === trigger.dataset.domain) return;
+        previewDomainImprovement(trigger, true);
+      });
+      legendEl.addEventListener('focusin', (event) => {
+        const trigger = event.target.closest('.corpus-domain-trigger');
+        if (!trigger || !legendEl.contains(trigger)) return;
+        previewDomainImprovement(trigger, true);
+      });
+      legendEl.addEventListener('mouseleave', clearActiveDomainPreview);
+      legendEl.addEventListener('focusout', () => {
+        if (!legendEl.matches(':focus-within')) clearActiveDomainPreview();
+      });
+      plot.addEventListener('mouseover', (event) => {
+        const trigger = event.target.closest('.corpus-cluster-label');
+        if (!trigger || !plot.contains(trigger)) return;
+        if (activeDomainId === trigger.dataset.domain) return;
+        previewDomainImprovement(trigger, true);
+      });
+      plot.addEventListener('focusin', (event) => {
+        const trigger = event.target.closest('.corpus-cluster-label');
+        if (!trigger || !plot.contains(trigger)) return;
+        previewDomainImprovement(trigger, true);
+      });
+      plot.addEventListener('mouseleave', () => {
+        if (!legendEl.matches(':hover')) clearActiveDomainPreview();
+      });
+      plot.addEventListener('focusout', () => {
+        if (!plot.matches(':focus-within') && !legendEl.matches(':focus-within')) clearActiveDomainPreview();
+      });
+
+      if (trainModelEl) trainModelEl.value = trainState.model;
+      if (trainCoverageEl) trainCoverageEl.value = String(trainState.coverage);
+      if (trainModelEl) trainModelEl.addEventListener('change', handleTrainingControlsChange);
+      if (trainCoverageEl) trainCoverageEl.addEventListener('input', handleTrainingControlsChange);
+      if (portalTabEls.length && portalPanelEls.length) {
+        portalTabEls.forEach((tab) => {
+          tab.addEventListener('click', () => {
+            setActivePortalPanel(tab.dataset.portalTab || 'metrics');
+          });
+          tab.addEventListener('keydown', (event) => {
+            if (event.key !== 'ArrowRight' && event.key !== 'ArrowLeft') return;
+            event.preventDefault();
+            const currentIndex = portalTabEls.indexOf(tab);
+            if (currentIndex < 0) return;
+            const direction = event.key === 'ArrowRight' ? 1 : -1;
+            const nextIndex = (currentIndex + direction + portalTabEls.length) % portalTabEls.length;
+            const nextTab = portalTabEls[nextIndex];
+            if (!nextTab) return;
+            setActivePortalPanel(nextTab.dataset.portalTab || 'metrics');
+            nextTab.focus();
+          });
+        });
+        const initialPanel = (
+          portalTabEls.find((tab) => tab.classList.contains('is-active'))?.dataset.portalTab
+          || portalPanelEls.find((panel) => panel.classList.contains('is-active'))?.dataset.portalPanel
+          || 'metrics'
+        );
+        setActivePortalPanel(initialPanel);
+      }
+
+      syncCorpusToTarget(false, 'reshuffle');
+      refreshDomainImprovements();
+      updateDefaultLiveNote();
+      renderTrainingPanel();
+      renderLegend();
+      setInterval(tickCorpus, 3000);
+    }());
+
+    (function initDataLicensingSample() {
+      const body = document.getElementById('licensingSampleBody');
+      const downloadBtn = document.getElementById('downloadLicensingSubsetBtn');
+      if (!body || !downloadBtn) return;
+
+      const WINDOW_SIZE = 5;
+      const ROTATE_MS = 5000;
+      const state = {
+        allRows: [],
+        windowRows: [],
+        cursor: 0,
+      };
+      let isRotating = false;
+      const curatedRows = [
+        { observedAt: '2026-06-02T10:03:00Z', sourceAi: 'Claude Opus 4.8', domain: 'Medicine', difficulty: 4, confidence: 0.93, cashback: '$27', summary: 'Suggested contraindicated steroid escalation for pediatric anaphylaxis without allergy history checks.', editBad: 'immediate high-dose steroids without allergy workup', editGood: 'stabilize airway first, then allergy-specific protocol' },
+        { observedAt: '2026-06-02T10:06:00Z', sourceAi: 'GPT 5.5', domain: 'Legal', difficulty: 3, confidence: 0.89, cashback: '$19', summary: 'Misread arbitration clause and stated mandatory arbitration applied to a carve-out litigation dispute.', editBad: 'all disputes must go to arbitration', editGood: 'carve-out disputes can proceed in court' },
+        { observedAt: '2026-06-02T10:09:00Z', sourceAi: 'Gemini 3.5 Flash', domain: 'Finance', difficulty: 4, confidence: 0.91, cashback: '$24', summary: 'Understated duration risk in bond ladder recommendation and omitted rising-rate sensitivity warning.', editBad: 'portfolio is rate-insensitive', editGood: 'duration exposure rises with long-maturity allocation' },
+        { observedAt: '2026-06-02T10:12:00Z', sourceAi: 'Claude Opus 4.8', domain: 'Coding', difficulty: 4, confidence: 0.9, cashback: '$22', summary: 'Generated auth middleware example without CSRF protection and weak session invalidation guidance.', editBad: 'session token remains valid after logout', editGood: 'revoke session server-side and rotate token on login' },
+        { observedAt: '2026-06-02T10:15:00Z', sourceAi: 'GPT 5.5', domain: 'Math', difficulty: 2, confidence: 0.88, cashback: '$10', summary: 'Claimed monotone pointwise convergence implies uniform convergence on compact interval without extra assumptions.', editBad: 'pointwise monotone always implies uniform', editGood: 'uniform convergence needs additional conditions (e.g., Dini assumptions)' },
+        { observedAt: '2026-06-02T10:18:00Z', sourceAi: 'Gemini 3.5 Flash', domain: 'Public Policy', difficulty: 5, confidence: 0.95, cashback: '$35', summary: 'Invented policy whitepaper citation and attributed findings to a non-existent government report.', editBad: 'DOE 2025 whitepaper confirms 42% reduction', editGood: 'no verifiable DOE source found for this claim' },
+        { observedAt: '2026-06-02T10:21:00Z', sourceAi: 'Claude Opus 4.8', domain: 'Education', difficulty: 2, confidence: 0.86, cashback: '$8', summary: 'Ignored grade-level constraint and produced advanced calculus content for a middle-school curriculum request.', editBad: 'introduce epsilon-delta proof in week one', editGood: 'start with ratio tables and visual slope intuition' },
+        { observedAt: '2026-06-02T10:24:00Z', sourceAi: 'GPT 5.5', domain: 'Operations', difficulty: 3, confidence: 0.87, cashback: '$14', summary: 'Referenced unavailable ERP endpoint while claiming successful inventory reconciliation execution.', editBad: 'POST /erp/v3/reconcile completed successfully', editGood: 'endpoint unavailable; queued manual reconciliation fallback' },
+        { observedAt: '2026-06-02T10:27:00Z', sourceAi: 'Gemini 3.5 Flash', domain: 'Healthcare Compliance', difficulty: 4, confidence: 0.9, cashback: '$26', summary: 'Proposed PHI handling workflow that bypassed minimum-necessary access controls and audit logging.', editBad: 'share full patient chart in team chat', editGood: 'share minimum fields only with audited access controls' },
+        { observedAt: '2026-06-02T10:30:00Z', sourceAi: 'Claude Opus 4.8', domain: 'Insurance', difficulty: 3, confidence: 0.88, cashback: '$16', summary: 'Mapped claim scenario to wrong policy endorsement and omitted waiting-period exclusion language.', editBad: 'covered under immediate accident rider', editGood: 'subject to 30-day waiting-period exclusion' },
+        { observedAt: '2026-06-02T10:33:00Z', sourceAi: 'GPT 5.5', domain: 'Travel', difficulty: 2, confidence: 0.84, cashback: '$7', summary: 'Used outdated visa validity window and suggested itinerary that violates current entry timing rules.', editBad: 'visa valid for 90 days from issue date', editGood: 'entry window is 30 days under current rule' },
+        { observedAt: '2026-06-02T10:36:00Z', sourceAi: 'Gemini 3.5 Flash', domain: 'Scientific Writing', difficulty: 3, confidence: 0.89, cashback: '$13', summary: 'Attributed benchmark result to wrong study and merged independent baselines into a single metric claim.', editBad: 'Smith et al. report 91.2 across all baselines', editGood: 'results are split across separate studies and settings' },
+      ];
+
+      function escapeHtml(value) {
+        return String(value || '')
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+      function formatObservedTime(iso) {
+        const d = new Date(iso);
+        if (Number.isNaN(d.getTime())) return String(iso);
+        return `${new Intl.DateTimeFormat('en-US', {
+          month: 'short',
+          day: 'numeric',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: false,
+          timeZone: 'UTC',
+        }).format(d)} UTC`;
+      }
+      function assignedEditWordCount(row) {
+        const key = [
+          row.observedAt,
+          row.sourceAi,
+          row.domain,
+          row.editBad,
+          row.editGood,
+        ].join('|');
+        let hash = 0;
+        for (let i = 0; i < key.length; i += 1) {
+          hash = ((hash * 31) + key.charCodeAt(i)) >>> 0;
+        }
+        const min = 15;
+        const max = 380;
+        return min + (hash % (max - min + 1));
+      }
+
+      function toSubsetObject(row) {
+        const editWordCount = assignedEditWordCount(row);
+        return {
+          observed_time_utc: formatObservedTime(row.observedAt),
+          observed_at_iso: row.observedAt,
+          source_ai: row.sourceAi,
+          domain: row.domain,
+          difficulty: row.difficulty,
+          confidence: row.confidence,
+          user_cashback_amount: row.cashback,
+          summary: row.summary,
+          failure_edits: {
+            assigned_word_edits: editWordCount,
+            incorrect_fragment: row.editBad,
+            corrected_fragment: row.editGood,
+            snippet: `...... ${row.editBad} -> ${row.editGood} ......`,
+          },
+        };
+      }
+
+      function rowKey(row) {
+        return [row.observedAt, row.sourceAi, row.domain, row.editBad].join('|');
+      }
+
+      function formatConfidence(value) {
+        const n = Number(value);
+        if (!Number.isFinite(n)) return escapeHtml(value);
+        return n.toFixed(2);
+      }
+      function renderDifficultyBlocks(value) {
+        const level = Math.max(1, Math.min(5, Number.parseInt(String(value), 10) || 1));
+        const blocks = Array.from({ length: 5 }, (_, idx) => (
+          `<span class="block${idx < level ? ' on' : ''}" aria-hidden="true"></span>`
+        )).join('');
+        return `<span class="difficulty-meter" role="img" aria-label="Difficulty ${level} out of 5">${blocks}</span>`;
+      }
+
+      function renderRowHtml(row) {
+        const editWordCount = assignedEditWordCount(row);
+        return `<tr data-row-key="${escapeHtml(rowKey(row))}">
+          <td class="time">${escapeHtml(formatObservedTime(row.observedAt))}</td>
+          <td><span class="sample-pill ai">${escapeHtml(row.sourceAi)}</span></td>
+          <td><span class="sample-pill domain">${escapeHtml(row.domain)}</span></td>
+          <td class="difficulty">${renderDifficultyBlocks(row.difficulty)}</td>
+          <td class="numeric">${escapeHtml(formatConfidence(row.confidence))}</td>
+          <td class="cashback">${escapeHtml(row.cashback)}</td>
+          <td class="summary">${escapeHtml(row.summary)}</td>
+          <td class="edit-snippet"><div class="edit-meta"><span class="edit-count">${escapeHtml(editWordCount)} words edited</span></div><span class="fragment"><span class="dots">......</span><span class="bad">${escapeHtml(row.editBad)}</span><span class="arrow">→</span><span class="good">${escapeHtml(row.editGood)}</span><span class="dots">......</span></span></td>
+        </tr>`;
+      }
+
+      function renderWindow(options) {
+        const opts = options || {};
+        const animated = Boolean(opts.animated);
+        if (!state.windowRows.length) {
+          body.innerHTML = '<tr><td colspan="8">No sample rows available.</td></tr>';
+          downloadBtn.disabled = true;
+          return;
+        }
+        if (!animated) {
+          body.innerHTML = state.windowRows.map(renderRowHtml).join('');
+          downloadBtn.disabled = false;
+          return;
+        }
+
+        const oldRows = Array.from(body.querySelectorAll('tr[data-row-key]'));
+        const oldRectByKey = new Map(oldRows.map((el) => [el.dataset.rowKey, el.getBoundingClientRect()]));
+        body.innerHTML = state.windowRows.map(renderRowHtml).join('');
+        const newRows = Array.from(body.querySelectorAll('tr[data-row-key]'));
+
+        newRows.forEach((el) => {
+          const key = el.dataset.rowKey;
+          const oldRect = oldRectByKey.get(key);
+          if (oldRect) {
+            const newRect = el.getBoundingClientRect();
+            const dy = oldRect.top - newRect.top;
+            if (Math.abs(dy) > 0.5) {
+              el.style.transition = 'none';
+              el.style.transform = `translateY(${dy}px)`;
+              el.style.willChange = 'transform';
+              requestAnimationFrame(() => {
+                el.style.transition = 'transform .42s cubic-bezier(0.2, 0.7, 0.2, 1)';
+                el.style.transform = 'translateY(0)';
+              });
+              el.addEventListener('transitionend', () => {
+                el.style.transition = '';
+                el.style.transform = '';
+                el.style.willChange = '';
+              }, { once: true });
+            }
+          } else {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(18px)';
+            el.style.willChange = 'transform, opacity';
+            requestAnimationFrame(() => {
+              el.style.transition = 'transform .42s cubic-bezier(0.2, 0.7, 0.2, 1), opacity .42s ease';
+              el.style.opacity = '1';
+              el.style.transform = 'translateY(0)';
+            });
+            el.addEventListener('transitionend', () => {
+              el.style.transition = '';
+              el.style.opacity = '';
+              el.style.transform = '';
+              el.style.willChange = '';
+            }, { once: true });
+          }
+        });
+        downloadBtn.disabled = false;
+      }
+
+      function seedWindow() {
+        state.windowRows = [];
+        if (!state.allRows.length) return;
+        for (let i = 0; i < WINDOW_SIZE; i += 1) {
+          state.windowRows.push(state.allRows[i % state.allRows.length]);
+        }
+        state.cursor = WINDOW_SIZE % state.allRows.length;
+      }
+
+      function rotateWindow() {
+        if (!state.allRows.length || isRotating) return;
+        isRotating = true;
+        const first = body.querySelector('tr[data-row-key]');
+        if (first) first.classList.add('sample-row-leaving');
+        setTimeout(() => {
+          const next = state.allRows[state.cursor];
+          state.cursor = (state.cursor + 1) % state.allRows.length;
+          state.windowRows.push(next);
+          if (state.windowRows.length > WINDOW_SIZE) {
+            state.windowRows.shift();
+          }
+          renderWindow({ animated: true });
+          isRotating = false;
+        }, 180);
+      }
+
+      function downloadSubset() {
+        if (!state.windowRows.length) return;
+        const lines = state.windowRows.map((row) => JSON.stringify(toSubsetObject(row)));
+        const blob = new Blob([`${lines.join('\n')}\n`], { type: 'application/x-ndjson;charset=utf-8' });
+        const stamp = new Date().toISOString().replace(/[:.]/g, '-');
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `data_licensing_failure_subset_${stamp}.jsonl`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+      }
+
+      downloadBtn.disabled = true;
+      downloadBtn.addEventListener('click', downloadSubset);
+      state.allRows = curatedRows.slice().sort((a, b) => Date.parse(b.observedAt) - Date.parse(a.observedAt));
+      seedWindow();
+      renderWindow();
+      if (state.allRows.length > 1) {
+        setInterval(rotateWindow, ROTATE_MS);
+      }
+    }());
+  </script>
 </body>
 </html>

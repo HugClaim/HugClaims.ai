@@ -1378,6 +1378,23 @@
     line-height: 1.5;
     margin-bottom: 14px;
   }
+  .corpus-head .corpus-link {
+    display: inline-flex;
+    align-items: center;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+    text-decoration: none;
+    border-bottom: 1px solid color-mix(in oklab, var(--ink-3) 45%, transparent);
+    padding-bottom: 2px;
+    transition: color .15s ease, border-color .15s ease;
+    margin-bottom: 12px;
+  }
+  .corpus-head .corpus-link:hover {
+    color: var(--hug);
+    border-bottom-color: var(--hug);
+  }
   .corpus-shell {
     display: grid;
     grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
@@ -2145,6 +2162,7 @@
       <div class="corpus-head">
         <h3 id="corpus-title">Failure Mode Corpus</h3>
         <p>Clusters show failure domains and submission density.</p>
+        <a class="corpus-link" href="enterprise.html#failure-corpus-title">See Enterprise Data Licensing + Audit Coverage &rarr;</a>
       </div>
       <div class="corpus-shell">
         <div class="corpus-plot" id="failureCorpusPlot" role="img" aria-label="Live clustered failure mode corpus with submission density">
