@@ -265,35 +265,14 @@
       border: 1px solid rgba(47, 107, 64, 0.42);
       background: radial-gradient(circle at 30% 28%, rgba(255, 255, 255, 0.92), rgba(225, 242, 229, 0.95));
       color: #2f6b40;
-      font: 800 22px/30px var(--sans);
-      text-align: center;
+      font: 800 22px/1 var(--sans);
+      display: flex;
+      align-items: center;
+      justify-content: center;
       letter-spacing: 0.02em;
       box-shadow: 0 6px 12px -10px rgba(40, 25, 10, 0.62);
       opacity: 0;
       animation: tokenTravel 5s linear infinite;
-    }
-    .token-flow-lane .token-chip.token-chip-failure {
-      border-color: rgba(196, 74, 63, 0.62);
-      background: radial-gradient(circle at 30% 28%, rgba(255, 255, 255, 0.95), rgba(251, 233, 227, 0.98));
-      box-shadow: 0 8px 14px -10px rgba(142, 52, 43, 0.66);
-      color: transparent;
-    }
-    .token-flow-lane .token-chip.token-chip-failure::before,
-    .token-flow-lane .token-chip.token-chip-failure::after {
-      content: "";
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      width: 16px;
-      height: 2px;
-      margin-left: -8px;
-      margin-top: -1px;
-      border-radius: 999px;
-      background: rgba(142, 52, 43, 0.92);
-      box-shadow: 0 0 6px rgba(196, 74, 63, 0.38);
-    }
-    .token-flow-lane .token-chip.token-chip-failure::after {
-      transform: rotate(90deg);
     }
     .token-flow-lane .token-label {
       position: absolute;
@@ -333,10 +312,10 @@
       animation-delay: 0.65s;
     }
     .token-flow-lane.flow-users-to-labs {
-      left: 50%;
-      top: 18%;
-      width: 46%;
-      transform: rotate(67deg);
+      left: 48.8%;
+      top: 15.4%;
+      width: 44.5%;
+      transform: rotate(66deg);
     }
     .token-flow-lane.flow-users-to-labs::before {
       background: linear-gradient(90deg, rgba(196, 74, 63, 0.18), rgba(196, 74, 63, 0.7));
@@ -347,24 +326,6 @@
       background: radial-gradient(circle at 30% 28%, rgba(255, 255, 255, 0.92), rgba(251, 233, 227, 0.95));
       color: #8e342b;
       animation-delay: 1.25s;
-    }
-    .token-flow-lane.flow-hug-to-labs-data {
-      left: 30%;
-      top: 83.2%;
-      width: 40%;
-      transform: rotate(0deg);
-    }
-    .token-flow-lane.flow-hug-to-labs-data::before {
-      background: linear-gradient(90deg, rgba(45, 112, 152, 0.18), rgba(45, 112, 152, 0.72));
-      box-shadow: 0 0 0 1px rgba(45, 112, 152, 0.14);
-    }
-    .token-flow-lane.flow-hug-to-labs-data .token-chip {
-      animation-delay: 1.85s;
-    }
-    .token-flow-lane.flow-hug-to-labs-data .token-label {
-      top: -16px;
-      left: 31%;
-      color: rgba(45, 112, 152, 0.94);
     }
     @keyframes tokenTravel {
       0% {
@@ -1982,8 +1943,8 @@
         <div class="hero-copy">
           <div class="kicker">for enterprise users</div>
           <h1 id="enterprise-pricing-title">
-            <span class="hero-question">Building a <em>self-evolving agent</em>?</span>
-            <span class="hero-question">LLM looks good but not <em>trustworthy</em> enough?</span>
+            <span class="hero-question">Deploying <em>self-evolving agents</em>?</span>
+            <span class="hero-question">LLM performs well but lacks <em>robustness</em>?</span>
             <span class="hero-question">Worry about <em>real-world deployment</em>?</span>
           </h1>
           <p>Hug Claims helps teams turn failure cases into practical improvement loops: data licensing for training and evaluation coverage, and audit coverage for deployment governance and compliance readiness.</p>
@@ -1997,10 +1958,6 @@
               </span>
               <span class="token-flow-lane flow-labs-to-hug">
                 <span class="token-chip">$</span>
-              </span>
-              <span class="token-flow-lane flow-hug-to-labs-data">
-                <span class="token-label">Failure data</span>
-                <span class="token-chip token-chip-failure"></span>
               </span>
               <span class="token-flow-lane flow-users-to-labs">
                 <span class="token-chip">$</span>
@@ -2020,6 +1977,7 @@
                 <img class="frontier-provider-logo" src="https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/anthropic.svg" alt="Anthropic" loading="lazy" />
                 <img class="frontier-provider-logo" src="https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/openai.svg" alt="OpenAI" loading="lazy" />
                 <img class="frontier-provider-logo" src="https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/gemini.svg" alt="Gemini" loading="lazy" />
+                <span aria-hidden="true">....</span>
               </span>
               <span class="name">LLM Companies</span>
             </article>
