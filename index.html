@@ -1391,6 +1391,21 @@
     overflow: hidden;
     box-shadow: inset 0 0 0 1px rgba(255,255,255,0.34);
   }
+  .corpus-scene {
+    position: absolute;
+    inset: 0;
+    transform-origin: 50% 50%;
+    will-change: transform;
+    transition: transform .16s ease-out;
+    z-index: 1;
+  }
+  .corpus-plot.is-zoomed .corpus-scene {
+    cursor: grab;
+  }
+  .corpus-plot.is-panning .corpus-scene {
+    cursor: grabbing;
+    transition: none;
+  }
   .corpus-plot::before {
     content: '';
     position: absolute;
@@ -1401,6 +1416,51 @@
     background-size: 34px 34px;
     opacity: 0.26;
     pointer-events: none;
+  }
+  .corpus-zoom-controls {
+    position: absolute;
+    z-index: 8;
+    top: 10px;
+    right: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255, 253, 248, 0.9);
+    border: 1px solid rgba(179, 162, 198, 0.66);
+    border-radius: 999px;
+    padding: 4px;
+    box-shadow: 0 8px 20px -16px rgba(40, 25, 10, 0.35);
+  }
+  .corpus-zoom-btn {
+    appearance: none;
+    border: 0;
+    border-radius: 999px;
+    width: 28px;
+    height: 28px;
+    display: inline-grid;
+    place-items: center;
+    background: rgba(132, 102, 178, 0.12);
+    color: #5e4a7a;
+    font: 700 14px var(--sans);
+    cursor: pointer;
+    transition: background .14s ease, color .14s ease, transform .14s ease;
+  }
+  .corpus-zoom-btn:hover {
+    background: rgba(132, 102, 178, 0.2);
+    color: var(--ink);
+    transform: translateY(-1px);
+  }
+  .corpus-zoom-btn:focus-visible {
+    outline: 2px solid rgba(132, 102, 178, 0.45);
+    outline-offset: 1px;
+  }
+  .corpus-zoom-btn.reset {
+    width: auto;
+    min-width: 52px;
+    padding: 0 10px;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
   }
   .corpus-density-layer {
     position: absolute;
@@ -2079,21 +2139,28 @@
       </div>
       <div class="corpus-shell">
         <div class="corpus-plot" id="failureCorpusPlot" role="img" aria-label="Live clustered failure mode corpus with submission density">
-          <div class="corpus-density-layer" aria-hidden="true">
-            <span class="corpus-blob b-medicine"></span>
-            <span class="corpus-blob b-finance"></span>
-            <span class="corpus-blob b-legal"></span>
-            <span class="corpus-blob b-math"></span>
-            <span class="corpus-blob b-coding"></span>
-            <span class="corpus-blob b-other"></span>
+          <div class="corpus-zoom-controls" aria-label="Zoom controls">
+            <button type="button" class="corpus-zoom-btn" id="corpusZoomOut" aria-label="Zoom out">−</button>
+            <button type="button" class="corpus-zoom-btn reset" id="corpusZoomReset" aria-label="Reset zoom">Reset</button>
+            <button type="button" class="corpus-zoom-btn" id="corpusZoomIn" aria-label="Zoom in">+</button>
           </div>
-          <button type="button" class="corpus-cluster-label corpus-domain-source l-medicine" data-domain="medicine" data-domain-label="Medicine">Medicine</button>
-          <button type="button" class="corpus-cluster-label corpus-domain-source l-finance" data-domain="finance" data-domain-label="Finance">Finance</button>
-          <button type="button" class="corpus-cluster-label corpus-domain-source l-legal" data-domain="legal" data-domain-label="Legal">Legal</button>
-          <button type="button" class="corpus-cluster-label corpus-domain-source l-math" data-domain="math" data-domain-label="Math">Math</button>
-          <button type="button" class="corpus-cluster-label corpus-domain-source l-coding" data-domain="coding" data-domain-label="Coding">Coding</button>
-          <button type="button" class="corpus-cluster-label corpus-domain-source l-other" data-domain="other" data-domain-label="Other">Other</button>
-          <div class="corpus-dots" id="failureCorpusDots"></div>
+          <div class="corpus-scene" id="failureCorpusScene">
+            <div class="corpus-density-layer" aria-hidden="true">
+              <span class="corpus-blob b-medicine"></span>
+              <span class="corpus-blob b-finance"></span>
+              <span class="corpus-blob b-legal"></span>
+              <span class="corpus-blob b-math"></span>
+              <span class="corpus-blob b-coding"></span>
+              <span class="corpus-blob b-other"></span>
+            </div>
+            <button type="button" class="corpus-cluster-label corpus-domain-source l-medicine" data-domain="medicine" data-domain-label="Medicine">Medicine</button>
+            <button type="button" class="corpus-cluster-label corpus-domain-source l-finance" data-domain="finance" data-domain-label="Finance">Finance</button>
+            <button type="button" class="corpus-cluster-label corpus-domain-source l-legal" data-domain="legal" data-domain-label="Legal">Legal</button>
+            <button type="button" class="corpus-cluster-label corpus-domain-source l-math" data-domain="math" data-domain-label="Math">Math</button>
+            <button type="button" class="corpus-cluster-label corpus-domain-source l-coding" data-domain="coding" data-domain-label="Coding">Coding</button>
+            <button type="button" class="corpus-cluster-label corpus-domain-source l-other" data-domain="other" data-domain-label="Other (e.g., music, travel, education)" title="Other (e.g., music, travel, education)">Other</button>
+            <div class="corpus-dots" id="failureCorpusDots"></div>
+          </div>
         </div>
         <aside class="corpus-side" aria-label="Corpus live statistics">
           <div class="corpus-kpi">
@@ -2145,7 +2212,7 @@
       <div>
         <span class="beta-pill">Chrome Extension Beta</span>
         <h3 id="extension-title">HugClaims.ai Chrome Extension</h3>
-        <p>Claim LLM credits when an answer misses. The extension is currently <strong>not yet available on the Chrome Web Store</strong>; install it unpacked from our GitHub repository.</p>
+        <p>Claim LLM credits when an answer misses.</p>
       </div>
       <a
         class="btn-primary"
@@ -2380,12 +2447,16 @@
   // ---------- Failure mode corpus live clusters ----------
   (function initFailureCorpus() {
     const plot = document.getElementById('failureCorpusPlot');
+    const scene = document.getElementById('failureCorpusScene');
     const dotsLayer = document.getElementById('failureCorpusDots');
     const totalEl = document.getElementById('corpusTotal');
     const removedEl = document.getElementById('corpusRemoved');
     const legendEl = document.getElementById('corpusLegend');
     const liveNoteEl = document.getElementById('corpusLiveNote');
-    if (!plot || !dotsLayer || !totalEl || !removedEl || !legendEl || !liveNoteEl) return;
+    const zoomInBtn = document.getElementById('corpusZoomIn');
+    const zoomOutBtn = document.getElementById('corpusZoomOut');
+    const zoomResetBtn = document.getElementById('corpusZoomReset');
+    if (!plot || !scene || !dotsLayer || !totalEl || !removedEl || !legendEl || !liveNoteEl) return;
 
     const heroTotalEl = document.getElementById('heroVerifiedClaims');
 
@@ -2395,7 +2466,7 @@
       { id: 'legal',    label: 'Legal',    center: [23, 72], spread: [8.6, 8.0] },
       { id: 'math',     label: 'Math',     center: [72, 73], spread: [9.0, 7.8] },
       { id: 'coding',   label: 'Coding',   center: [48, 50], spread: [10.2, 9.0] },
-      { id: 'other',    label: 'Other',    center: [79, 48], spread: [15.5, 11.5] },
+      { id: 'other',    label: 'Other (e.g., music, travel, education)', center: [79, 48], spread: [15.5, 11.5] },
     ];
     const colorMap = {
       medicine: 'rgba(196, 74, 63, 0.92)',
@@ -2411,6 +2482,14 @@
       removed: 0,
       targetCounts: null,
     };
+    const zoomState = {
+      scale: 1,
+      tx: 0,
+      ty: 0,
+      min: 1,
+      max: 2.6,
+    };
+    let panState = null;
     const domainImprovements = {};
     let activeDomainId = null;
     let defaultCorpusNoteHtml = liveNoteEl.innerHTML;
@@ -2424,6 +2503,41 @@
     }
     function clamp(value, min, max) {
       return Math.max(min, Math.min(max, value));
+    }
+    function clampZoomPan() {
+      if (zoomState.scale <= 1.001) {
+        zoomState.tx = 0;
+        zoomState.ty = 0;
+        return;
+      }
+      const w = plot.clientWidth || 1;
+      const h = plot.clientHeight || 1;
+      const maxX = (w * (zoomState.scale - 1)) / 2;
+      const maxY = (h * (zoomState.scale - 1)) / 2;
+      zoomState.tx = clamp(zoomState.tx, -maxX, maxX);
+      zoomState.ty = clamp(zoomState.ty, -maxY, maxY);
+    }
+    function applyZoomTransform() {
+      clampZoomPan();
+      scene.style.transform = `translate(${zoomState.tx}px, ${zoomState.ty}px) scale(${zoomState.scale})`;
+      plot.classList.toggle('is-zoomed', zoomState.scale > 1.001);
+      plot.classList.remove('is-panning');
+    }
+    function setZoom(nextScale, originX = (plot.clientWidth || 1) / 2, originY = (plot.clientHeight || 1) / 2) {
+      const oldScale = zoomState.scale;
+      const newScale = clamp(nextScale, zoomState.min, zoomState.max);
+      if (Math.abs(newScale - oldScale) < 0.0001) return;
+      const ratio = newScale / oldScale;
+      zoomState.tx = originX - ratio * (originX - zoomState.tx);
+      zoomState.ty = originY - ratio * (originY - zoomState.ty);
+      zoomState.scale = newScale;
+      applyZoomTransform();
+    }
+    function resetZoom() {
+      zoomState.scale = 1;
+      zoomState.tx = 0;
+      zoomState.ty = 0;
+      applyZoomTransform();
     }
     function getHeroVerifiedTotal() {
       if (!heroTotalEl) return 1286;
@@ -2727,8 +2841,55 @@
         clearActiveDomainPreview();
       }
     });
+    if (zoomInBtn) {
+      zoomInBtn.addEventListener('click', () => setZoom(zoomState.scale * 1.2));
+    }
+    if (zoomOutBtn) {
+      zoomOutBtn.addEventListener('click', () => setZoom(zoomState.scale / 1.2));
+    }
+    if (zoomResetBtn) {
+      zoomResetBtn.addEventListener('click', resetZoom);
+    }
+    plot.addEventListener('wheel', (event) => {
+      event.preventDefault();
+      const rect = plot.getBoundingClientRect();
+      const originX = event.clientX - rect.left;
+      const originY = event.clientY - rect.top;
+      const factor = event.deltaY < 0 ? 1.12 : 1 / 1.12;
+      setZoom(zoomState.scale * factor, originX, originY);
+    }, { passive: false });
+    scene.addEventListener('pointerdown', (event) => {
+      if (event.button !== 0 || zoomState.scale <= 1.001) return;
+      if (event.target.closest('.corpus-cluster-label')) return;
+      panState = {
+        pointerId: event.pointerId,
+        startX: event.clientX,
+        startY: event.clientY,
+        startTx: zoomState.tx,
+        startTy: zoomState.ty,
+      };
+      plot.classList.add('is-panning');
+      scene.setPointerCapture(event.pointerId);
+      event.preventDefault();
+    });
+    scene.addEventListener('pointermove', (event) => {
+      if (!panState || event.pointerId !== panState.pointerId) return;
+      zoomState.tx = panState.startTx + (event.clientX - panState.startX);
+      zoomState.ty = panState.startTy + (event.clientY - panState.startY);
+      clampZoomPan();
+      scene.style.transform = `translate(${zoomState.tx}px, ${zoomState.ty}px) scale(${zoomState.scale})`;
+    });
+    function endPan(event) {
+      if (!panState || event.pointerId !== panState.pointerId) return;
+      panState = null;
+      plot.classList.remove('is-panning');
+    }
+    scene.addEventListener('pointerup', endPan);
+    scene.addEventListener('pointercancel', endPan);
+    window.addEventListener('resize', applyZoomTransform);
 
     syncCorpusToHero(false, 'reshuffle');
+    applyZoomTransform();
     renderLegend();
     window.hugSyncCorpusToHero = function hugSyncCorpusToHero() {
       syncCorpusToHero(true, 'drift');

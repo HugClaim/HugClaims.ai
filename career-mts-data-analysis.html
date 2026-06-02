@@ -367,16 +367,26 @@
       font-size: 14px;
     }
 
-    .apply a {
-      font-weight: 800;
-      color: var(--text);
+    .apply .apply-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       text-decoration: none;
-      border-bottom: 1px solid #81949a;
+      border-radius: 999px;
+      padding: 10px 16px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: var(--text);
+      color: #f6f4ef;
       width: fit-content;
+      transition: transform 0.14s ease, background 0.16s ease;
     }
 
-    .apply a:hover {
-      border-bottom-color: var(--text);
+    .apply .apply-btn:hover {
+      background: var(--brand);
+      transform: translateY(-1px);
     }
 
     .foot-nav {
@@ -567,8 +577,8 @@
         </section>
         <section class="apply" aria-label="How to apply">
           <h3>How to Apply</h3>
-          <p>Apply: yuexing@mit.edu. Email a cover letter, resume, and your most proud technical artifact.</p>
-          <a href="mailto:yuexing@mit.edu?subject=Application%20-%20MTS%20Data%20Analysis">yuexing@mit.edu</a>
+          <p>Submit your application through our standard role form.</p>
+          <a class="apply-btn" href="https://forms.gle/1asxrF3KgNUsv1DW6" target="_blank" rel="noopener noreferrer">Apply Now</a>
         </section>
       </div>
     </section>
