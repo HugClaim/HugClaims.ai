@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" fill="none">
+  <rect width="640" height="360" rx="14" fill="#F8FBFF"/>
+  <rect x="18" y="18" width="604" height="324" rx="10" fill="#FFFFFF" stroke="#D5E0ED"/>
+
+  <text x="38" y="48" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#17324F">Step 2: Curation + Validation</text>
+  <text x="38" y="72" font-family="Arial, sans-serif" font-size="13" fill="#4C6078">Quality metrics after deduplication and reproducer checks.</text>
+
+  <rect x="42" y="92" width="556" height="220" fill="#FCFEFF" stroke="#E1EAF4"/>
+
+  <text x="60" y="130" font-family="Arial, sans-serif" font-size="13" fill="#5A7088">Precision</text>
+  <rect x="170" y="115" width="156" height="18" rx="4" fill="#C8DDF0"/>
+  <rect x="340" y="115" width="192" height="18" rx="4" fill="#2F80C1"/>
+  <text x="330" y="129" text-anchor="end" font-family="Arial, sans-serif" font-size="12" fill="#4E657D">0.72</text>
+  <text x="540" y="129" font-family="Arial, sans-serif" font-size="12" fill="#184B74">0.89</text>
+
+  <text x="60" y="180" font-family="Arial, sans-serif" font-size="13" fill="#5A7088">Reproducibility</text>
+  <rect x="170" y="165" width="170" height="18" rx="4" fill="#C8DDF0"/>
+  <rect x="340" y="165" width="180" height="18" rx="4" fill="#2F80C1"/>
+  <text x="330" y="179" text-anchor="end" font-family="Arial, sans-serif" font-size="12" fill="#4E657D">0.78</text>
+  <text x="528" y="179" font-family="Arial, sans-serif" font-size="12" fill="#184B74">0.86</text>
+
+  <text x="60" y="230" font-family="Arial, sans-serif" font-size="13" fill="#5A7088">Policy Pass</text>
+  <rect x="170" y="215" width="162" height="18" rx="4" fill="#C8DDF0"/>
+  <rect x="340" y="215" width="186" height="18" rx="4" fill="#2F80C1"/>
+  <text x="330" y="229" text-anchor="end" font-family="Arial, sans-serif" font-size="12" fill="#4E657D">0.75</text>
+  <text x="534" y="229" font-family="Arial, sans-serif" font-size="12" fill="#184B74">0.87</text>
+
+  <text x="60" y="280" font-family="Arial, sans-serif" font-size="13" fill="#5A7088">Noise Ratio</text>
+  <rect x="170" y="265" width="182" height="18" rx="4" fill="#D26D66"/>
+  <rect x="340" y="265" width="104" height="18" rx="4" fill="#EEB0AB"/>
+  <text x="360" y="279" font-family="Arial, sans-serif" font-size="12" fill="#8D3E39">0.28</text>
+  <text x="452" y="279" font-family="Arial, sans-serif" font-size="12" fill="#8D3E39">0.16</text>
+
+  <rect x="392" y="30" width="216" height="50" rx="7" fill="#F1F7FF" stroke="#D0E2F3"/>
+  <rect x="404" y="45" width="14" height="10" fill="#C8DDF0"/>
+  <text x="424" y="54" font-family="Arial, sans-serif" font-size="12" fill="#385776">before curation</text>
+  <rect x="520" y="45" width="14" height="10" fill="#2F80C1"/>
+  <text x="540" y="54" font-family="Arial, sans-serif" font-size="12" fill="#385776">after curation</text>
+  <text x="404" y="72" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#1F6297">False positives reduced by 35%</text>
+</svg>

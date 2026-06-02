@@ -479,7 +479,7 @@
       border: 1px solid rgba(179, 162, 198, 0.66);
       border-radius: 16px;
       background: rgba(255, 253, 248, 0.92);
-      padding: 12px;
+      padding: 14px;
       box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.42);
     }
     .corpus-figure-head h3 {
@@ -497,7 +497,7 @@
     .corpus-shell {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 12px;
+      gap: 14px;
       align-items: stretch;
     }
     .corpus-portal {
@@ -548,7 +548,7 @@
     }
     .corpus-plot {
       position: relative;
-      min-height: 350px;
+      min-height: 500px;
       height: 100%;
       border-radius: 0;
       border: 0;
@@ -575,7 +575,7 @@
     }
     .corpus-scene {
       position: absolute;
-      inset: 0;
+      inset: 14px;
       z-index: 1;
     }
     .corpus-density-layer {
@@ -599,41 +599,44 @@
     .corpus-blob.b-other    { left: 76%; top: 44%; background: rgba(108, 121, 142, 0.68); }
     .corpus-dots {
       position: absolute;
-      inset: 0;
+      inset: 10px;
     }
     .corpus-cluster-label {
       appearance: none;
-      border: 1px solid rgba(211, 200, 218, 0.7);
+      border: 0;
       position: absolute;
       z-index: 3;
-      font: 700 10px var(--sans);
-      letter-spacing: 0.12em;
+      font: 700 9px var(--sans);
+      letter-spacing: 0.07em;
       text-transform: uppercase;
-      color: rgba(26, 22, 18, 0.62);
-      background: rgba(255, 253, 248, 0.74);
+      color: rgba(26, 22, 18, 0.56);
+      background: transparent;
       border-radius: 999px;
-      padding: 3px 7px;
+      padding: 1px 3px;
       cursor: pointer;
-      transition: background .14s ease, color .14s ease, border-color .14s ease, transform .14s ease;
-      backdrop-filter: blur(2px);
+      white-space: nowrap;
+      transition: background .14s ease, color .14s ease, transform .14s ease, box-shadow .14s ease;
+      text-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.86),
+        0 0 8px rgba(255, 253, 248, 0.88);
     }
     .corpus-cluster-label:hover,
     .corpus-cluster-label.is-active {
       color: var(--ink);
-      background: rgba(132, 102, 178, 0.14);
-      border-color: rgba(132, 102, 178, 0.36);
+      background: rgba(255, 253, 248, 0.84);
+      box-shadow: 0 0 0 1px rgba(132, 102, 178, 0.3) inset;
       transform: translateY(-1px);
     }
     .corpus-cluster-label:focus-visible {
       outline: 2px solid rgba(132, 102, 178, 0.45);
       outline-offset: 2px;
     }
-    .corpus-cluster-label.l-medicine { left: 10%; top: 8%; }
-    .corpus-cluster-label.l-finance  { left: 66%; top: 10%; }
-    .corpus-cluster-label.l-legal    { left: 12%; top: 82%; }
-    .corpus-cluster-label.l-math     { left: 72%; top: 82%; }
-    .corpus-cluster-label.l-coding   { left: 42%; top: 47%; }
-    .corpus-cluster-label.l-other    { left: 82%; top: 49%; }
+    .corpus-cluster-label.l-medicine { left: 3%; top: 3%; }
+    .corpus-cluster-label.l-finance  { left: 75%; top: 3%; }
+    .corpus-cluster-label.l-legal    { left: 3%; top: 91%; }
+    .corpus-cluster-label.l-math     { left: 80%; top: 91%; }
+    .corpus-cluster-label.l-coding   { left: 33%; top: 3%; }
+    .corpus-cluster-label.l-other    { left: 88%; top: 58%; }
     .corpus-dot {
       position: absolute;
       border-radius: 50%;
@@ -744,239 +747,169 @@
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 8px;
     }
-    .portal-stage-strip {
+    .portal-stage-cycle {
       display: grid;
-      grid-template-columns: repeat(4, minmax(132px, 1fr));
+      grid-template-columns: minmax(0, 0.84fr) minmax(0, 1.16fr);
       gap: 16px;
-      align-items: center;
+      align-items: stretch;
+    }
+    .portal-card-legend .portal-stage-cycle {
+      margin-top: 0;
+    }
+    .portal-stage-wheel {
       position: relative;
-      padding: 14px 8px 38px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-rows: repeat(3, minmax(56px, 1fr));
+      gap: 12px;
+      min-height: 248px;
+      padding: 8px;
       isolation: isolate;
     }
-    .portal-stage-strip::before {
+    .portal-stage-wheel::before {
       content: "";
       position: absolute;
-      left: calc(12.5% + 8px);
-      right: calc(12.5% + 8px);
-      top: calc(50% - 1.5px);
-      height: 3px;
+      inset: 14px;
       border-radius: 999px;
-      background: linear-gradient(90deg, rgba(48, 182, 255, 0.2), rgba(61, 214, 255, 0.76), rgba(130, 104, 255, 0.28));
-      box-shadow:
-        0 0 0 1px rgba(46, 176, 255, 0.16),
-        0 0 14px rgba(61, 214, 255, 0.3),
-        0 0 26px rgba(130, 104, 255, 0.2);
+      border: 1.5px dashed rgba(101, 163, 242, 0.55);
+      box-shadow: 0 0 16px rgba(101, 163, 242, 0.16);
+      pointer-events: none;
       z-index: 0;
     }
-    .portal-stage-strip::after {
-      content: "";
-      position: absolute;
-      left: calc(12.5% + 8px);
-      top: calc(50% - 4px);
-      width: 24%;
-      height: 8px;
+    .pipeline-cycle-core {
+      grid-column: 2;
+      grid-row: 2;
+      align-self: center;
+      justify-self: center;
+      width: 82px;
+      height: 82px;
       border-radius: 999px;
-      background: linear-gradient(90deg, rgba(94, 228, 255, 0), rgba(94, 228, 255, 1), rgba(164, 135, 255, 0));
-      filter: blur(0.5px);
-      z-index: 1;
-      animation: runwaySweep 5s linear infinite;
-      pointer-events: none;
-    }
-    .portal-stage-strip .stage {
-      border: 1px solid rgba(118, 183, 255, 0.42);
-      border-radius: 12px;
-      background:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(238, 245, 255, 0.9)),
-        radial-gradient(circle at 18% 0%, rgba(94, 228, 255, 0.14), transparent 58%);
-      color: #132139;
-      font-size: 13px;
-      line-height: 1.28;
-      padding: 10px 11px;
-      min-height: 54px;
-      letter-spacing: 0.015em;
-      font-weight: 700;
-      text-align: center;
+      border: 1px solid rgba(93, 136, 202, 0.45);
+      background: radial-gradient(circle at 35% 30%, rgba(248, 252, 255, 0.98), rgba(228, 238, 252, 0.92));
+      color: #275b8a;
+      font-size: 10.5px;
+      font-weight: 800;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
       display: flex;
       align-items: center;
       justify-content: center;
-      position: relative;
-      z-index: 2;
-      box-shadow:
-        0 12px 24px -18px rgba(33, 67, 115, 0.46),
-        inset 0 0 0 1px rgba(255, 255, 255, 0.72);
-      transform: translateY(0);
-      backdrop-filter: blur(6px);
-    }
-    .portal-stage-strip .stage.done {
-      animation: stageRunwayPulse 5s cubic-bezier(.23, 1, .32, 1) infinite;
-    }
-    .portal-stage-strip .stage.done:nth-child(1) { animation-delay: 0s; }
-    .portal-stage-strip .stage.done:nth-child(2) { animation-delay: 1.25s; }
-    .portal-stage-strip .stage.done:nth-child(3) { animation-delay: 2.5s; }
-    .portal-stage-strip .stage.done:nth-child(4) { animation-delay: 3.75s; }
-    .portal-stage-strip .stage.done:not(:nth-child(4))::after {
-      content: "";
-      display: none;
-    }
-    .portal-stage-strip .runway-return {
-      position: absolute;
-      left: 12%;
-      right: 12%;
-      bottom: 11px;
-      height: 18px;
-      border: 1.5px dashed rgba(71, 201, 255, 0.56);
-      border-top: 0;
-      border-radius: 0 0 22px 22px;
+      text-align: center;
+      line-height: 1.2;
+      box-shadow: 0 12px 20px -18px rgba(33, 67, 115, 0.56);
+      z-index: 1;
       pointer-events: none;
-      z-index: 0;
-      filter: drop-shadow(0 0 6px rgba(71, 201, 255, 0.2));
     }
-    .portal-stage-strip .runway-return::after {
-      content: "↺ iterative loop";
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-      bottom: -17px;
-      color: rgba(28, 117, 196, 0.9);
-      font-size: 10px;
+    .pipeline-stage-btn {
+      appearance: none;
+      border: 1px solid rgba(118, 183, 255, 0.48);
+      border-radius: 11px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(237, 245, 255, 0.92));
+      color: #162640;
+      padding: 10px 10px;
+      min-height: 80px;
+      display: grid;
+      justify-items: center;
+      gap: 3px;
+      cursor: pointer;
+      transition: border-color .16s ease, box-shadow .16s ease, transform .16s ease, background .16s ease;
+      box-shadow: 0 12px 22px -18px rgba(33, 67, 115, 0.52);
+      z-index: 2;
+      text-align: center;
+    }
+    .pipeline-stage-btn .stage-index {
+      font-size: 12.5px;
       font-weight: 800;
       letter-spacing: 0.1em;
-      text-transform: uppercase;
-      white-space: nowrap;
-      animation: runwayLoopPulse 5s ease-in-out infinite;
+      color: rgba(35, 72, 115, 0.78);
     }
-    .portal-stage-strip .runway-dot {
-      position: absolute;
-      width: 15px;
-      height: 15px;
-      border-radius: 50%;
-      border: 1px solid rgba(73, 204, 255, 0.75);
-      background: radial-gradient(circle at 36% 30%, rgba(255, 255, 255, 1), rgba(143, 233, 255, 0.98));
+    .pipeline-stage-btn .stage-label {
+      font-size: 15.5px;
+      font-weight: 700;
+      line-height: 1.18;
+      letter-spacing: 0.01em;
+    }
+    .pipeline-stage-btn:hover {
+      transform: translateY(-1px);
+      border-color: rgba(73, 204, 255, 0.72);
       box-shadow:
-        0 0 0 4px rgba(73, 204, 255, 0.16),
-        0 0 16px rgba(73, 204, 255, 0.45),
-        0 0 28px rgba(134, 104, 255, 0.24);
-      pointer-events: none;
-      z-index: 3;
+        0 16px 22px -20px rgba(0, 146, 217, 0.52),
+        0 0 0 1px rgba(73, 204, 255, 0.2);
     }
-    .portal-stage-strip .runway-dot.forward {
-      top: calc(50% - 7.5px);
-      left: calc(12.5% - 7.5px);
-      animation: runwayForward 5s cubic-bezier(.4, 0, .2, 1) infinite;
+    .pipeline-stage-btn:focus-visible {
+      outline: 2px solid rgba(73, 204, 255, 0.42);
+      outline-offset: 2px;
     }
-    .portal-stage-strip .runway-dot.return {
-      left: calc(87.5% - 7.5px);
-      bottom: 20px;
-      opacity: 0;
-      animation: runwayReturn 5s cubic-bezier(.4, 0, .2, 1) infinite;
+    .pipeline-stage-btn.is-active {
+      border-color: rgba(73, 204, 255, 0.76);
+      background:
+        linear-gradient(180deg, rgba(231, 249, 255, 0.98), rgba(224, 240, 255, 0.98)),
+        radial-gradient(circle at 22% 0%, rgba(94, 228, 255, 0.28), transparent 58%);
+      box-shadow:
+        0 16px 24px -20px rgba(0, 146, 217, 0.56),
+        0 0 0 1px rgba(73, 204, 255, 0.24),
+        0 0 18px rgba(73, 204, 255, 0.18);
+      animation: pipelineStagePulse 2.2s ease-in-out infinite;
     }
-    @keyframes stageRunwayPulse {
-      0%, 64%, 100% {
-        border-color: rgba(118, 183, 255, 0.42);
-        background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(238, 245, 255, 0.9));
-        box-shadow:
-          0 12px 24px -18px rgba(33, 67, 115, 0.46),
-          inset 0 0 0 1px rgba(255, 255, 255, 0.72);
-        color: #132139;
+    .pipeline-stage-btn[data-stage-id="collect"] { grid-column: 2; grid-row: 1; }
+    .pipeline-stage-btn[data-stage-id="curate"] { grid-column: 3; grid-row: 2; }
+    .pipeline-stage-btn[data-stage-id="posttrain"] { grid-column: 2; grid-row: 3; }
+    .pipeline-stage-btn[data-stage-id="regression"] { grid-column: 1; grid-row: 2; }
+    .portal-stage-detail {
+      border: 1px solid rgba(179, 162, 198, 0.56);
+      border-radius: 12px;
+      background: linear-gradient(180deg, rgba(255, 253, 248, 0.95), rgba(248, 243, 255, 0.9));
+      padding: 12px 13px;
+      display: grid;
+      align-content: start;
+      gap: 10px;
+      min-height: 248px;
+      box-shadow: 0 12px 24px -22px rgba(40, 25, 10, 0.34);
+    }
+    .portal-stage-detail .detail-step {
+      color: #2f6b40;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    .portal-stage-detail h4 {
+      margin: 0;
+      color: var(--ink);
+      font-size: 18px;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+    }
+    .pipeline-visual-wrap {
+      margin: 2px 0 0;
+      border: 1px solid rgba(173, 157, 192, 0.46);
+      border-radius: 10px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(242, 237, 251, 0.9));
+      padding: 8px;
+      display: grid;
+      gap: 0;
+    }
+    .pipeline-visual {
+      width: 95%;
+      margin: 0 auto;
+      aspect-ratio: 1.65 / 1;
+      object-fit: contain;
+      display: block;
+      border-radius: 7px;
+      background: #fff;
+      border: 1px solid rgba(173, 157, 192, 0.36);
+    }
+    @keyframes pipelineStagePulse {
+      0%, 100% {
         transform: translateY(0);
       }
-      12%, 24% {
-        border-color: rgba(73, 204, 255, 0.76);
-        background:
-          linear-gradient(180deg, rgba(231, 249, 255, 0.98), rgba(224, 240, 255, 0.98)),
-          radial-gradient(circle at 18% 0%, rgba(94, 228, 255, 0.28), transparent 58%);
-        box-shadow:
-          0 16px 24px -18px rgba(0, 146, 217, 0.52),
-          0 0 0 1px rgba(73, 204, 255, 0.22),
-          0 0 20px rgba(73, 204, 255, 0.22);
-        color: #0f4f78;
-        transform: translateY(-1.5px);
-      }
-    }
-    @keyframes runwayForward {
-      0% {
-        left: calc(12.5% - 7.5px);
-        opacity: 0;
-        transform: scale(0.76);
-      }
-      8% {
-        opacity: 1;
-        transform: scale(1);
-      }
-      70% {
-        left: calc(87.5% - 7.5px);
-        opacity: 1;
-        transform: scale(1);
-      }
-      76% {
-        opacity: 0;
-      }
-      100% {
-        left: calc(87.5% - 7.5px);
-        opacity: 0;
-        transform: scale(0.8);
-      }
-    }
-    @keyframes runwayReturn {
-      0%, 74% {
-        left: calc(87.5% - 7.5px);
-        bottom: 20px;
-        opacity: 0;
-      }
-      78% {
-        opacity: 1;
-      }
-      88% {
-        left: calc(68% - 7.5px);
-        bottom: 8px;
-        opacity: 1;
-      }
-      96% {
-        left: calc(32% - 7.5px);
-        bottom: 8px;
-        opacity: 1;
-      }
-      100% {
-        left: calc(12.5% - 7.5px);
-        bottom: 20px;
-        opacity: 0;
-      }
-    }
-    @keyframes runwayLoopPulse {
-      0%, 74%, 100% { opacity: 0.58; }
-      82%, 96% { opacity: 1; }
-    }
-    @keyframes runwaySweep {
-      0%, 6% {
-        left: calc(12.5% + 8px);
-        opacity: 0;
-      }
-      12% {
-        opacity: 1;
-      }
-      72% {
-        left: calc(63.5% + 8px);
-        opacity: 0.84;
-      }
-      76%, 100% {
-        left: calc(63.5% + 8px);
-        opacity: 0;
+      50% {
+        transform: translateY(-1px);
       }
     }
     @media (prefers-reduced-motion: reduce) {
-      .portal-stage-strip::after,
-      .portal-stage-strip .stage.done,
-      .portal-stage-strip .runway-return::after,
-      .portal-stage-strip .runway-dot.forward,
-      .portal-stage-strip .runway-dot.return {
-        animation: none !important;
-      }
-      .portal-stage-strip .runway-dot.forward {
-        left: calc(87.5% - 7.5px);
-        opacity: 1;
-      }
-      .portal-stage-strip .runway-dot.return {
-        display: none;
+      .pipeline-stage-btn.is-active {
+        animation: none;
       }
     }
     .corpus-kpi {
@@ -1137,18 +1070,55 @@
       display: grid;
       gap: 9px;
     }
+    .corpus-train-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+      gap: 12px;
+      align-items: start;
+    }
+    .corpus-train-left {
+      display: grid;
+      gap: 9px;
+      min-width: 0;
+    }
+    .corpus-train-right {
+      min-width: 0;
+      border-left: 1px solid rgba(179, 162, 198, 0.46);
+      padding-left: 11px;
+      display: grid;
+      gap: 6px;
+      align-content: start;
+    }
+    .corpus-train-right .plot-title {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--ink-3);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .corpus-train-right .plot-title .hint {
+      font-size: 10px;
+      letter-spacing: 0.04em;
+      text-transform: none;
+      font-weight: 600;
+      color: var(--ink-2);
+    }
     .corpus-train-head {
       display: grid;
       gap: 3px;
     }
     .corpus-train-head strong {
       color: var(--ink);
-      font-size: 12px;
+      font-size: 13px;
       letter-spacing: 0.03em;
     }
     .corpus-train-head span {
       color: var(--ink-2);
-      font-size: 10.5px;
+      font-size: 11.5px;
       line-height: 1.35;
     }
     .corpus-train-controls {
@@ -1170,8 +1140,7 @@
       font-weight: 700;
       color: var(--ink-3);
     }
-    .corpus-train-field select,
-    .corpus-train-field input[type="range"] {
+    .corpus-train-field select {
       width: 100%;
     }
     .corpus-train-field select {
@@ -1182,10 +1151,6 @@
       font: 600 11px var(--sans);
       color: var(--ink);
       background: rgba(255, 253, 248, 0.95);
-    }
-    .corpus-train-field input[type="range"] {
-      accent-color: #6f57a2;
-      cursor: pointer;
     }
     .corpus-train-summary {
       display: grid;
@@ -1221,61 +1186,93 @@
     .corpus-train-domain-list {
       list-style: none;
       margin: 0;
-      padding: 0;
+      padding: 5px 7px;
       display: grid;
-      gap: 6px;
+      gap: 1px;
+      border: 1px solid rgba(179, 162, 198, 0.5);
+      border-radius: 9px;
+      background: linear-gradient(180deg, rgba(255, 253, 248, 0.9), rgba(247, 241, 255, 0.82));
     }
     .corpus-train-domain-list li {
-      border: 1px solid rgba(179, 162, 198, 0.5);
-      border-radius: 8px;
-      background: rgba(255, 253, 248, 0.84);
-      padding: 4px 6px;
       display: grid;
       gap: 3px;
+      padding: 4px 2px;
     }
-    .corpus-train-domain-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
+    .corpus-train-domain-list li + li {
+      border-top: 1px solid rgba(179, 162, 198, 0.3);
+    }
+    .corpus-train-domain-row {
+      display: grid;
+      grid-template-columns: minmax(64px, auto) minmax(0, 1fr) auto;
+      align-items: center;
       gap: 8px;
-      font-size: 10px;
+      font-size: 11px;
       color: var(--ink-2);
     }
-    .corpus-train-domain-top .name {
-      font-weight: 600;
-      color: var(--ink);
-    }
-    .corpus-train-domain-top .delta {
-      font-size: 9px;
-      color: var(--green-2);
+    .corpus-train-domain-row .name {
       font-weight: 700;
-      letter-spacing: 0.02em;
-      white-space: normal;
-      line-height: 1.25;
-      text-align: right;
-      max-width: 62%;
+      color: var(--ink);
+      font-size: 11.5px;
     }
+    .corpus-train-domain-row .delta-main {
+      font-size: 11.5px;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.01em;
+      text-align: right;
+      white-space: nowrap;
+      min-width: 52px;
+    }
+    .corpus-train-domain-row .delta-main.up { color: var(--green-2); }
+    .corpus-train-domain-row .delta-main.down { color: #b74438; }
     .corpus-train-bar {
-      height: 6px;
+      height: 12px;
       border-radius: 999px;
-      background: rgba(210, 198, 224, 0.55);
+      background: linear-gradient(90deg, rgba(211, 199, 226, 0.76), rgba(198, 184, 218, 0.62));
       position: relative;
       overflow: hidden;
+      box-shadow:
+        inset 0 1px 2px rgba(255, 255, 255, 0.52),
+        inset 0 -1px 2px rgba(80, 63, 108, 0.16);
     }
     .corpus-train-bar .base,
-    .corpus-train-bar .after {
+    .corpus-train-bar .delta-segment {
       position: absolute;
       top: 0;
-      left: 0;
       height: 100%;
       border-radius: 999px;
     }
     .corpus-train-bar .base {
+      left: 0;
       background: rgba(137, 113, 171, 0.42);
     }
-    .corpus-train-bar .after {
-      background: linear-gradient(90deg, rgba(47, 107, 64, 0.78), rgba(55, 129, 77, 0.9));
-      transition: width .35s ease;
+    .corpus-train-bar .delta-segment.pos {
+      background: linear-gradient(90deg, rgba(47, 107, 64, 0.86), rgba(64, 145, 88, 0.95));
+      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.35) inset;
+    }
+    .corpus-train-bar .delta-segment.neg {
+      background: linear-gradient(90deg, rgba(183, 68, 56, 0.88), rgba(212, 92, 74, 0.95));
+      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.35) inset;
+    }
+    .corpus-train-bar .delta-segment {
+      transition: left .42s ease, width .42s ease;
+    }
+    .corpus-train-bar .marker {
+      position: absolute;
+      top: 50%;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      border: 2px solid rgba(255, 255, 255, 0.95);
+      box-shadow: 0 0 0 1px rgba(71, 58, 95, 0.28);
+      background: rgba(126, 101, 165, 0.92);
+    }
+    .corpus-train-bar .marker.current {
+      background: rgba(40, 98, 57, 0.95);
+    }
+    .corpus-train-bar .marker.current.neg {
+      background: rgba(181, 60, 46, 0.95);
     }
     .stream {
       border: 1px solid rgba(179, 162, 198, 0.56);
@@ -1890,10 +1887,30 @@
       .portal-card.portal-card-metrics,
       .portal-card.portal-card-training,
       .portal-card.portal-card-legend { grid-column: span 1; }
-      .portal-stage-strip {
-        grid-template-columns: repeat(4, minmax(138px, 1fr));
-        overflow-x: auto;
-        padding-bottom: 24px;
+      .portal-stage-cycle { grid-template-columns: 1fr; }
+      .corpus-train-layout { grid-template-columns: 1fr; }
+      .corpus-train-right {
+        border-left: 0;
+        border-top: 1px solid rgba(179, 162, 198, 0.46);
+        padding-left: 0;
+        padding-top: 9px;
+      }
+      .portal-stage-wheel {
+        min-height: 190px;
+        gap: 8px;
+      }
+      .corpus-plot {
+        min-height: 410px;
+      }
+      .corpus-scene {
+        inset: 8px;
+      }
+      .corpus-dots {
+        inset: 6px;
+      }
+      .pipeline-stage-btn {
+        min-height: 68px;
+        padding: 8px;
       }
       .hero-panel { padding: 0; }
       .token-cycle-diagram { min-height: 340px; }
@@ -1945,7 +1962,7 @@
           <h1 id="enterprise-pricing-title">
             <span class="hero-question">Deploying <em>self-evolving agents</em>?</span>
             <span class="hero-question">LLM performs well but lacks <em>robustness</em>?</span>
-            <span class="hero-question">Worry about <em>real-world deployment</em>?</span>
+            <span class="hero-question">Worry about <em>real-world evaluation</em>?</span>
           </h1>
           <p>Hug Claims helps teams turn failure cases into practical improvement loops: data licensing for training and evaluation coverage, and audit coverage for deployment governance and compliance readiness.</p>
           <div class="hero-trial"><span class="dot" aria-hidden="true"></span> <a href="#enterprise-grant">Enterprise Grant available for qualified enterprise teams and non-profit research.</a></div>
@@ -1993,8 +2010,8 @@
       <p>The Failure Mode Corpus is the shared evidence layer behind our enterprise offering. Every validated failure item includes taxonomy labels, severity, domain context, and remediation traceability so teams can train safer systems and prove governance decisions.</p>
       <div class="corpus-figure-block" aria-labelledby="failure-corpus-figure-title">
         <div class="corpus-figure-head">
-          <h3 id="failure-corpus-figure-title">Failure Data Cluster</h3>
-          <p>Interactive post-training portal for failure data triage, model tuning, and domain lift tracking.</p>
+          <h3 id="failure-corpus-figure-title">Failure Data FlyWheel Fuel LLM Performance</h3>
+          <p>Interactive post-training portal for failure data triage, model tuning, and data flywheel tracking.</p>
         </div>
         <div class="corpus-shell">
           <div class="corpus-portal">
@@ -2063,8 +2080,8 @@
     <section class="corpus-bridge" aria-labelledby="failure-corpus-figure-title">
       <div class="corpus-figure-block">
         <div class="corpus-figure-head">
-          <h3 id="failure-corpus-figure-title">Failure Data Cluster</h3>
-          <p>Interactive post-training portal for failure data triage, model tuning, and domain lift tracking.</p>
+          <h3 id="failure-corpus-figure-title">Failure Data FlyWheel Fuel LLM Performance</h3>
+          <p>Interactive post-training portal for failure data triage, model tuning, and data flywheel tracking.</p>
         </div>
         <div class="corpus-shell">
           <div class="corpus-portal">
@@ -2096,8 +2113,8 @@
           <aside class="corpus-side" aria-label="Enterprise corpus statistics">
             <div class="portal-tabs" role="tablist" aria-label="Portal views">
               <button type="button" class="portal-tab is-active" role="tab" aria-selected="true" data-portal-tab="metrics">Snapshot</button>
-              <button type="button" class="portal-tab" role="tab" aria-selected="false" data-portal-tab="training">Trainer</button>
-              <button type="button" class="portal-tab" role="tab" aria-selected="false" data-portal-tab="legend">Domain Lift</button>
+              <button type="button" class="portal-tab" role="tab" aria-selected="false" data-portal-tab="training">Post-Training</button>
+              <button type="button" class="portal-tab" role="tab" aria-selected="false" data-portal-tab="legend">Data Flywheel</button>
             </div>
             <section class="portal-card portal-card-metrics is-active" data-portal-panel="metrics" aria-label="Pipeline snapshot">
               <div class="portal-card-head">
@@ -2114,62 +2131,89 @@
                   <strong id="enterpriseCorpusRemoved">0</strong>
                 </div>
               </div>
-              <div class="portal-stage-strip" aria-label="Post-training pipeline stages">
-                <span class="stage done">1. Collect failures</span>
-                <span class="stage done">2. Curate + validate</span>
-                <span class="stage done">3. Post-train model</span>
-                <span class="stage done">4. Regression check</span>
-                <span class="runway-return" aria-hidden="true"></span>
-                <span class="runway-dot forward" aria-hidden="true"></span>
-                <span class="runway-dot return" aria-hidden="true"></span>
-              </div>
               <div class="corpus-live-note" id="enterpriseCorpusLiveNote">Streaming updates every 3s.</div>
             </section>
             <section class="portal-card portal-card-training" data-portal-panel="training" aria-label="Training controls and gains">
               <div class="portal-card-head">
-                <span class="title">Training Controls</span>
-                <span class="badge soft" id="enterpriseTrainCoverageBadge">40% coverage</span>
+                <span class="title">Post-Training Controls</span>
+                <span class="badge soft" id="enterpriseTrainBatchBadge">Medicine +400 datapoints</span>
               </div>
               <div class="corpus-train-panel" aria-label="Post-training performance simulator">
-                <div class="corpus-train-head">
-                  <strong>Post-Training Simulator</strong>
-                  <span>See how targeted post-training on failure data improves domain performance.</span>
+                <div class="corpus-train-layout">
+                  <div class="corpus-train-left">
+                    <div class="corpus-train-head">
+                      <strong>Post-Training Simulator</strong>
+                      <span>See how new domain datapoints move performance.</span>
+                    </div>
+                    <div class="corpus-train-controls">
+                      <div class="corpus-train-field">
+                        <label for="enterpriseTrainModel"><span>Model</span></label>
+                        <select id="enterpriseTrainModel" aria-label="Choose base model">
+                          <option value="gpt55">GPT 5.5</option>
+                          <option value="claude48">Claude Opus 4.8</option>
+                          <option value="gemini35flash">Gemini 3.5 Flash</option>
+                        </select>
+                      </div>
+                      <div class="corpus-train-field">
+                        <label><span>Incoming Domain</span><span id="enterpriseTrainDomainValue">Medicine</span></label>
+                      </div>
+                      <div class="corpus-train-field">
+                        <label><span>New Datapoints</span><span id="enterpriseTrainNewPointsValue">400</span></label>
+                      </div>
+                    </div>
+                    <div class="corpus-train-summary">
+                      <div class="corpus-train-kpi">
+                        <span class="label">Baseline Accuracy</span>
+                        <strong id="enterpriseTrainBaseline">--</strong>
+                        <span class="stat" id="enterpriseTrainBaselineStat">(accuracy, 95% CI: --)</span>
+                      </div>
+                      <div class="corpus-train-kpi">
+                        <span class="label">Post-Train Accuracy</span>
+                        <strong id="enterpriseTrainAfter">--</strong>
+                        <span class="stat" id="enterpriseTrainAfterStat">(accuracy, 95% CI: --)</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="corpus-train-right">
+                    <div class="plot-title"><span>Domain Shift Chart</span><span class="hint">↑ gain ↓ drop</span></div>
+                    <ul class="corpus-train-domain-list" id="enterpriseTrainDomainList"></ul>
+                  </div>
                 </div>
-                <div class="corpus-train-controls">
-                  <div class="corpus-train-field">
-                    <label for="enterpriseTrainModel"><span>Model</span></label>
-                    <select id="enterpriseTrainModel" aria-label="Choose base model">
-                      <option value="gpt55">GPT 5.5</option>
-                      <option value="claude48">Claude Opus 4.8</option>
-                      <option value="gemini35flash">Gemini 3.5 Flash</option>
-                    </select>
-                  </div>
-                  <div class="corpus-train-field">
-                    <label for="enterpriseTrainCoverage"><span>Failure Data Coverage</span><span id="enterpriseTrainCoverageValue">40%</span></label>
-                    <input id="enterpriseTrainCoverage" type="range" min="0" max="100" step="5" value="40" />
-                  </div>
-                </div>
-                <div class="corpus-train-summary">
-                  <div class="corpus-train-kpi">
-                    <span class="label">Baseline Accuracy</span>
-                    <strong id="enterpriseTrainBaseline">--</strong>
-                    <span class="stat" id="enterpriseTrainBaselineStat">(accuracy, 95% CI: --)</span>
-                  </div>
-                  <div class="corpus-train-kpi">
-                    <span class="label">Post-Train Accuracy</span>
-                    <strong id="enterpriseTrainAfter">--</strong>
-                    <span class="stat" id="enterpriseTrainAfterStat">(accuracy, 95% CI: --)</span>
-                  </div>
-                </div>
-                <ul class="corpus-train-domain-list" id="enterpriseTrainDomainList"></ul>
               </div>
             </section>
-            <section class="portal-card portal-card-legend" data-portal-panel="legend" aria-label="Domain risk and lift map">
+            <section class="portal-card portal-card-legend" data-portal-panel="legend" aria-label="Data flywheel">
               <div class="portal-card-head">
-                <span class="title">Domain Risk + Lift</span>
+                <span class="title">Data Flywheel</span>
                 <span class="badge soft">live</span>
               </div>
-              <ul class="corpus-legend" id="enterpriseCorpusLegend"></ul>
+              <div class="portal-stage-cycle" aria-label="Post-training pipeline cycle">
+                <div class="portal-stage-wheel" aria-label="Pipeline stages">
+                  <button type="button" class="pipeline-stage-btn is-active" data-stage-id="collect" aria-pressed="true">
+                    <span class="stage-index">Step 1</span>
+                    <span class="stage-label">Capture Failures</span>
+                  </button>
+                  <button type="button" class="pipeline-stage-btn" data-stage-id="curate" aria-pressed="false">
+                    <span class="stage-index">Step 2</span>
+                    <span class="stage-label">Verify Signals</span>
+                  </button>
+                  <button type="button" class="pipeline-stage-btn" data-stage-id="posttrain" aria-pressed="false">
+                    <span class="stage-index">Step 3</span>
+                    <span class="stage-label">Targeted Post-Train</span>
+                  </button>
+                  <button type="button" class="pipeline-stage-btn" data-stage-id="regression" aria-pressed="false">
+                    <span class="stage-index">Step 4</span>
+                    <span class="stage-label">Regression Guardrail</span>
+                  </button>
+                  <span class="pipeline-cycle-core" aria-hidden="true">Loop</span>
+                </div>
+                <article class="portal-stage-detail" id="enterprisePipelineDetail" aria-live="polite">
+                  <div class="detail-step" id="enterprisePipelineStep">Step 1</div>
+                  <h4 id="enterprisePipelineTitle">Capture Failures</h4>
+                  <figure class="pipeline-visual-wrap">
+                    <img class="pipeline-visual" id="enterprisePipelineVisual" src="assets/pipeline-step-collect.svg" alt="Performance trend chart for failure collection stage" loading="lazy" />
+                  </figure>
+                </article>
+              </div>
             </section>
           </aside>
         </div>
@@ -2416,9 +2460,9 @@
       const legendEl = document.getElementById('enterpriseCorpusLegend');
       const liveNoteEl = document.getElementById('enterpriseCorpusLiveNote');
       const trainModelEl = document.getElementById('enterpriseTrainModel');
-      const trainCoverageEl = document.getElementById('enterpriseTrainCoverage');
-      const trainCoverageValueEl = document.getElementById('enterpriseTrainCoverageValue');
-      const trainCoverageBadgeEl = document.getElementById('enterpriseTrainCoverageBadge');
+      const trainDomainValueEl = document.getElementById('enterpriseTrainDomainValue');
+      const trainNewPointsValueEl = document.getElementById('enterpriseTrainNewPointsValue');
+      const trainBatchBadgeEl = document.getElementById('enterpriseTrainBatchBadge');
       const trainBaselineEl = document.getElementById('enterpriseTrainBaseline');
       const trainAfterEl = document.getElementById('enterpriseTrainAfter');
       const trainBaselineStatEl = document.getElementById('enterpriseTrainBaselineStat');
@@ -2426,7 +2470,14 @@
       const trainDomainListEl = document.getElementById('enterpriseTrainDomainList');
       const portalTabEls = Array.from(document.querySelectorAll('.portal-tab[data-portal-tab]'));
       const portalPanelEls = Array.from(document.querySelectorAll('.portal-card[data-portal-panel]'));
-      if (!plot || !dotsLayer || !totalEl || !removedEl || !legendEl || !liveNoteEl) return;
+      const pipelineStageEls = Array.from(document.querySelectorAll('.pipeline-stage-btn[data-stage-id]'));
+      const pipelineStepEl = document.getElementById('enterprisePipelineStep');
+      const pipelineTitleEl = document.getElementById('enterprisePipelineTitle');
+      const pipelineVisualEl = document.getElementById('enterprisePipelineVisual');
+      const PIPELINE_AUTO_MS = 4000;
+      let pipelineAutoTimer = null;
+      let pipelineStageOrder = [];
+      if (!plot || !dotsLayer || !totalEl || !removedEl || !liveNoteEl) return;
 
       const renderedDotTotal = 1286;
       const SHARED_VERIFIED_TOTAL_KEY = 'hugClaimsSharedVerifiedTotal';
@@ -2501,7 +2552,54 @@
       };
       const trainState = {
         model: 'gpt55',
-        coverage: 40,
+        domain: 'medicine',
+        newPoints: 400,
+      };
+      const domainTransferWeights = {
+        medicine: { medicine: 1.00, finance: 0.22, legal: 0.28, math: 0.10, coding: 0.06, other: 0.16 },
+        finance:  { medicine: 0.14, finance: 1.00, legal: 0.24, math: 0.22, coding: 0.12, other: 0.16 },
+        legal:    { medicine: 0.24, finance: 0.24, legal: 1.00, math: 0.14, coding: 0.10, other: 0.18 },
+        math:     { medicine: 0.10, finance: 0.20, legal: 0.12, math: 1.00, coding: 0.30, other: 0.12 },
+        coding:   { medicine: 0.06, finance: 0.12, legal: 0.10, math: 0.30, coding: 1.00, other: 0.14 },
+        other:    { medicine: 0.14, finance: 0.14, legal: 0.16, math: 0.10, coding: 0.12, other: 1.00 },
+      };
+      const pipelineStages = {
+        collect: {
+          step: 'Step 1',
+          title: 'Capture Failures',
+          summary: 'Capture high-signal real-world failures from production traffic, eval harnesses, and user submissions.',
+          visual: {
+            src: 'assets/pipeline-step-collect.svg',
+            alt: 'Performance trend chart for failure collection stage',
+          },
+        },
+        curate: {
+          step: 'Step 2',
+          title: 'Verify Signals',
+          summary: 'Filter noisy entries, verify reproducibility, and keep only trusted failures for downstream use.',
+          visual: {
+            src: 'assets/pipeline-step-curate.svg',
+            alt: 'Validation precision chart for curation stage',
+          },
+        },
+        posttrain: {
+          step: 'Step 3',
+          title: 'Targeted Post-Train',
+          summary: 'Use validated hard negatives to improve weak domains while keeping general capability stable.',
+          visual: {
+            src: 'assets/pipeline-step-posttrain.svg',
+            alt: 'Before and after model performance chart for post-training stage',
+          },
+        },
+        regression: {
+          step: 'Step 4',
+          title: 'Regression Guardrail',
+          summary: 'Continuously re-test old and new slices, catch relapses early, and feed misses back into intake.',
+          visual: {
+            src: 'assets/pipeline-step-regression.svg',
+            alt: 'Regression monitoring trend chart showing reduced recurrence',
+          },
+        },
       };
 
       function randn() {
@@ -2519,6 +2617,11 @@
       }
       function formatPct(n) {
         return `${n.toFixed(1)}%`;
+      }
+      function formatSigned(value, digits = 1, suffix = '') {
+        const safe = Number.isFinite(value) ? value : 0;
+        const sign = safe >= 0 ? '+' : '-';
+        return `${sign}${Math.abs(safe).toFixed(digits)}${suffix}`;
       }
       function formatCiRange(ci) {
         return `${formatPct(ci.low)}-${formatPct(ci.high)}`;
@@ -2577,9 +2680,22 @@
       function currentProfile() {
         return modelProfiles[trainState.model] || modelProfiles.gpt55;
       }
-      function coverageFactor() {
-        const normalized = Math.max(0, Math.min(1, trainState.coverage / 100));
-        return Math.pow(normalized, 0.82);
+      function domainDisplayLabel(domainId) {
+        const domain = domains.find((entry) => entry.id === domainId);
+        if (!domain) return 'Other';
+        if (domainId === 'other') return 'Other';
+        return domain.label;
+      }
+      function transferWeight(sourceDomain, targetDomain) {
+        const sourceWeights = domainTransferWeights[sourceDomain] || domainTransferWeights.other;
+        return sourceWeights[targetDomain] || 0.1;
+      }
+      function datapointFactor() {
+        const normalized = Math.max(0, Math.min(1, trainState.newPoints / 2000));
+        return Math.pow(normalized, 0.68);
+      }
+      function addedDatapointsForDomain(domainId) {
+        return Math.round(trainState.newPoints * transferWeight(trainState.domain, domainId));
       }
       function domainBaseScore(domainId) {
         const profile = currentProfile();
@@ -2588,20 +2704,31 @@
       function domainLiftPoints(domainId) {
         const profile = currentProfile();
         const maxLift = profile.domainLiftPotential[domainId] || 7.5;
-        return maxLift * coverageFactor();
+        return maxLift * datapointFactor() * transferWeight(trainState.domain, domainId);
+      }
+      function domainDriftPenalty(domainId) {
+        if (domainId === trainState.domain) return 0;
+        const mismatch = 1 - transferWeight(trainState.domain, domainId);
+        const pressure = Math.pow(Math.max(0, Math.min(1, trainState.newPoints / 2200)), 0.92);
+        return 1.45 * mismatch * pressure;
       }
       function domainPostScore(domainId) {
-        return Math.min(99.4, domainBaseScore(domainId) + domainLiftPoints(domainId));
+        const shifted = domainBaseScore(domainId) + domainLiftPoints(domainId) - domainDriftPenalty(domainId);
+        return clamp(shifted, 45, 99.4);
       }
       function domainRelativeGainPct(domainId) {
         const before = domainBaseScore(domainId);
         const after = domainPostScore(domainId);
-        return Math.max(0, ((after - before) / Math.max(before, 1)) * 100);
+        return ((after - before) / Math.max(before, 1)) * 100;
       }
-      function effectiveSampleSize(rawCount) {
+      function domainDeltaPoints(domainId) {
+        return domainPostScore(domainId) - domainBaseScore(domainId);
+      }
+      function effectiveSampleSize(rawCount, addedPoints = 0) {
         const safeCount = Math.max(1, Number.parseInt(String(rawCount), 10) || 1);
-        const coverageWeight = 0.06 + (trainState.coverage / 450);
-        return Math.max(80, Math.round(safeCount * coverageWeight));
+        const safeAdded = Math.max(0, Number.parseInt(String(addedPoints), 10) || 0);
+        const augmented = safeCount + safeAdded;
+        return Math.max(80, Math.round((augmented * 0.07) + (safeAdded * 0.04)));
       }
       function confidenceInterval(scorePct, sampleSize) {
         const p = clamp(scorePct / 100, 0.01, 0.99);
@@ -2639,10 +2766,11 @@
       function updateDefaultLiveNote(feedAdded, feedRemoved) {
         const scores = weightedModelScores();
         const profile = currentProfile();
-        const relativeGainPct = Math.max(0, ((scores.after - scores.baseline) / Math.max(scores.baseline, 1)) * 100);
-        const overallSample = effectiveSampleSize(sumCounts(displayCountsByDomain()));
+        const incomingLabel = domainDisplayLabel(trainState.domain);
+        const relativeGainPct = ((scores.after - scores.baseline) / Math.max(scores.baseline, 1)) * 100;
+        const overallSample = effectiveSampleSize(sumCounts(displayCountsByDomain()), trainState.newPoints);
         const afterCi = confidenceInterval(scores.after, overallSample);
-        const simulationLine = `<strong>Post-train:</strong> ${profile.label} ${formatPct(scores.baseline)} → ${formatPct(scores.after)} (+${relativeGainPct.toFixed(1)}% accuracy, 95% CI ${formatCiRange(afterCi)})`;
+        const simulationLine = `<strong>Post-train:</strong> ${profile.label} ${formatPct(scores.baseline)} → ${formatPct(scores.after)} (${formatSigned(relativeGainPct, 1, '%')} accuracy, 95% CI ${formatCiRange(afterCi)}) from +${formatInt(trainState.newPoints)} incoming ${incomingLabel} datapoints`;
         if (typeof feedAdded === 'number' && typeof feedRemoved === 'number') {
           defaultNoteHtml = `<strong>Last update:</strong> +${feedAdded} verified, -${feedRemoved} removed<br>${simulationLine}`;
         } else {
@@ -2653,17 +2781,19 @@
         }
       }
       function renderTrainingPanel() {
-        if (!trainModelEl || !trainCoverageEl || !trainCoverageValueEl || !trainBaselineEl || !trainAfterEl || !trainDomainListEl) return;
+        if (!trainModelEl || !trainNewPointsValueEl || !trainBaselineEl || !trainAfterEl || !trainDomainListEl) return;
         trainModelEl.value = trainState.model;
-        trainCoverageEl.value = String(trainState.coverage);
-        trainCoverageValueEl.textContent = `${trainState.coverage}%`;
-        if (trainCoverageBadgeEl) {
-          trainCoverageBadgeEl.textContent = `${trainState.coverage}% coverage`;
+        if (trainDomainValueEl) {
+          trainDomainValueEl.textContent = domainDisplayLabel(trainState.domain);
+        }
+        trainNewPointsValueEl.textContent = formatInt(trainState.newPoints);
+        if (trainBatchBadgeEl) {
+          trainBatchBadgeEl.textContent = `${domainDisplayLabel(trainState.domain)} +${formatInt(trainState.newPoints)} datapoints`;
         }
         const scores = weightedModelScores();
         trainBaselineEl.textContent = formatPct(scores.baseline);
         trainAfterEl.textContent = formatPct(scores.after);
-        const overallSample = effectiveSampleSize(sumCounts(displayCountsByDomain()));
+        const overallSample = effectiveSampleSize(sumCounts(displayCountsByDomain()), trainState.newPoints);
         const baselineCi = confidenceInterval(scores.baseline, overallSample);
         const afterCi = confidenceInterval(scores.after, overallSample);
         if (trainBaselineStatEl) {
@@ -2676,12 +2806,20 @@
         trainDomainListEl.innerHTML = domains.map((domain) => {
           const baseline = domainBaseScore(domain.id);
           const after = domainPostScore(domain.id);
-          const relativeGainPct = Math.max(0, ((after - baseline) / Math.max(baseline, 1)) * 100);
-          const domainSample = effectiveSampleSize(displayCounts[domain.id] || 1);
+          const deltaPoints = domainDeltaPoints(domain.id);
+          const relativeGainPct = ((after - baseline) / Math.max(baseline, 1)) * 100;
+          const incomingPoints = addedDatapointsForDomain(domain.id);
+          const domainSample = effectiveSampleSize(displayCounts[domain.id] || 1, incomingPoints);
           const domainCi = confidenceInterval(after, domainSample);
-          const baseWidth = clamp((baseline - 45) * 2.2, 6, 96);
-          const afterWidth = clamp((after - 45) * 2.2, baseWidth, 98);
-          return `<li><div class="corpus-train-domain-top"><span class="name">${domain.label}</span><span class="delta">+${relativeGainPct.toFixed(1)}% (accuracy, 95% CI: ${formatCiRange(domainCi)})</span></div><div class="corpus-train-bar"><span class="base" style="width:${baseWidth}%"></span><span class="after" style="width:${afterWidth}%"></span></div></li>`;
+          const baseWidth = clamp((baseline - 50) * 2, 4, 98);
+          const afterWidth = clamp((after - 50) * 2, 4, 98);
+          const deltaLeft = Math.min(baseWidth, afterWidth);
+          const deltaWidth = Math.max(1.8, Math.abs(afterWidth - baseWidth));
+          const direction = deltaPoints >= 0 ? 'up' : 'down';
+          const rowClass = deltaPoints >= 0 ? 'is-gain' : 'is-loss';
+          const segmentClass = deltaPoints >= 0 ? 'pos' : 'neg';
+          const detailTitle = `${domain.label}: ${formatSigned(deltaPoints, 2, ' pts')}, +${formatInt(incomingPoints)} datapoints, 95% CI ${formatCiRange(domainCi)}`;
+          return `<li class="${rowClass}" title="${detailTitle}"><div class="corpus-train-domain-row"><span class="name">${domain.label}</span><div class="corpus-train-bar" role="img" aria-label="${domain.label} change ${formatSigned(relativeGainPct, 1, '%')}"><span class="base" style="width:${baseWidth}%"></span><span class="delta-segment ${segmentClass}" style="left:${deltaLeft}%;width:${deltaWidth}%"></span><span class="marker baseline" style="left:${baseWidth}%"></span><span class="marker current ${segmentClass}" style="left:${afterWidth}%"></span></div><span class="delta-main ${direction}">${formatSigned(relativeGainPct, 1, '%')}</span></div></li>`;
         }).join('');
         if (!activeDomainId) {
           liveNoteEl.innerHTML = defaultNoteHtml;
@@ -2700,6 +2838,46 @@
           tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
           tab.tabIndex = isActive ? 0 : -1;
         });
+      }
+      function setActivePipelineStage(stageId) {
+        if (!pipelineStageEls.length || !pipelineStepEl || !pipelineTitleEl || !pipelineVisualEl) return;
+        const fallbackId = pipelineStageEls[0].dataset.stageId;
+        const safeId = Object.prototype.hasOwnProperty.call(pipelineStages, stageId) ? stageId : fallbackId;
+        const stage = pipelineStages[safeId];
+        pipelineStageEls.forEach((btn) => {
+          const isActive = btn.dataset.stageId === safeId;
+          btn.classList.toggle('is-active', isActive);
+          btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+          btn.tabIndex = isActive ? 0 : -1;
+        });
+        pipelineStepEl.textContent = stage.step;
+        pipelineTitleEl.textContent = stage.title;
+        pipelineVisualEl.src = stage.visual.src;
+        pipelineVisualEl.alt = stage.visual.alt;
+      }
+      function advancePipelineStage() {
+        if (!pipelineStageOrder.length) return;
+        const activeId = (
+          pipelineStageEls.find((btn) => btn.classList.contains('is-active'))?.dataset.stageId
+          || pipelineStageOrder[0]
+        );
+        const currentIndex = pipelineStageOrder.indexOf(activeId);
+        const safeIndex = currentIndex >= 0 ? currentIndex : 0;
+        const nextId = pipelineStageOrder[(safeIndex + 1) % pipelineStageOrder.length];
+        setActivePipelineStage(nextId);
+      }
+      function startPipelineAutoplay() {
+        if (pipelineAutoTimer || !pipelineStageOrder.length) return;
+        pipelineAutoTimer = window.setInterval(advancePipelineStage, PIPELINE_AUTO_MS);
+      }
+      function stopPipelineAutoplay() {
+        if (!pipelineAutoTimer) return;
+        window.clearInterval(pipelineAutoTimer);
+        pipelineAutoTimer = null;
+      }
+      function restartPipelineAutoplay() {
+        stopPipelineAutoplay();
+        startPipelineAutoplay();
       }
       function shuffle(list) {
         const arr = list.slice();
@@ -2767,6 +2945,25 @@
         if (!domainId) return;
         document.querySelectorAll(`.corpus-domain-source[data-domain="${domainId}"]`).forEach((el) => el.classList.add('is-active'));
       }
+      function applyDomainCountHints(counts) {
+        if (!counts) return;
+        document.querySelectorAll('.corpus-cluster-label[data-domain]').forEach((labelEl) => {
+          const domainId = labelEl.dataset.domain;
+          const domainLabel = labelEl.dataset.domainLabel || domainDisplayLabel(domainId);
+          const count = counts[domainId] || 0;
+          const text = `${domainLabel}: ${formatInt(count)} datapoints`;
+          labelEl.title = text;
+          labelEl.setAttribute('aria-label', text);
+        });
+      }
+      function refreshActiveDomainPreview(forceNew = false) {
+        if (!activeDomainId) return;
+        const activeTrigger = (
+          plot.querySelector(`.corpus-cluster-label[data-domain="${activeDomainId}"]`)
+          || (legendEl ? legendEl.querySelector(`.corpus-domain-trigger[data-domain="${activeDomainId}"]`) : null)
+        );
+        if (activeTrigger) previewDomainImprovement(activeTrigger, forceNew);
+      }
       function clearActiveDomainPreview() {
         activeDomainId = null;
         setActiveDomainSource(null);
@@ -2779,16 +2976,20 @@
         if (forceNew || !domainImprovements[domainId]) {
           domainImprovements[domainId] = domainRelativeGainPct(domainId);
         }
+        const counts = displayCountsByDomain();
+        const existingCount = counts[domainId] || 0;
         const pct = domainImprovements[domainId];
         const profile = currentProfile();
         activeDomainId = domainId;
         setActiveDomainSource(domainId);
         const gainEl = trigger.querySelector('.corpus-domain-gain');
-        if (gainEl) gainEl.textContent = `+${pct}%`;
-        legendEl.querySelectorAll(`.corpus-domain-trigger[data-domain="${domainId}"] .corpus-domain-gain`).forEach((el) => {
-          el.textContent = `+${pct}%`;
-        });
-        liveNoteEl.innerHTML = `<strong>${domainLabel}:</strong> ${profile.label} improves +${pct}% after post-training at ${trainState.coverage}% coverage`;
+        if (gainEl) gainEl.textContent = formatSigned(pct, 1, '%');
+        if (legendEl) {
+          legendEl.querySelectorAll(`.corpus-domain-trigger[data-domain="${domainId}"] .corpus-domain-gain`).forEach((el) => {
+            el.textContent = formatSigned(pct, 1, '%');
+          });
+        }
+        liveNoteEl.innerHTML = `<strong>${domainLabel}:</strong> ${formatInt(existingCount)} datapoints | ${profile.label} shifts ${formatSigned(pct, 1, '%')} with +${formatInt(trainState.newPoints)} incoming ${domainDisplayLabel(trainState.domain)} datapoints`;
       }
       function pointForDomain(domain, entering) {
         const isOther = domain.id === 'other';
@@ -2860,26 +3061,39 @@
       function rebalanceToTarget(targetCounts, entering) {
         let removed = 0;
         let added = 0;
+        const addedByDomain = emptyCounts();
+        const removedByDomain = emptyCounts();
         const current = countsByDomain();
 
         domains.forEach((d) => {
           const diff = (current[d.id] || 0) - (targetCounts[d.id] || 0);
-          if (diff > 0) removed += removeRandomPoints(diff, d.id);
+          if (diff > 0) {
+            const removedNow = removeRandomPoints(diff, d.id);
+            removed += removedNow;
+            removedByDomain[d.id] += removedNow;
+          }
         });
 
         const afterRemove = countsByDomain();
         domains.forEach((d) => {
           const diff = (targetCounts[d.id] || 0) - (afterRemove[d.id] || 0);
-          if (diff > 0) added += addPoints(d.id, diff, entering);
+          if (diff > 0) {
+            const addedNow = addPoints(d.id, diff, entering);
+            added += addedNow;
+            addedByDomain[d.id] += addedNow;
+          }
         });
 
-        return { added, removed };
+        return { added, removed, addedByDomain, removedByDomain };
       }
       function renderLegend() {
         const counts = displayCountsByDomain();
-        legendEl.innerHTML = domains.map((d) => (
-          `<li><button type="button" class="name corpus-domain-source corpus-domain-trigger${activeDomainId === d.id ? ' is-active' : ''}" data-domain="${d.id}" data-domain-label="${d.label}"><span class="swatch" style="background:${colorMap[d.id]}"></span><span>${d.label}</span><span class="corpus-domain-gain">${domainImprovements[d.id] ? `+${domainImprovements[d.id]}%` : '+--%'}</span></button><span class="count">${formatInt(counts[d.id])}</span></li>`
-        )).join('');
+        if (legendEl) {
+          legendEl.innerHTML = domains.map((d) => (
+            `<li><button type="button" class="name corpus-domain-source corpus-domain-trigger${activeDomainId === d.id ? ' is-active' : ''}" data-domain="${d.id}" data-domain-label="${d.label}"><span class="swatch" style="background:${colorMap[d.id]}"></span><span>${d.label}</span><span class="corpus-domain-gain">${Number.isFinite(domainImprovements[d.id]) ? formatSigned(domainImprovements[d.id], 1, '%') : '--'}</span></button><span class="count">${formatInt(counts[d.id])}</span></li>`
+          )).join('');
+        }
+        applyDomainCountHints(counts);
         totalEl.textContent = formatInt(getDisplayTotal());
         removedEl.textContent = formatInt(state.removed);
         if (activeDomainId) setActiveDomainSource(activeDomainId);
@@ -2906,6 +3120,26 @@
         }
         return rebalanceToTarget(state.targetCounts, entering);
       }
+      function selectIncomingDomain(addedByDomain) {
+        const safeMap = addedByDomain || {};
+        let selected = trainState.domain || domainIds[0];
+        let maxCount = 0;
+        domainIds.forEach((id) => {
+          const count = safeMap[id] || 0;
+          if (count > maxCount) {
+            maxCount = count;
+            selected = id;
+          }
+        });
+        if (maxCount <= 0) {
+          return domainIds[Math.floor(Math.random() * domainIds.length)];
+        }
+        return selected;
+      }
+      function updateTrainingStateFromFeed(feedAdded, addedByDomain) {
+        trainState.domain = selectIncomingDomain(addedByDomain);
+        trainState.newPoints = Math.max(80, Math.min(2600, Math.round(feedAdded)));
+      }
       function tickCorpus() {
         const invalidatedRemoved = removeRandomPoints(6 + Math.floor(Math.random() * 7));
         const syncDelta = syncCorpusToTarget(true, 'reshuffle');
@@ -2913,15 +3147,16 @@
         const feedRemoved = Math.max(1, totalRemoved);
         const minFeedAdded = feedRemoved * 3;
         const feedAdded = Math.max(minFeedAdded + Math.floor(Math.random() * 11), syncDelta.added);
+        updateTrainingStateFromFeed(feedAdded, syncDelta.addedByDomain);
         nudgeExisting();
+        refreshDomainImprovements();
         updateDefaultLiveNote(feedAdded, feedRemoved);
         renderTrainingPanel();
         renderLegend();
         if (!activeDomainId) {
           liveNoteEl.innerHTML = defaultNoteHtml;
         } else {
-          const trigger = legendEl.querySelector(`.corpus-domain-trigger[data-domain="${activeDomainId}"]`);
-          if (trigger) previewDomainImprovement(trigger, false);
+          refreshActiveDomainPreview(false);
         }
       }
 
@@ -2929,35 +3164,32 @@
         if (trainModelEl) {
           trainState.model = trainModelEl.value || trainState.model;
         }
-        if (trainCoverageEl) {
-          const parsed = Number.parseInt(trainCoverageEl.value, 10);
-          trainState.coverage = Number.isFinite(parsed) ? Math.max(0, Math.min(100, parsed)) : trainState.coverage;
-        }
         refreshDomainImprovements();
         updateDefaultLiveNote();
         renderTrainingPanel();
         renderLegend();
         if (activeDomainId) {
-          const trigger = legendEl.querySelector(`.corpus-domain-trigger[data-domain="${activeDomainId}"]`);
-          if (trigger) previewDomainImprovement(trigger, false);
+          refreshActiveDomainPreview(false);
         }
       }
 
-      legendEl.addEventListener('mouseover', (event) => {
-        const trigger = event.target.closest('.corpus-domain-trigger');
-        if (!trigger || !legendEl.contains(trigger)) return;
-        if (activeDomainId === trigger.dataset.domain) return;
-        previewDomainImprovement(trigger, true);
-      });
-      legendEl.addEventListener('focusin', (event) => {
-        const trigger = event.target.closest('.corpus-domain-trigger');
-        if (!trigger || !legendEl.contains(trigger)) return;
-        previewDomainImprovement(trigger, true);
-      });
-      legendEl.addEventListener('mouseleave', clearActiveDomainPreview);
-      legendEl.addEventListener('focusout', () => {
-        if (!legendEl.matches(':focus-within')) clearActiveDomainPreview();
-      });
+      if (legendEl) {
+        legendEl.addEventListener('mouseover', (event) => {
+          const trigger = event.target.closest('.corpus-domain-trigger');
+          if (!trigger || !legendEl.contains(trigger)) return;
+          if (activeDomainId === trigger.dataset.domain) return;
+          previewDomainImprovement(trigger, true);
+        });
+        legendEl.addEventListener('focusin', (event) => {
+          const trigger = event.target.closest('.corpus-domain-trigger');
+          if (!trigger || !legendEl.contains(trigger)) return;
+          previewDomainImprovement(trigger, true);
+        });
+        legendEl.addEventListener('mouseleave', clearActiveDomainPreview);
+        legendEl.addEventListener('focusout', () => {
+          if (!legendEl.matches(':focus-within')) clearActiveDomainPreview();
+        });
+      }
       plot.addEventListener('mouseover', (event) => {
         const trigger = event.target.closest('.corpus-cluster-label');
         if (!trigger || !plot.contains(trigger)) return;
@@ -2970,16 +3202,14 @@
         previewDomainImprovement(trigger, true);
       });
       plot.addEventListener('mouseleave', () => {
-        if (!legendEl.matches(':hover')) clearActiveDomainPreview();
+        if (!(legendEl && legendEl.matches(':hover'))) clearActiveDomainPreview();
       });
       plot.addEventListener('focusout', () => {
-        if (!plot.matches(':focus-within') && !legendEl.matches(':focus-within')) clearActiveDomainPreview();
+        if (!plot.matches(':focus-within') && !(legendEl && legendEl.matches(':focus-within'))) clearActiveDomainPreview();
       });
 
       if (trainModelEl) trainModelEl.value = trainState.model;
-      if (trainCoverageEl) trainCoverageEl.value = String(trainState.coverage);
       if (trainModelEl) trainModelEl.addEventListener('change', handleTrainingControlsChange);
-      if (trainCoverageEl) trainCoverageEl.addEventListener('input', handleTrainingControlsChange);
       window.addEventListener('storage', (event) => {
         if (event.key !== SHARED_VERIFIED_TOTAL_KEY) return;
         syncCorpusToTarget(false, 'drift');
@@ -3012,6 +3242,41 @@
           || 'metrics'
         );
         setActivePortalPanel(initialPanel);
+      }
+      if (pipelineStageEls.length && pipelineStepEl && pipelineTitleEl && pipelineVisualEl) {
+        pipelineStageOrder = pipelineStageEls.map((btn) => btn.dataset.stageId).filter(Boolean);
+        pipelineStageEls.forEach((btn) => {
+          btn.addEventListener('click', () => {
+            setActivePipelineStage(btn.dataset.stageId);
+            restartPipelineAutoplay();
+          });
+          btn.addEventListener('keydown', (event) => {
+            if (!['ArrowRight', 'ArrowLeft', 'ArrowUp', 'ArrowDown'].includes(event.key)) return;
+            event.preventDefault();
+            const currentIndex = pipelineStageOrder.indexOf(btn.dataset.stageId);
+            if (currentIndex < 0) return;
+            const direction = (event.key === 'ArrowRight' || event.key === 'ArrowDown') ? 1 : -1;
+            const nextIndex = (currentIndex + direction + pipelineStageOrder.length) % pipelineStageOrder.length;
+            const nextId = pipelineStageOrder[nextIndex];
+            const nextBtn = pipelineStageEls.find((candidate) => candidate.dataset.stageId === nextId);
+            setActivePipelineStage(nextId);
+            restartPipelineAutoplay();
+            if (nextBtn) nextBtn.focus();
+          });
+        });
+        const initialStageId = (
+          pipelineStageEls.find((btn) => btn.classList.contains('is-active'))?.dataset.stageId
+          || pipelineStageOrder[0]
+        );
+        setActivePipelineStage(initialStageId);
+        startPipelineAutoplay();
+        document.addEventListener('visibilitychange', () => {
+          if (document.hidden) {
+            stopPipelineAutoplay();
+          } else {
+            startPipelineAutoplay();
+          }
+        });
       }
 
       syncCorpusToTarget(false, 'reshuffle');

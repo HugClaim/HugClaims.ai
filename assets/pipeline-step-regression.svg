@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-24 0 664 360" fill="none">
+  <rect width="640" height="360" rx="14" fill="#F8FBFF"/>
+  <rect x="18" y="18" width="604" height="324" rx="10" fill="#FFFFFF" stroke="#D5E0ED"/>
+
+  <text x="38" y="48" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#17324F">Step 4: Regression Monitoring</text>
+  <text x="38" y="72" font-family="Arial, sans-serif" font-size="13" fill="#4C6078">Recurrence trend after adding regression checks and guardrails.</text>
+
+  <rect x="42" y="92" width="556" height="220" fill="#FCFEFF" stroke="#E1EAF4"/>
+  <path d="M42 312H598M42 272H598M42 232H598M42 192H598M42 152H598M42 112H598" stroke="#E6EEF8"/>
+  <path d="M42 312V92M140 312V92M238 312V92M336 312V92M434 312V92M532 312V92" stroke="#EEF3F9"/>
+
+  <path d="M56 170L140 176L224 184L308 192L392 198L476 204L560 208" stroke="#B66AA8" stroke-width="4" stroke-dasharray="8 6" stroke-linecap="round"/>
+  <path d="M56 210L140 218L224 224L308 230L392 235L476 238L560 240" stroke="#2F80C1" stroke-width="4" stroke-linecap="round"/>
+  <path d="M42 200H598" stroke="#C45B55" stroke-width="2" stroke-dasharray="4 4"/>
+
+  <text x="10" y="316" text-anchor="end" font-family="Arial, sans-serif" font-size="11" fill="#5A7088">0%</text>
+  <text x="10" y="276" text-anchor="end" font-family="Arial, sans-serif" font-size="11" fill="#5A7088">5%</text>
+  <text x="10" y="236" text-anchor="end" font-family="Arial, sans-serif" font-size="11" fill="#5A7088">10%</text>
+  <text x="10" y="196" text-anchor="end" font-family="Arial, sans-serif" font-size="11" fill="#5A7088">15%</text>
+  <text x="10" y="156" text-anchor="end" font-family="Arial, sans-serif" font-size="11" fill="#5A7088">20%</text>
+  <text x="10" y="116" text-anchor="end" font-family="Arial, sans-serif" font-size="11" fill="#5A7088">25%</text>
+
+  <text x="56" y="332" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#5A7088">R1</text>
+  <text x="140" y="332" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#5A7088">R2</text>
+  <text x="224" y="332" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#5A7088">R3</text>
+  <text x="308" y="332" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#5A7088">R4</text>
+  <text x="392" y="332" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#5A7088">R5</text>
+  <text x="476" y="332" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#5A7088">R6</text>
+  <text x="560" y="332" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#5A7088">R7</text>
+
+  <rect x="384" y="30" width="224" height="56" rx="7" fill="#F1F7FF" stroke="#D0E2F3"/>
+  <line x1="398" y1="48" x2="416" y2="48" stroke="#B66AA8" stroke-width="3" stroke-dasharray="7 5"/>
+  <text x="422" y="52" font-family="Arial, sans-serif" font-size="12" fill="#385776">without checks</text>
+  <line x1="398" y1="67" x2="416" y2="67" stroke="#2F80C1" stroke-width="3"/>
+  <text x="422" y="71" font-family="Arial, sans-serif" font-size="12" fill="#385776">with checks</text>
+  <text x="398" y="83" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#1F6297">Recurrence reduced: 41%</text>
+</svg>

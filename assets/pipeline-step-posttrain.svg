@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" fill="none">
+  <rect width="640" height="360" rx="14" fill="#F8FBFF"/>
+  <rect x="18" y="18" width="604" height="324" rx="10" fill="#FFFFFF" stroke="#D5E0ED"/>
+
+  <text x="38" y="48" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#17324F">Step 3: Post-train Performance Lift</text>
+  <text x="38" y="72" font-family="Arial, sans-serif" font-size="13" fill="#4C6078">Domain-level accuracy before vs after failure-targeted post-training.</text>
+
+  <rect x="42" y="92" width="556" height="220" fill="#FCFEFF" stroke="#E1EAF4"/>
+  <path d="M42 312H598M42 272H598M42 232H598M42 192H598M42 152H598M42 112H598" stroke="#E6EEF8"/>
+
+  <rect x="90" y="178" width="24" height="134" fill="#C7DBEE"/>
+  <rect x="116" y="148" width="24" height="164" fill="#2F80C1"/>
+  <text x="103" y="172" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#5A7088">71</text>
+  <text x="129" y="142" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#1F6297">79</text>
+
+  <rect x="174" y="166" width="24" height="146" fill="#C7DBEE"/>
+  <rect x="200" y="136" width="24" height="176" fill="#2F80C1"/>
+  <text x="187" y="160" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#5A7088">74</text>
+  <text x="213" y="130" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#1F6297">82</text>
+
+  <rect x="258" y="172" width="24" height="140" fill="#C7DBEE"/>
+  <rect x="284" y="140" width="24" height="172" fill="#2F80C1"/>
+  <text x="271" y="166" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#5A7088">72</text>
+  <text x="297" y="134" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#1F6297">81</text>
+
+  <rect x="342" y="156" width="24" height="156" fill="#C7DBEE"/>
+  <rect x="368" y="124" width="24" height="188" fill="#2F80C1"/>
+  <text x="355" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#5A7088">75</text>
+  <text x="381" y="118" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#1F6297">84</text>
+
+  <rect x="426" y="170" width="24" height="142" fill="#C7DBEE"/>
+  <rect x="452" y="138" width="24" height="174" fill="#2F80C1"/>
+  <text x="439" y="164" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#5A7088">73</text>
+  <text x="465" y="132" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#1F6297">82</text>
+
+  <text x="116" y="332" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#5A7088">Medicine</text>
+  <text x="200" y="332" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#5A7088">Finance</text>
+  <text x="284" y="332" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#5A7088">Legal</text>
+  <text x="368" y="332" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#5A7088">Math</text>
+  <text x="452" y="332" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#5A7088">Coding</text>
+
+  <rect x="406" y="30" width="208" height="50" rx="7" fill="#F1F7FF" stroke="#D0E2F3"/>
+  <rect x="418" y="45" width="14" height="10" fill="#C7DBEE"/>
+  <text x="438" y="54" font-family="Arial, sans-serif" font-size="12" fill="#385776">baseline accuracy</text>
+  <rect x="526" y="45" width="14" height="10" fill="#2F80C1"/>
+  <text x="546" y="54" font-family="Arial, sans-serif" font-size="12" fill="#385776">post-train</text>
+  <text x="418" y="72" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#1F6297">Average lift: +9.6 points</text>
+</svg>
