@@ -1929,7 +1929,7 @@
         <div class="badge">
           <span class="pulse"></span>
           <span class="badge-copy">
-            <strong id="heroVerifiedClaims" data-value="1286">1,286</strong>
+            <strong id="heroVerifiedClaims" data-value="35000">35,000</strong>
             <span class="badge-label">verified claims submitted</span>
           </span>
         </div>
@@ -2486,6 +2486,39 @@
     if (!plot || !scene || !dotsLayer || !totalEl || !removedEl || !legendEl || !liveNoteEl) return;
 
     const heroTotalEl = document.getElementById('heroVerifiedClaims');
+    const renderedDotTotal = 1286;
+    const SHARED_VERIFIED_TOTAL_KEY = 'hugClaimsSharedVerifiedTotal';
+    const SHARED_VERIFIED_MIN = 35000;
+    function randomSharedVerifiedStart() {
+      return SHARED_VERIFIED_MIN + Math.floor(Math.random() * 5001);
+    }
+    function parsePositiveInt(value) {
+      const parsed = Number.parseInt(String(value || '').replace(/[^\d]/g, ''), 10);
+      return Number.isFinite(parsed) && parsed > 0 ? parsed : null;
+    }
+    function ensureSharedVerifiedTotal() {
+      let parsed = null;
+      try {
+        parsed = parsePositiveInt(window.localStorage.getItem(SHARED_VERIFIED_TOTAL_KEY) || '');
+      } catch (_) {}
+      if (parsed !== null && parsed >= SHARED_VERIFIED_MIN) return parsed;
+      const seeded = randomSharedVerifiedStart();
+      try {
+        window.localStorage.setItem(SHARED_VERIFIED_TOTAL_KEY, String(seeded));
+      } catch (_) {}
+      return seeded;
+    }
+    function readSharedVerifiedTotal(fallback = SHARED_VERIFIED_MIN) {
+      const parsed = ensureSharedVerifiedTotal();
+      return parsed >= SHARED_VERIFIED_MIN ? parsed : Math.max(fallback, SHARED_VERIFIED_MIN);
+    }
+    function writeSharedVerifiedTotal(total) {
+      const parsed = parsePositiveInt(total);
+      if (parsed === null) return;
+      try {
+        window.localStorage.setItem(SHARED_VERIFIED_TOTAL_KEY, String(Math.max(parsed, SHARED_VERIFIED_MIN)));
+      } catch (_) {}
+    }
 
     const domains = [
       { id: 'medicine', label: 'Medicine', center: [19, 24], spread: [8.8, 7.6] },
@@ -2567,16 +2600,61 @@
       applyZoomTransform();
     }
     function getHeroVerifiedTotal() {
-      if (!heroTotalEl) return 1286;
+      if (!heroTotalEl) return readSharedVerifiedTotal(SHARED_VERIFIED_MIN);
       const raw = heroTotalEl.dataset.value || heroTotalEl.textContent || '1286';
-      const parsed = parseInt(String(raw).replace(/[^\d]/g, ''), 10);
-      return Number.isFinite(parsed) && parsed > 0 ? parsed : 1286;
+      const fallback = Math.max(parsePositiveInt(raw) || SHARED_VERIFIED_MIN, SHARED_VERIFIED_MIN);
+      const shared = readSharedVerifiedTotal(fallback);
+      if (shared !== fallback) {
+        heroTotalEl.dataset.value = String(shared);
+        heroTotalEl.textContent = new Intl.NumberFormat('en-US').format(shared);
+      }
+      writeSharedVerifiedTotal(shared);
+      return shared;
     }
     function emptyCounts() {
       return Object.fromEntries(domainIds.map((id) => [id, 0]));
     }
     function sumCounts(counts) {
       return domainIds.reduce((sum, id) => sum + (counts[id] || 0), 0);
+    }
+    function scaleCountsToTotal(counts, total) {
+      const safeTotal = Math.max(0, Number.parseInt(String(total), 10) || 0);
+      const scaled = emptyCounts();
+      if (safeTotal === 0) return scaled;
+      const baseTotal = sumCounts(counts);
+      if (baseTotal <= 0) {
+        const per = Math.floor(safeTotal / domainIds.length);
+        let remainder = safeTotal - (per * domainIds.length);
+        domainIds.forEach((id) => { scaled[id] = per; });
+        let idx = 0;
+        while (remainder > 0) {
+          scaled[domainIds[idx % domainIds.length]] += 1;
+          idx += 1;
+          remainder -= 1;
+        }
+        return scaled;
+      }
+      const fractions = [];
+      let allocated = 0;
+      domainIds.forEach((id) => {
+        const exact = ((counts[id] || 0) / baseTotal) * safeTotal;
+        const floor = Math.floor(exact);
+        scaled[id] = floor;
+        allocated += floor;
+        fractions.push({ id, frac: exact - floor });
+      });
+      let remainder = safeTotal - allocated;
+      fractions.sort((a, b) => b.frac - a.frac);
+      let cursor = 0;
+      while (remainder > 0) {
+        scaled[fractions[cursor % fractions.length].id] += 1;
+        cursor += 1;
+        remainder -= 1;
+      }
+      return scaled;
+    }
+    function displayCountsByDomain() {
+      return scaleCountsToTotal(countsByDomain(), getHeroVerifiedTotal());
     }
     function shuffle(list) {
       const arr = list.slice();
@@ -2776,7 +2854,7 @@
       return { added, removed };
     }
     function renderLegend() {
-      const counts = countsByDomain();
+      const counts = displayCountsByDomain();
       legendEl.innerHTML = domains.map((d) => (
         `<li><button type="button" class="name corpus-domain-source corpus-domain-trigger${activeDomainId === d.id ? ' is-active' : ''}" data-domain="${d.id}" data-domain-label="${d.label}"><span class="swatch" style="background:${colorMap[d.id]}"></span><span>${d.label}</span><span class="corpus-domain-gain">${domainImprovements[d.id] ? `+${domainImprovements[d.id]}%` : '+--%'}</span></button><span class="count">${new Intl.NumberFormat('en-US').format(counts[d.id])}</span></li>`
       )).join('');
@@ -2800,7 +2878,7 @@
       });
     }
     function syncCorpusToHero(entering, mode = 'drift') {
-      const targetTotal = getHeroVerifiedTotal();
+      const targetTotal = renderedDotTotal;
       if (!state.targetCounts || mode === 'reshuffle') {
         state.targetCounts = buildRandomTargetCounts(targetTotal);
       } else {
@@ -2929,26 +3007,83 @@
     return new Intl.NumberFormat('en-US').format(n);
   }
 
+  const SHARED_VERIFIED_TOTAL_KEY = 'hugClaimsSharedVerifiedTotal';
+  const SHARED_VERIFIED_MIN = 35000;
+  function randomSharedVerifiedStart() {
+    return SHARED_VERIFIED_MIN + Math.floor(Math.random() * 5001);
+  }
+  function parseSharedTotal(value) {
+    const parsed = Number.parseInt(String(value || '').replace(/[^\d]/g, ''), 10);
+    return Number.isFinite(parsed) && parsed > 0 ? parsed : null;
+  }
+  function ensureSharedVerifiedTotal() {
+    let parsed = null;
+    try {
+      parsed = parseSharedTotal(window.localStorage.getItem(SHARED_VERIFIED_TOTAL_KEY) || '');
+    } catch (_) {}
+    if (parsed !== null && parsed >= SHARED_VERIFIED_MIN) return parsed;
+    const seeded = randomSharedVerifiedStart();
+    try {
+      window.localStorage.setItem(SHARED_VERIFIED_TOTAL_KEY, String(seeded));
+    } catch (_) {}
+    return seeded;
+  }
+  function readSharedVerifiedTotal(fallback = SHARED_VERIFIED_MIN) {
+    const parsed = ensureSharedVerifiedTotal();
+    return parsed >= SHARED_VERIFIED_MIN ? parsed : Math.max(fallback, SHARED_VERIFIED_MIN);
+  }
+  function writeSharedVerifiedTotal(total) {
+    const parsed = parseSharedTotal(total);
+    if (parsed === null) return;
+    try {
+      window.localStorage.setItem(SHARED_VERIFIED_TOTAL_KEY, String(Math.max(parsed, SHARED_VERIFIED_MIN)));
+    } catch (_) {}
+  }
+
   const heroVerifiedClaimsEl = document.getElementById('heroVerifiedClaims');
   const corpusTotalEl = document.getElementById('corpusTotal');
+  function currentHeroTotal() {
+    if (!heroVerifiedClaimsEl) return readSharedVerifiedTotal(SHARED_VERIFIED_MIN);
+    const fromDom = Math.max(parseSharedTotal(heroVerifiedClaimsEl.dataset.value || heroVerifiedClaimsEl.textContent || '1286') || SHARED_VERIFIED_MIN, SHARED_VERIFIED_MIN);
+    return readSharedVerifiedTotal(fromDom);
+  }
+  function setHeroTotal(total) {
+    if (!heroVerifiedClaimsEl) return;
+    heroVerifiedClaimsEl.dataset.value = String(total);
+    heroVerifiedClaimsEl.textContent = formatInt(total);
+  }
   function syncCorpusTotalFromHero() {
     if (!heroVerifiedClaimsEl || !corpusTotalEl) return;
     corpusTotalEl.textContent = heroVerifiedClaimsEl.textContent;
   }
   function tickHeroVerifiedClaims() {
     if (!heroVerifiedClaimsEl) return;
-    const current = parseInt(heroVerifiedClaimsEl.dataset.value || '1286', 10) || 1286;
+    const current = currentHeroTotal();
     const next = current + 1;
-    heroVerifiedClaimsEl.dataset.value = String(next);
-    heroVerifiedClaimsEl.textContent = formatInt(next);
+    setHeroTotal(next);
+    writeSharedVerifiedTotal(next);
     syncCorpusTotalFromHero();
     if (typeof window.hugSyncCorpusToHero === 'function') {
       window.hugSyncCorpusToHero();
     }
   }
 
+  if (heroVerifiedClaimsEl) {
+    const initial = currentHeroTotal();
+    setHeroTotal(initial);
+    writeSharedVerifiedTotal(initial);
+  }
   syncCorpusTotalFromHero();
   setInterval(tickHeroVerifiedClaims, 2000);
+  window.addEventListener('storage', (event) => {
+    if (event.key !== SHARED_VERIFIED_TOTAL_KEY || !heroVerifiedClaimsEl) return;
+    const shared = currentHeroTotal();
+    setHeroTotal(shared);
+    syncCorpusTotalFromHero();
+    if (typeof window.hugSyncCorpusToHero === 'function') {
+      window.hugSyncCorpusToHero();
+    }
+  });
 
   const ELIGIBLE_CAPTION_NAMES = ['UAKEC', 'NIVAR', 'MILOX', 'SAREM', 'QATEN', 'RUVIK', 'LEONA', 'DYLAN', 'MARA', 'KAI'];
 

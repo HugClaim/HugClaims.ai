@@ -366,16 +366,16 @@
 
     <section class="hero" aria-labelledby="grant-title">
       <div class="kicker">hug claims enterprise grant</div>
-      <h1 id="grant-title">Apply for a one-month <em>Enterprise Grant Trial</em>.</h1>
-      <p>The Enterprise Grant gives qualified teams a zero-cost one-month pilot for either Data Licensing, Enterprise Audits, or both. Submit the form and our team will review fit, compliance needs, and onboarding readiness.</p>
+      <h1 id="grant-title">Get a three-month period of <em>free access to Hug Claims data</em>.</h1>
+      <p>The Enterprise Grant gives qualified enterprise teams and nonprofit researchers zero-cost access to Hug Claims data for up to three months. Use this period to explore, prototype, and validate what matters most for your goals, and our team can support you along the way.</p>
     </section>
 
     <section class="grant-grid" aria-label="Enterprise grant details and application">
       <aside class="benefits">
         <h2>What the grant includes</h2>
         <article class="benefit-card">
-          <div class="title">Trial Access</div>
-          <p>30-day access with onboarding support, integration checks, and pilot-scoped usage limits based on your selected stream.</p>
+          <div class="title">Data Access</div>
+          <p>Up to three months of free access to Hug Claims data, with onboarding support and integration guidance based on your selected focus areas.</p>
         </article>
         <article class="benefit-card">
           <div class="title">Technical Enablement</div>
@@ -383,89 +383,23 @@
         </article>
         <article class="benefit-card">
           <div class="title">Decision Package</div>
-          <p>At the end of the trial, you receive a recommended annual or quarterly plan aligned to your scope, governance, and budget.</p>
+          <p>When you are ready, you receive a recommended annual or quarterly plan aligned to your scope, governance, and budget.</p>
         </article>
       </aside>
 
       <section class="form-wrap" aria-labelledby="apply-title">
         <h2 id="apply-title">Grant Application</h2>
         <p class="form-sub">Use your company email. Most applications receive an initial response within 3 business days.</p>
-        <form id="grantForm">
-          <div class="form-grid">
-            <div class="field">
-              <label for="fullName">Full name</label>
-              <input id="fullName" name="full_name" type="text" autocomplete="name" required />
-            </div>
-            <div class="field">
-              <label for="workEmail">Work email</label>
-              <input id="workEmail" name="work_email" type="email" autocomplete="email" required />
-            </div>
-            <div class="field">
-              <label for="companyName">Company / organization</label>
-              <input id="companyName" name="company_name" type="text" required />
-            </div>
-            <div class="field">
-              <label for="roleTitle">Role / title</label>
-              <input id="roleTitle" name="role_title" type="text" required />
-            </div>
-            <div class="field">
-              <label for="stream">Grant stream</label>
-              <select id="stream" name="stream" required>
-                <option value="">Select stream</option>
-                <option value="data_licensing">Enterprise Data Licensing</option>
-                <option value="enterprise_audits">Enterprise Audits</option>
-                <option value="both">Both streams</option>
-              </select>
-            </div>
-            <div class="field">
-              <label for="targetTier">Target tier</label>
-              <select id="targetTier" name="target_tier" required>
-                <option value="">Select tier</option>
-                <option value="starter_or_departmental">Starter / Departmental</option>
-                <option value="growth_or_enterprise">Growth / Enterprise</option>
-                <option value="frontier_or_enterprise_plus">Frontier / Enterprise Plus</option>
-                <option value="custom_or_regulated">Custom Enterprise / Regulated Enterprise</option>
-              </select>
-            </div>
-            <div class="field">
-              <label for="teamSize">Team size for trial</label>
-              <select id="teamSize" name="team_size" required>
-                <option value="">Select size</option>
-                <option value="1_20">1-20 users</option>
-                <option value="21_100">21-100 users</option>
-                <option value="101_500">101-500 users</option>
-                <option value="500_plus">500+ users</option>
-              </select>
-            </div>
-            <div class="field">
-              <label for="timeline">Requested start timeline</label>
-              <select id="timeline" name="timeline" required>
-                <option value="">Select timeline</option>
-                <option value="immediate">Immediate (0-2 weeks)</option>
-                <option value="this_quarter">This quarter</option>
-                <option value="next_quarter">Next quarter</option>
-                <option value="exploratory">Exploratory / no fixed date</option>
-              </select>
-            </div>
-            <div class="field full">
-              <label for="llmStack">Current LLM stack / tooling</label>
-              <textarea id="llmStack" name="llm_stack" placeholder="Example: OpenAI + Anthropic models, Datadog dashboards, internal gateway, LangSmith tracing."></textarea>
-            </div>
-            <div class="field full">
-              <label for="useCase">Primary trial objective</label>
-              <textarea id="useCase" name="trial_objective" placeholder="Describe what you want to validate in the one-month Enterprise Grant trial." required></textarea>
-            </div>
-            <label class="check" for="attest">
-              <input id="attest" name="attest" type="checkbox" required />
-              I confirm this application is for business use and I can participate in grant qualification calls.
-            </label>
-            <div class="actions">
-              <button class="btn" type="submit">submit grant request</button>
-              <span class="note">By submitting, you agree to receive follow-up about grant qualification.</span>
-            </div>
+        <div class="form-grid">
+          <div class="field full">
+            <label>Application Portal</label>
+            <p class="form-sub">Applications are now handled through our Google Form.</p>
           </div>
-          <div id="grantResult" class="grant-result" role="status" aria-live="polite"></div>
-        </form>
+          <div class="actions">
+            <a class="btn" href="https://forms.gle/BCYkjEKL7jAV2yas8" target="_blank" rel="noopener noreferrer">open grant application form</a>
+            <span class="note">You will be redirected to Google Forms to submit your application.</span>
+          </div>
+        </div>
       </section>
     </section>
 
@@ -475,83 +409,5 @@
     </footer>
   </div>
 
-  <script src="hug-config.js"></script>
-  <script>
-    const HUG_API_BASE = (window.HUG_API_BASE || '').replace(/\/+$/, '');
-    const hugApiUrl = (path) => `${HUG_API_BASE}${path}`;
-    const grantForm = document.getElementById('grantForm');
-    const grantResult = document.getElementById('grantResult');
-    const grantSubmitBtn = grantForm.querySelector('button[type="submit"]');
-    const defaultSubmitText = grantSubmitBtn ? grantSubmitBtn.textContent : '';
-
-    function setSubmitting(isSubmitting) {
-      if (!grantSubmitBtn) return;
-      grantSubmitBtn.disabled = isSubmitting;
-      grantSubmitBtn.textContent = isSubmitting ? 'submitting...' : defaultSubmitText;
-    }
-
-    function showResult(message, tone) {
-      grantResult.textContent = message;
-      grantResult.classList.add('show');
-      grantResult.classList.toggle('error', tone === 'error');
-      window.scrollTo({
-        top: grantResult.getBoundingClientRect().top + window.scrollY - 120,
-        behavior: 'smooth',
-      });
-    }
-
-    grantForm.addEventListener('submit', async (event) => {
-      event.preventDefault();
-      const formData = new FormData(grantForm);
-      const payload = {
-        full_name: String(formData.get('full_name') || '').trim(),
-        work_email: String(formData.get('work_email') || '').trim(),
-        company_name: String(formData.get('company_name') || '').trim(),
-        role_title: String(formData.get('role_title') || '').trim(),
-        stream: String(formData.get('stream') || '').trim(),
-        target_tier: String(formData.get('target_tier') || '').trim(),
-        team_size: String(formData.get('team_size') || '').trim(),
-        timeline: String(formData.get('timeline') || '').trim(),
-        llm_stack: String(formData.get('llm_stack') || '').trim(),
-        trial_objective: String(formData.get('trial_objective') || '').trim(),
-        attest: formData.get('attest') === 'on',
-      };
-      const name = payload.full_name || 'Team';
-      const company = payload.company_name || 'your organization';
-
-      setSubmitting(true);
-      try {
-        const resp = await fetch(hugApiUrl('/enterprise_grant'), {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
-        });
-        let data = null;
-        try { data = await resp.json(); } catch (_) {}
-        if (!resp.ok || !data || !data.ok) {
-          const detail = data && typeof data.detail === 'string'
-            ? data.detail
-            : `request failed (${resp.status})`;
-          throw new Error(detail);
-        }
-        const ref = String(data.grant_id || '').trim() || 'pending';
-        showResult(
-          `Application received. Thanks ${name}. Your Hug Claims Enterprise Grant request for ${company} is now in review. Reference: ${ref}.`,
-          'success',
-        );
-        grantForm.reset();
-      } catch (error) {
-        const detail = error instanceof Error && error.message
-          ? error.message
-          : 'network error';
-        showResult(
-          `We could not submit your grant request right now (${detail}). Please try again shortly.`,
-          'error',
-        );
-      } finally {
-        setSubmitting(false);
-      }
-    });
-  </script>
 </body>
 </html>

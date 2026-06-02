@@ -203,6 +203,144 @@
       font-size: 14px;
       max-width: 80ch;
     }
+    .token-cycle {
+      margin: 16px 0 8px;
+      border: 1px solid rgba(179, 162, 198, 0.62);
+      border-radius: 20px;
+      background: linear-gradient(180deg, rgba(247, 241, 253, 0.82), rgba(255, 255, 255, 0.9));
+      box-shadow:
+        0 20px 38px -34px rgba(40, 25, 10, 0.24),
+        0 0 0 1px rgba(255, 255, 255, 0.36) inset;
+      padding: 20px;
+    }
+    .token-cycle .cycle-kicker {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--ink-3);
+      margin-bottom: 6px;
+      font-weight: 700;
+    }
+    .token-cycle h2 {
+      font-family: var(--serif);
+      font-weight: 340;
+      font-size: clamp(24px, 3vw, 34px);
+      letter-spacing: -0.02em;
+      line-height: 1.12;
+      margin-bottom: 7px;
+    }
+    .token-cycle p {
+      color: var(--ink-2);
+      font-size: 14px;
+      max-width: 86ch;
+    }
+    .token-cycle-shell {
+      margin-top: 12px;
+      border: 1px solid rgba(179, 162, 198, 0.66);
+      border-radius: 16px;
+      background: rgba(255, 253, 248, 0.9);
+      padding: 12px;
+      display: grid;
+      gap: 10px;
+    }
+    .token-cycle-diagram {
+      position: relative;
+      min-height: 360px;
+      border: 1px solid rgba(179, 162, 198, 0.55);
+      border-radius: 14px;
+      background:
+        radial-gradient(circle at 24% 25%, rgba(47, 107, 64, 0.13) 0, transparent 37%),
+        radial-gradient(circle at 74% 26%, rgba(45, 112, 152, 0.13) 0, transparent 38%),
+        radial-gradient(circle at 48% 74%, rgba(128, 95, 168, 0.12) 0, transparent 42%),
+        linear-gradient(180deg, rgba(255, 253, 248, 0.95), rgba(246, 238, 253, 0.75));
+      overflow: hidden;
+    }
+    .token-cycle-ring {
+      position: absolute;
+      width: min(70%, 430px);
+      aspect-ratio: 1 / 1;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      border: 1.5px dashed rgba(132, 102, 178, 0.52);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .token-cycle-center {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      border: 1px solid rgba(132, 102, 178, 0.45);
+      border-radius: 11px;
+      background: rgba(250, 246, 255, 0.92);
+      color: var(--ink);
+      font: 700 11px var(--sans);
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      padding: 7px 10px;
+      white-space: nowrap;
+    }
+    .token-cycle-node {
+      position: absolute;
+      width: min(220px, 42%);
+      border: 1px solid rgba(179, 162, 198, 0.72);
+      border-radius: 12px;
+      background: #fff;
+      padding: 9px 10px;
+      display: grid;
+      gap: 3px;
+      box-shadow: 0 10px 24px -22px rgba(40, 25, 10, 0.35);
+    }
+    .token-cycle-node .name {
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      font-weight: 700;
+    }
+    .token-cycle-node .desc {
+      color: var(--ink);
+      font-size: 12px;
+      line-height: 1.34;
+    }
+    .token-cycle-node.users {
+      top: 10%;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    .token-cycle-node.hugclaims {
+      left: 9%;
+      bottom: 12%;
+    }
+    .token-cycle-node.frontier-labs {
+      right: 9%;
+      bottom: 12%;
+    }
+    .token-flow-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+    }
+    .token-flow-item {
+      border: 1px solid rgba(179, 162, 198, 0.5);
+      border-radius: 10px;
+      background: rgba(255, 253, 248, 0.9);
+      padding: 7px 8px;
+      display: grid;
+      gap: 3px;
+    }
+    .token-flow-item .step {
+      color: var(--ink);
+      font: 700 10px var(--sans);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .token-flow-item .detail {
+      color: var(--ink-2);
+      font-size: 11px;
+      line-height: 1.34;
+    }
     .bridge-grid {
       margin-top: 12px;
       display: grid;
@@ -1437,6 +1575,7 @@
     @media (max-width: 1040px) {
       .streams { grid-template-columns: 1fr; }
       .corpus-side { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .token-flow-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .portal-card.portal-card-metrics,
       .portal-card.portal-card-training,
       .portal-card.portal-card-legend { grid-column: span 2; }
@@ -1453,9 +1592,17 @@
       .portal-card.portal-card-training,
       .portal-card.portal-card-legend { grid-column: span 1; }
       .portal-stage-strip { grid-template-columns: 1fr; }
+      .token-cycle-diagram { min-height: 320px; }
+      .token-cycle-node.users { top: 8%; }
+      .token-cycle-node.hugclaims,
+      .token-cycle-node.frontier-labs {
+        bottom: 8%;
+        width: 44%;
+      }
+      .token-flow-grid { grid-template-columns: 1fr; }
       .bridge-grid { grid-template-columns: 1fr; }
       .trial-grid { grid-template-columns: 1fr; }
-      .hero, .corpus-bridge, .stream-head, .trial { padding: 16px; }
+      .hero, .token-cycle, .corpus-bridge, .stream-head, .trial { padding: 16px; }
       .tiers { padding: 10px; }
       .tiers::before { display: none; }
       .tier-card,
@@ -1492,7 +1639,49 @@
         <span class="hero-question">Worry about <em>real-world deployment</em>?</span>
       </h1>
       <p>Hug Claims helps teams turn failure cases into practical improvement loops: data licensing for training and evaluation coverage, and audit coverage for deployment governance and compliance readiness.</p>
-      <div class="hero-trial"><span class="dot" aria-hidden="true"></span> <a href="#enterprise-grant">Enterprise Grant available for qualified enterprise teams.</a></div>
+      <div class="hero-trial"><span class="dot" aria-hidden="true"></span> <a href="#enterprise-grant">Enterprise Grant available for qualified enterprise teams and non-profit research.</a></div>
+    </section>
+
+    <section class="token-cycle" aria-labelledby="token-cycle-title">
+      <div class="cycle-kicker">market role</div>
+      <h2 id="token-cycle-title">Token Cycle in the Frontier LLM Market</h2>
+      <p>Hug Claims runs the circulation loop between users and frontier labs: users surface real-world model errors and earn cashback (or equivalent tokens), while labs fund that reward pool to access curated failure data and improve model performance.</p>
+      <div class="token-cycle-shell">
+        <div class="token-cycle-diagram" role="img" aria-label="Circular token cycle between Users, Hug Claims, and LLM Frontier Labs">
+          <span class="token-cycle-ring" aria-hidden="true"></span>
+          <span class="token-cycle-center">continuous model improvement loop</span>
+          <article class="token-cycle-node users" aria-label="Users in the token cycle">
+            <span class="name">Users</span>
+            <span class="desc">Spot LLM failures in real usage and submit evidence-backed error claims.</span>
+          </article>
+          <article class="token-cycle-node hugclaims" aria-label="Hug Claims in the token cycle">
+            <span class="name">Hug Claims</span>
+            <span class="desc">Validates, structures, and routes failure data into a reusable enterprise corpus.</span>
+          </article>
+          <article class="token-cycle-node frontier-labs" aria-label="LLM Frontier Labs in the token cycle">
+            <span class="name">LLM Frontier Labs</span>
+            <span class="desc">License high-signal error data and governance traces to train safer, stronger models.</span>
+          </article>
+        </div>
+        <div class="token-flow-grid" aria-label="Token cycle flows">
+          <article class="token-flow-item">
+            <span class="step">Users → Hug Claims</span>
+            <span class="detail">Error reports enter verification, taxonomy labeling, and remediation tracking.</span>
+          </article>
+          <article class="token-flow-item">
+            <span class="step">Hug Claims → Users</span>
+            <span class="detail">Cashback or equivalent token rewards are issued for validated submissions.</span>
+          </article>
+          <article class="token-flow-item">
+            <span class="step">Hug Claims → Frontier Labs</span>
+            <span class="detail">Curated failure datasets and audit coverage feeds are delivered for model tuning.</span>
+          </article>
+          <article class="token-flow-item">
+            <span class="step">Frontier Labs → Hug Claims</span>
+            <span class="detail">Licensing payments sustain the reward pool and expand coverage across domains.</span>
+          </article>
+        </div>
+      </div>
     </section>
 
     <!--
@@ -1535,7 +1724,7 @@
           <aside class="corpus-side" aria-label="Enterprise corpus statistics">
             <div class="corpus-kpi k-total">
               <span class="k-label">Verified datapoints</span>
-              <strong id="enterpriseCorpusTotal">0</strong>
+              <strong id="enterpriseCorpusTotal">35,000</strong>
             </div>
             <div class="corpus-kpi removed k-removed">
               <span class="k-label">Invalidated removed</span>
@@ -1616,7 +1805,7 @@
               <div class="portal-kpi-grid">
                 <div class="corpus-kpi k-total">
                   <span class="k-label">Verified datapoints</span>
-                  <strong id="enterpriseCorpusTotal">0</strong>
+                  <strong id="enterpriseCorpusTotal">35,000</strong>
                 </div>
                 <div class="corpus-kpi removed k-removed">
                   <span class="k-label">Invalidated removed</span>
@@ -1935,6 +2124,35 @@
       if (!plot || !dotsLayer || !totalEl || !removedEl || !legendEl || !liveNoteEl) return;
 
       const renderedDotTotal = 1286;
+      const SHARED_VERIFIED_TOTAL_KEY = 'hugClaimsSharedVerifiedTotal';
+      const SHARED_VERIFIED_MIN = 35000;
+      function randomSharedVerifiedStart() {
+        return SHARED_VERIFIED_MIN + Math.floor(Math.random() * 5001);
+      }
+      function parseSharedTotal(value) {
+        const parsed = Number.parseInt(String(value || '').replace(/[^\d]/g, ''), 10);
+        return Number.isFinite(parsed) && parsed > 0 ? parsed : null;
+      }
+      function readSharedVerifiedTotal(fallback = renderedDotTotal) {
+        let parsed = null;
+        try {
+          parsed = parseSharedTotal(window.localStorage.getItem(SHARED_VERIFIED_TOTAL_KEY) || '');
+        } catch (_) {}
+        if (parsed !== null && parsed >= SHARED_VERIFIED_MIN) return parsed;
+        const seeded = randomSharedVerifiedStart();
+        try {
+          window.localStorage.setItem(SHARED_VERIFIED_TOTAL_KEY, String(seeded));
+        } catch (_) {}
+        return Math.max(seeded, fallback, SHARED_VERIFIED_MIN);
+      }
+      function ensureSharedVerifiedTotal() {
+        try {
+          const parsed = parseSharedTotal(window.localStorage.getItem(SHARED_VERIFIED_TOTAL_KEY) || '');
+          if (parsed !== null && parsed >= SHARED_VERIFIED_MIN) return;
+          window.localStorage.setItem(SHARED_VERIFIED_TOTAL_KEY, String(randomSharedVerifiedStart()));
+        } catch (_) {}
+      }
+      ensureSharedVerifiedTotal();
       const domains = [
         { id: 'medicine', label: 'Medicine', center: [19, 24], spread: [8.8, 7.6] },
         { id: 'finance', label: 'Finance', center: [76, 27], spread: [9.2, 7.8] },
@@ -2010,7 +2228,7 @@
         return renderedDotTotal;
       }
       function getDisplayTotal() {
-        return renderedDotTotal;
+        return readSharedVerifiedTotal(SHARED_VERIFIED_MIN);
       }
       function scaleCountsToTotal(counts, total) {
         const safeTotal = Math.max(0, Number.parseInt(String(total), 10) || 0);
@@ -2457,6 +2675,14 @@
       if (trainCoverageEl) trainCoverageEl.value = String(trainState.coverage);
       if (trainModelEl) trainModelEl.addEventListener('change', handleTrainingControlsChange);
       if (trainCoverageEl) trainCoverageEl.addEventListener('input', handleTrainingControlsChange);
+      window.addEventListener('storage', (event) => {
+        if (event.key !== SHARED_VERIFIED_TOTAL_KEY) return;
+        syncCorpusToTarget(false, 'drift');
+        refreshDomainImprovements();
+        updateDefaultLiveNote();
+        renderTrainingPanel();
+        renderLegend();
+      });
       if (portalTabEls.length && portalPanelEls.length) {
         portalTabEls.forEach((tab) => {
           tab.addEventListener('click', () => {
