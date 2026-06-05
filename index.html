@@ -1,20 +1,787 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Redirecting...</title>
-  <meta http-equiv="refresh" content="0; url=/pages/core/index.html" />
-  <script>
-    (function () {
-      var target = '/pages/core/index.html' + window.location.search + window.location.hash;
-      if (window.location.pathname + window.location.search + window.location.hash !== target) {
-        window.location.replace(target);
-      }
-    }());
-  </script>
-</head>
-<body>
-  <p>Redirecting to <a href="/pages/core/index.html">/pages/core/index.html</a>...</p>
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/png" href="/assets/hug-logo.png?v=20260601" />
+    <link rel="apple-touch-icon" href="/assets/hug-logo.png?v=20260601" />
+    <link rel="canonical" href="https://hugclaim.com/" />
+    <title>Hug Claim - Cashback for AI Failures</title>
+    <meta name="description" content="Hug Claim - Cashback for AI Failures." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://hugclaim.com/" />
+    <meta property="og:title" content="Hug Claim - Cashback for AI Failures" />
+    <meta
+      property="og:description"
+      content="Hug Claim - Cashback for AI Failures."
+    />
+    <meta property="og:site_name" content="HugClaim" />
+    <meta property="twitter:card" content="summary" />
+    <meta
+      property="twitter:title"
+      content="Hug Claim - Cashback for AI Failures"
+    />
+    <meta
+      property="twitter:description"
+      content="Hug Claim - Cashback for AI Failures."
+    />
+    <script src="/assets/js/pages/core/index.inline-1.js"></script>
+    <link rel="stylesheet" href="/assets/css/pages/core/index.css" />
+    <script src="/hug-config.js"></script>
+    <script src="/hug-events.js" defer></script>
+  </head>
+  <body>
+    <!-- Flippable background: hover any × to flip it to ✓ -->
+    <div class="bg-grid" id="bgGrid" aria-hidden="true"></div>
+
+    <div class="app">
+      <header class="top">
+        <a class="brand-link" href="/" aria-label="Hug Claims home">
+          <span class="brand-text"
+            >Hug<span class="em">.</span><span class="small">claims</span></span
+          >
+        </a>
+        <nav class="nav">
+          <a href="/forum.html">forum</a>
+          <a href="/claim.html">file a claim</a>
+          <a href="/enterprise.html">enterprise</a>
+          <a href="/careers/career.html">careers</a>
+          <a href="/login.html">login</a>
+          <a href="/chat.html" class="cta">try the chat &rarr;</a>
+        </nav>
+      </header>
+
+      <section class="hero">
+        <div class="hero-inner">
+          <div class="hero-copy">
+            <div class="badge">
+              <span class="pulse"></span>
+              <span class="badge-copy">
+                <strong id="heroVerifiedClaims" data-value="35000"
+                  >35,000</strong
+                >
+                <span class="badge-label">verified claims submitted</span>
+              </span>
+            </div>
+            <h1>
+              Cashback for AI
+              <span class="swap hero-word-swap" tabindex="0">
+                <span class="wrong">Failures</span>
+                <span class="right">$ucce$$</span>
+              </span>
+            </h1>
+            <p class="tagline">
+              Spot AI mistakes. Get <strong>cashback in 24 hours</strong>.
+            </p>
+            <div class="actions">
+              <a href="/chat.html" class="btn-primary">start a claim &rarr;</a>
+              <a href="/forum.html" class="hero-secondary"
+                >see verified errors &rarr;</a
+              >
+            </div>
+            <div class="hero-recent" aria-label="Recent cash back samples">
+              <div class="label">recent cash back</div>
+              <h3>Hover any answer to see what was <em>actually right</em>.</h3>
+              <div class="ex-grid">
+                <article class="ex-card">
+                  <div class="domain">medicine</div>
+                  <div class="chat-thread">
+                    <div class="chat-bubble user">
+                      <span class="chat-role">User</span>
+                      <p>
+                        I have fever + cough for 2 days. Is this bacterial
+                        pneumonia?
+                      </p>
+                    </div>
+                    <div class="chat-bubble ai">
+                      <span class="chat-role">Claude Opus 4.8</span>
+                      <p>
+                        ... This is likely
+                        <span class="swap" tabindex="0"
+                          ><span class="wrong">bacterial</span
+                          ><span class="right">viral</span></span
+                        >
+                        pneumonia ...
+                      </p>
+                    </div>
+                  </div>
+                  <div class="pay">Sara got <strong>$24 back</strong>.</div>
+                </article>
+                <article class="ex-card">
+                  <div class="domain">math</div>
+                  <div class="chat-thread">
+                    <div class="chat-bubble user">
+                      <span class="chat-role">User</span>
+                      <p>
+                        Check my integration-by-parts proof for
+                        <span class="math-inline"
+                          ><span class="math-op">&int;</span
+                          >x<sup>n</sup>e<sup>&minus;x</sup>&thinsp;dx</span
+                        >.
+                      </p>
+                    </div>
+                    <div class="chat-bubble ai">
+                      <span class="chat-role">Gemini 3.5 Pro</span>
+                      <p>
+                        ... In IBP,
+                        <span class="math-inline"
+                          >v =
+                          <span class="swap" tabindex="0"
+                            ><span class="wrong">1</span
+                            ><span class="right"
+                              >&minus;e<sup>&minus;x</sup></span
+                            ></span
+                          ></span
+                        >, and
+                        <span class="swap" tabindex="0"
+                          ><span class="wrong">the proof is correct</span
+                          ><span class="right"
+                            >the final answer is right but the proof has a
+                            gap</span
+                          ></span
+                        >
+                        ...
+                      </p>
+                    </div>
+                  </div>
+                  <div class="pay">Yuexing got <strong>$16 back</strong>.</div>
+                </article>
+                <article class="ex-card">
+                  <div class="domain">finance</div>
+                  <div class="chat-thread">
+                    <div class="chat-bubble user">
+                      <span class="chat-role">User</span>
+                      <p>
+                        Summarize NVIDIA Q4 report vs consensus and forward
+                        guide.
+                      </p>
+                    </div>
+                    <div class="chat-bubble ai">
+                      <span class="chat-role">GPT 5.5</span>
+                      <p>
+                        ... Q4 revenue
+                        <span class="swap" tabindex="0"
+                          ><span class="wrong">missed by $1B</span
+                          ><span class="right">beat by $1.2B</span></span
+                        >; guide looked
+                        <span class="swap" tabindex="0"
+                          ><span class="wrong">conservative</span
+                          ><span class="right">ahead of Street</span></span
+                        >
+                        ...
+                      </p>
+                    </div>
+                  </div>
+                  <div class="pay">Mark got <strong>$19 back</strong>.</div>
+                </article>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--
+    <aside class="hero-timeline" aria-labelledby="timeline-title">
+      <div class="timeline-head" id="timeline-title">1886 cars &rarr; 128 years to key safety layers</div>
+      <div class="timeline-track" aria-label="Automotive safety milestones">
+        <div class="timeline-step">
+          <div class="timeline-years">+16 yrs</div>
+          <article class="timeline-card">
+            <img class="timeline-media" src="/assets/Antilock_Braking_System.svg.png" alt="Antilock braking system diagram" loading="lazy" />
+            <h3>ABS</h3>
+            <div class="impact">44,599 deaths/yr</div>
+            <p><em>Skidding + rollover</em></p>
+          </article>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-years">+66 yrs</div>
+          <article class="timeline-card">
+            <img class="timeline-media" src="/assets/seat_belt.jpeg" alt="Seat belt in car" loading="lazy" />
+            <h3>Seat belts</h3>
+            <div class="impact">50,894 deaths/yr</div>
+            <p><em>Occupant ejection</em></p>
+          </article>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-years">+30 yrs</div>
+          <article class="timeline-card">
+            <img class="timeline-media" src="/assets/Airbags.jpeg" alt="Car airbag deployment" loading="lazy" />
+            <h3>Airbags</h3>
+            <div class="impact">42,013 deaths/yr</div>
+            <p><em>Frontal crashes</em></p>
+          </article>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-years">+16 yrs</div>
+          <article class="timeline-card">
+            <img class="timeline-media" src="/assets/Car_Sensor.avif" alt="Car sensor and radar technology" loading="lazy" />
+            <h3>Sensors</h3>
+            <div class="impact">37,806 deaths/yr</div>
+            <p><em>Misjudged gaps</em></p>
+          </article>
+        </div>
+      </div>
+      <p class="timeline-note">
+        Don&apos;t wait decades for AI safety. Report mistakes now, get cashback, harden models faster.
+      </p>
+    </aside>
+    -->
+      </section>
+
+      <section class="accepted-models" aria-labelledby="accepted-models-title">
+        <div class="label">cash back eligible models</div>
+        <h2 id="accepted-models-title">
+          Now streaming claims for best models for
+          <span
+            class="inline-provider-logos"
+            aria-label="Anthropic, OpenAI, and Gemini"
+          >
+            <img
+              class="inline-provider-logo"
+              src="https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/anthropic.svg"
+              alt="Anthropic"
+              loading="lazy"
+            />
+            <img
+              class="inline-provider-logo"
+              src="https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/openai.svg"
+              alt="OpenAI"
+              loading="lazy"
+            />
+            <img
+              class="inline-provider-logo"
+              src="https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/gemini.svg"
+              alt="Gemini"
+              loading="lazy"
+            />
+          </span>
+          .
+        </h2>
+        <p class="accepted-models-note">More best models are on the way.</p>
+        <div class="eligible-buttons" aria-label="Accepted language models">
+          <div class="eligible-model" style="--provider-accent: #d97757">
+            <a
+              class="eligible-button"
+              href="https://yuexinghao.github.io/HugClaims.ai/claim.html?model=claude-opus-4.8&amp;provider=Anthropic"
+              title="File a claim for Claude Opus 4.8"
+            >
+              <img
+                src="https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/anthropic.svg"
+                alt="Anthropic logo"
+                loading="lazy"
+              />
+              <span>Claude Opus 4.8</span>
+            </a>
+            <span class="eligible-caption">User UAKEC received $22</span>
+          </div>
+          <div class="eligible-model" style="--provider-accent: #10a37f">
+            <a
+              class="eligible-button"
+              href="https://yuexinghao.github.io/HugClaims.ai/claim.html?model=gpt-5.5&amp;provider=OpenAI"
+              title="File a claim for GPT 5.5"
+            >
+              <img
+                src="https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/openai.svg"
+                alt="OpenAI logo"
+                loading="lazy"
+              />
+              <span>GPT 5.5</span>
+            </a>
+            <span class="eligible-caption">User NIVAR received $19</span>
+          </div>
+          <div class="eligible-model" style="--provider-accent: #10a37f">
+            <a
+              class="eligible-button"
+              href="https://yuexinghao.github.io/HugClaims.ai/claim.html?model=gpt-codex-5.3&amp;provider=OpenAI"
+              title="File a claim for GPT Codex 5.3"
+            >
+              <img
+                src="https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/openai.svg"
+                alt="OpenAI logo"
+                loading="lazy"
+              />
+              <span>GPT Codex 5.3</span>
+            </a>
+            <span class="eligible-caption">User MILOX received $24</span>
+          </div>
+          <div class="eligible-model" style="--provider-accent: #1a73e8">
+            <a
+              class="eligible-button"
+              href="https://yuexinghao.github.io/HugClaims.ai/claim.html?model=gemini-3.5-pro&amp;provider=Google"
+              title="File a claim for Gemini 3.5 Pro"
+            >
+              <img
+                src="https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/gemini.svg"
+                alt="Google logo"
+                loading="lazy"
+              />
+              <span>Gemini 3.5 Pro</span>
+            </a>
+            <span class="eligible-caption">User SAREM received $17</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="reviews" aria-labelledby="reviews-title">
+        <div class="label">community proof</div>
+        <h2 id="reviews-title">Real reviews about <em>real rewards</em>.</h2>
+        <div class="reviews-grid">
+          <article class="review-card">
+            <div class="review-type">user review</div>
+            <p class="review-quote">
+              &ldquo;The model gave a <strong>wrong dosage schedule</strong>. I
+              filed a failure-mode claim with the corrected guidance, and Hug
+              approved in a few hours.&rdquo;
+            </p>
+            <div class="review-foot">
+              <span class="review-who">User SAREM</span>
+              <span class="review-reward">$24 cash back</span>
+            </div>
+          </article>
+          <article class="review-card">
+            <div class="review-type">user review</div>
+            <p class="review-quote">
+              &ldquo;I caught a <strong>fabricated legal citation</strong> in a
+              draft motion. Submitted the claim with source links, got paid, and
+              reused the fix for my team template.&rdquo;
+            </p>
+            <div class="review-foot">
+              <span class="review-who">User MILOX</span>
+              <span class="review-reward">$19 cash back</span>
+            </div>
+          </article>
+          <article class="review-card">
+            <div class="review-type">user review</div>
+            <p class="review-quote">
+              &ldquo;The equation chain looked polished but had a
+              <strong>hidden sign error</strong>. My claim was verified and the
+              cashback made the debugging time worth it.&rdquo;
+            </p>
+            <div class="review-foot">
+              <span class="review-who">User UAKEC</span>
+              <span class="review-reward">$11 cash back</span>
+            </div>
+          </article>
+          <article class="review-card">
+            <div class="review-type">company impact</div>
+            <p class="review-quote">
+              &ldquo;Our support team used submitted failure-mode claims like
+              <strong>wrong dosage schedule</strong> to patch recurring bot
+              mistakes. Escalations dropped and customer trust improved
+              quickly.&rdquo;
+            </p>
+            <div class="review-foot">
+              <span class="review-who">Ops Lead, Arcwell</span>
+              <span class="review-reward">91 issues fixed</span>
+            </div>
+          </article>
+          <article class="review-card">
+            <div class="review-type">company impact</div>
+            <p class="review-quote">
+              &ldquo;Claims gave us a live map of where the model was brittle,
+              including <strong>fabricated legal citation</strong> issues. We
+              turned those reports into eval cases and cut repeat failures in
+              two weeks.&rdquo;
+            </p>
+            <div class="review-foot">
+              <span class="review-who">AI PM, NorthGrid</span>
+              <span class="review-reward">47% fewer repeats</span>
+            </div>
+          </article>
+          <article class="review-card">
+            <div class="review-type">company impact</div>
+            <p class="review-quote">
+              &ldquo;The payout mechanism motivated high-quality reports from
+              users. Their claims exposed blind spots like
+              <strong>equation chain hidden sign error</strong> that we missed
+              in internal testing.&rdquo;
+            </p>
+            <div class="review-foot">
+              <span class="review-who">CTO, Solstem</span>
+              <span class="review-reward">136 validated claims</span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="literature" aria-labelledby="literature-title">
+        <div class="label">Research Results</div>
+        <h2 id="literature-title">
+          Papers our team is <em>currently doing</em>.
+        </h2>
+        <p class="lit-sub">Our paper shows Failure Is the Training Signal.</p>
+        <div class="corpus-block" aria-labelledby="corpus-title">
+          <div class="corpus-head">
+            <h3 id="corpus-title">Failure Mode Corpus</h3>
+            <p>Clusters show failure domains and submission density.</p>
+            <a class="corpus-link" href="/enterprise.html#failure-corpus-title"
+              >See Enterprise Data Licensing + Audit Coverage &rarr;</a
+            >
+          </div>
+          <div class="corpus-shell">
+            <div
+              class="corpus-plot"
+              id="failureCorpusPlot"
+              role="img"
+              aria-label="Live clustered failure mode corpus with submission density"
+            >
+              <div class="corpus-zoom-controls" aria-label="Zoom controls">
+                <button
+                  type="button"
+                  class="corpus-zoom-btn"
+                  id="corpusZoomOut"
+                  aria-label="Zoom out"
+                >
+                  −
+                </button>
+                <button
+                  type="button"
+                  class="corpus-zoom-btn reset"
+                  id="corpusZoomReset"
+                  aria-label="Reset zoom"
+                >
+                  Reset
+                </button>
+                <button
+                  type="button"
+                  class="corpus-zoom-btn"
+                  id="corpusZoomIn"
+                  aria-label="Zoom in"
+                >
+                  +
+                </button>
+              </div>
+              <div class="corpus-scene" id="failureCorpusScene">
+                <div class="corpus-density-layer" aria-hidden="true">
+                  <span class="corpus-blob b-medicine"></span>
+                  <span class="corpus-blob b-finance"></span>
+                  <span class="corpus-blob b-legal"></span>
+                  <span class="corpus-blob b-math"></span>
+                  <span class="corpus-blob b-coding"></span>
+                  <span class="corpus-blob b-other"></span>
+                </div>
+                <button
+                  type="button"
+                  class="corpus-cluster-label corpus-domain-source l-medicine"
+                  data-domain="medicine"
+                  data-domain-label="Medicine"
+                >
+                  Medicine
+                </button>
+                <button
+                  type="button"
+                  class="corpus-cluster-label corpus-domain-source l-finance"
+                  data-domain="finance"
+                  data-domain-label="Finance"
+                >
+                  Finance
+                </button>
+                <button
+                  type="button"
+                  class="corpus-cluster-label corpus-domain-source l-legal"
+                  data-domain="legal"
+                  data-domain-label="Legal"
+                >
+                  Legal
+                </button>
+                <button
+                  type="button"
+                  class="corpus-cluster-label corpus-domain-source l-math"
+                  data-domain="math"
+                  data-domain-label="Math"
+                >
+                  Math
+                </button>
+                <button
+                  type="button"
+                  class="corpus-cluster-label corpus-domain-source l-coding"
+                  data-domain="coding"
+                  data-domain-label="Coding"
+                >
+                  Coding
+                </button>
+                <button
+                  type="button"
+                  class="corpus-cluster-label corpus-domain-source l-other"
+                  data-domain="other"
+                  data-domain-label="Other (e.g., music, travel, education)"
+                  title="Other (e.g., music, travel, education)"
+                >
+                  Other
+                </button>
+                <div class="corpus-dots" id="failureCorpusDots"></div>
+              </div>
+            </div>
+            <aside class="corpus-side" aria-label="Corpus live statistics">
+              <div class="corpus-kpi">
+                <span class="k-label">Verified datapoints</span>
+                <strong id="corpusTotal">0</strong>
+              </div>
+              <div class="corpus-kpi removed">
+                <span class="k-label">Invalidated removed</span>
+                <strong id="corpusRemoved">0</strong>
+              </div>
+              <div class="corpus-live-note" id="corpusLiveNote">
+                Streaming updates every 3s.
+              </div>
+              <ul class="corpus-legend" id="corpusLegend"></ul>
+            </aside>
+          </div>
+        </div>
+        <div class="lit-grid">
+          <article class="lit-card">
+            <h3 class="lit-title">
+              ProbeLLM: Automating Principled Diagnosis of LLM Failures
+            </h3>
+            <span class="lit-status">Published in ICML 2026</span>
+            <div class="lit-logos" aria-label="Affiliated organizations">
+              <img
+                class="lit-logo"
+                src="/assets/logos/MIT_logo.png"
+                alt="MIT logo"
+                loading="lazy"
+              />
+              <img
+                class="lit-logo"
+                src="/assets/logos/IBM_logo.png"
+                alt="IBM Research logo"
+                loading="lazy"
+              />
+              <img
+                class="lit-logo"
+                src="/assets/logos/NotreDame_logo.png"
+                alt="University of Notre Dame logo"
+                loading="lazy"
+              />
+            </div>
+            <p class="lit-authors">
+              Yue Huang, Zhengzhe Jiang, Yuchen Ma, Yu Jiang, Xiangqi Wang,
+              Yujun Zhou,
+              <a href="https://yuexinghao.github.io/Yuexing-Hao/">Yuexing Hao</a
+              >, Kehan Guo, Pin-Yu Chen, Marzyeh Ghassemi, Stefan Feuerriegel,
+              Xiangliang Zhang
+            </p>
+            <a
+              class="lit-link"
+              href="https://arxiv.org/abs/2602.12966"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Read Paper &rarr;</a
+            >
+          </article>
+
+          <article class="lit-card">
+            <h3 class="lit-title">
+              Chain of Risk: Safety Failures in Large Reasoning Models and
+              Mitigation via Adaptive Multi-Principle Steering
+            </h3>
+            <span class="lit-status">Under Review (NeurIPS 2026)</span>
+            <div class="lit-logos" aria-label="Affiliated organizations">
+              <img
+                class="lit-logo"
+                src="/assets/logos/harvard_logo.svg"
+                alt="Harvard logo"
+                loading="lazy"
+              />
+              <img
+                class="lit-logo"
+                src="/assets/logos/MIT_logo.png"
+                alt="MIT logo"
+                loading="lazy"
+              />
+              <img
+                class="lit-logo"
+                src="/assets/logos/Brown_logo.png"
+                alt="Brown logo"
+                loading="lazy"
+              />
+              <img
+                class="lit-logo"
+                src="/assets/logos/USC_logo.png"
+                alt="USC logo"
+                loading="lazy"
+              />
+            </div>
+            <p class="lit-authors">
+              Xiaomin Li, Jianheng Hou, Zheyuan Deng, Zhiwei Zhang, Taoran Li,
+              Binghang Lu, Bing Hu, Yunhan Zhao,
+              <a href="https://yuexinghao.github.io/Yuexing-Hao/"
+                >Yuexing Hao</a
+              >
+            </p>
+            <a
+              class="lit-link"
+              href="https://arxiv.org/abs/2605.05678"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Read Paper &rarr;</a
+            >
+          </article>
+
+          <article class="lit-card">
+            <h3 class="lit-title">
+              TrustGen: A Platform of Dynamic Benchmarking on the
+              Trustworthiness of Generative Foundation Models
+            </h3>
+            <span class="lit-status">Published in ICLR 2026</span>
+            <div class="lit-logos" aria-label="Affiliated organizations">
+              <img
+                class="lit-logo"
+                src="/assets/logos/Microsoft_logo.png"
+                alt="Microsoft logo"
+                loading="lazy"
+              />
+              <img
+                class="lit-logo"
+                src="/assets/logos/MIT_logo.png"
+                alt="MIT logo"
+                loading="lazy"
+              />
+              <img
+                class="lit-logo"
+                src="/assets/logos/UCB_logo.svg"
+                alt="UC Berkeley logo"
+                loading="lazy"
+              />
+              <img
+                class="lit-logo"
+                src="/assets/logos/UW_logo.png"
+                alt="University of Washington logo"
+                loading="lazy"
+              />
+              <img
+                class="lit-logo"
+                src="/assets/logos/UCLA_logo.jpg"
+                alt="UCLA logo"
+                loading="lazy"
+              />
+            </div>
+            <p class="lit-authors">
+              Yue Huang, Chujie Gao, Siyuan Wu, Haoran Wang, Xiangqi Wang, Yujun
+              Zhou, ...
+              <a href="https://yuexinghao.github.io/Yuexing-Hao/">Yuexing Hao</a
+              >, ... Bo Li, Dawn Song, Xiangliang Zhang
+            </p>
+            <a
+              class="lit-link"
+              href="https://iclr.cc/virtual/2026/poster/10010583"
+              target="_blank"
+              rel="noopener noreferrer"
+              >View Poster &rarr;</a
+            >
+          </article>
+
+          <article class="lit-card">
+            <h3 class="lit-title">
+              The MedPerturb Dataset: What Non-Content Perturbations Reveal
+              About Human and Clinical LLM Decision Making
+            </h3>
+            <span class="lit-status">Under Review (Nature Medicine)</span>
+            <div class="lit-logos" aria-label="Affiliated organizations">
+              <img
+                class="lit-logo"
+                src="/assets/logos/MIT_logo.png"
+                alt="MIT logo"
+                loading="lazy"
+              />
+              <img
+                class="lit-logo"
+                src="/assets/logos/Cornell_logo.png"
+                alt="Cornell logo"
+                loading="lazy"
+              />
+            </div>
+            <p class="lit-authors">
+              Abinitha Gourabathina, Haoran Zhang,
+              <a href="https://yuexinghao.github.io/Yuexing-Hao/">Yuexing Hao</a
+              >, Walter Gerych, Marzyeh Ghassemi
+            </p>
+            <a
+              class="lit-link"
+              href="https://medperturb.csail.mit.edu/"
+              target="_blank"
+              rel="noopener noreferrer"
+              >View Project &rarr;</a
+            >
+          </article>
+        </div>
+      </section>
+
+      <section class="extension" aria-labelledby="extension-title">
+        <div class="extension-card">
+          <div>
+            <span class="beta-pill">Chrome Extension Beta</span>
+            <h3 id="extension-title">HugClaims.ai Chrome Extension</h3>
+            <p>Claim LLM credits when an answer misses.</p>
+          </div>
+          <a
+            class="btn-primary"
+            href="https://github.com/YuexingHao/HugClaims.ai/tree/main/chrome-extension"
+            target="_blank"
+            rel="noopener noreferrer"
+            >install unpacked &rarr;</a
+          >
+        </div>
+      </section>
+
+      <section class="how">
+        <h2>How it <em>works</em>.</h2>
+        <div class="how-grid">
+          <div class="step">
+            <div class="num">1.</div>
+            <h3>Use the BEST AI.</h3>
+            <p>
+              Have a conversation with Claude, GPT, or Gemini &mdash; whichever
+              your project uses.
+            </p>
+          </div>
+          <div class="step">
+            <div class="num">2.</div>
+            <h3>Spot an error.</h3>
+            <p>
+              If the AI
+              <span class="swap" tabindex="0"
+                ><span class="wrong">got it right</span
+                ><span class="right">misled you</span></span
+              >, mark the wrong span and write your correction inline.
+            </p>
+          </div>
+          <div class="step">
+            <div class="num">3.</div>
+            <h3>Get cash back.</h3>
+            <p>
+              An independent verifier reviews. Valid claim &rarr;
+              <strong>up to $27</strong> in your account within 24 hours.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="final">
+        <h2>Find an AI mistake. <em>Get cash back.</em></h2>
+        <a href="/chat.html" class="btn-primary">open the chat &rarr;</a>
+      </section>
+
+      <footer class="bottom">
+        <div>hug.claims &middot; <em>cash back since 2026</em></div>
+        <div>
+          <a href="/forum.html">forum</a>
+          &nbsp;&middot;&nbsp;
+          <a href="/claim.html">file a claim</a>
+          &nbsp;&middot;&nbsp;
+          <a href="/chat.html">try the chat</a>
+          &nbsp;&middot;&nbsp;
+          <a href="/enterprise.html">enterprise</a>
+          &nbsp;&middot;&nbsp;
+          <a href="/careers/career.html">careers</a>
+          &nbsp;&middot;&nbsp;
+          <a href="/login.html">login</a>
+          &nbsp;&middot;&nbsp;
+          <a href="/disclaimer.html">Disclaimer</a>
+          &nbsp;&middot;&nbsp;
+          <a data-hug-export>Export my session</a>
+        </div>
+      </footer>
+    </div>
+
+    <script src="/assets/js/pages/core/index.inline-2.js"></script>
+  </body>
 </html>
