@@ -3,6 +3,7 @@
 This repo keeps public routes stable while organizing source pages in subfolders.
 
 Current layout:
+
 - Route wrappers (public URLs): repo root, e.g. `chat.html`, `claim.html`
 - Source pages: `pages/core/`, `pages/careers/`, `pages/account/`
 - Route map: `pages/routes.json`
@@ -17,6 +18,7 @@ python scripts/html_inventory.py
 ```
 
 What it does:
+
 - Lists all tracked HTML pages from:
   - repo root (`*.html`)
   - `pages/core/*.html`
@@ -39,6 +41,7 @@ python scripts/check_html_links.py
 ```
 
 What it does:
+
 - Parses local HTML links (`href`, `src`, `action`, `poster`) and validates local targets.
 - Ignores external URLs (`http:`, `https:`, `mailto:`, etc.) and hash links.
 - Fails with line-numbered errors when local links are broken.
@@ -50,6 +53,7 @@ python scripts/generate_route_wrappers.py
 ```
 
 What it does:
+
 - Reads `pages/routes.json`
 - Generates root wrapper pages (for stable public URLs)
 - Preserves query string and hash while redirecting to the source page

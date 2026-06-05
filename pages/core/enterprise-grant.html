@@ -1,413 +1,111 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="icon" type="image/png" href="/assets/hug-logo.png?v=20260601" />
-  <link rel="apple-touch-icon" href="/assets/hug-logo.png?v=20260601" />
-  <title>hug.claims - Enterprise Grant Application</title>
-  <style>
-    :root {
-      --paper: #f1edf6;
-      --ink: #1a1612;
-      --ink-2: #4b4339;
-      --ink-3: #8a8073;
-      --hug: #c44a3f;
-      --hug-2: #a83a30;
-      --green-2: #2f6b40;
-      --line: #d3c8da;
-      --surface: rgba(255, 253, 248, 0.94);
-      --serif: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
-      --sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
-    }
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/png" href="/assets/hug-logo.png?v=20260601" />
+    <link rel="apple-touch-icon" href="/assets/hug-logo.png?v=20260601" />
+    <title>hug.claims - Enterprise Grant Application</title>
+    <link rel="stylesheet" href="/assets/css/pages/core/enterprise-grant.css" />
+  </head>
+  <body>
+    <div class="app">
+      <header class="top">
+        <a class="brand-link" href="/" aria-label="Hug Claims home">
+          <span class="brand-text"
+            >Hug<span class="em">.</span><span class="small">claims</span></span
+          >
+        </a>
+        <nav class="nav" aria-label="Main">
+          <a href="/">home</a>
+          <a href="/claim.html">file a claim</a>
+          <a href="/forum.html">forum</a>
+          <a href="/enterprise.html">enterprise</a>
+          <a href="/enterprise-grant.html" aria-current="page"
+            >enterprise grant</a
+          >
+          <a href="/career.html">careers</a>
+        </nav>
+      </header>
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      font-family: var(--sans);
-      color: var(--ink);
-      background: var(--paper);
-      background-image:
-        radial-gradient(ellipse 62% 42% at 84% -8%, rgba(132, 102, 178, 0.14) 0%, transparent 60%),
-        radial-gradient(ellipse 70% 50% at -8% 104%, rgba(196, 74, 63, 0.08) 0%, transparent 56%);
-      -webkit-font-smoothing: antialiased;
-      line-height: 1.5;
-      font-size: 16px;
-    }
-
-    .app {
-      max-width: 1140px;
-      margin: 0 auto;
-      padding: 0 24px 44px;
-    }
-
-    .brand-link {
-      display: inline-flex;
-      align-items: baseline;
-      text-decoration: none;
-      color: inherit;
-      transition: opacity .15s, transform .15s;
-    }
-    .brand-link:hover { opacity: 0.86; transform: translateY(-1px); }
-    .brand-text {
-      font-family: var(--serif);
-      font-style: italic;
-      letter-spacing: -0.02em;
-      font-size: 30px;
-      line-height: 1;
-    }
-    .brand-text .em { color: var(--hug); font-weight: 500; }
-    .brand-text .small { font-size: 18px; color: var(--ink-3); margin-left: 1px; font-weight: 400; }
-
-    header.top {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      gap: 18px;
-      padding: 30px 0 22px;
-      border-bottom: 1px solid var(--line);
-      margin-bottom: 22px;
-    }
-    .nav {
-      display: flex;
-      gap: 18px;
-      align-items: baseline;
-      flex-wrap: wrap;
-    }
-    .nav a {
-      font-family: var(--serif);
-      font-style: italic;
-      font-size: 14px;
-      color: var(--ink-2);
-      text-decoration: none;
-      border-bottom: 1px solid transparent;
-      transition: border-color .15s, color .15s;
-      padding-bottom: 1px;
-    }
-    .nav a:hover,
-    .nav a[aria-current="page"] {
-      color: var(--hug);
-      border-bottom-color: var(--hug);
-    }
-
-    .hero {
-      border: 1px solid var(--line);
-      border-radius: 20px;
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(248, 243, 253, 0.8));
-      padding: 24px;
-      box-shadow: 0 20px 38px -34px rgba(40, 25, 10, 0.28);
-      margin-bottom: 14px;
-    }
-    .kicker {
-      display: inline-flex;
-      border: 1px solid rgba(196, 74, 63, 0.38);
-      border-radius: 999px;
-      padding: 5px 10px;
-      font-size: 10px;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--hug-2);
-      margin-bottom: 9px;
-      font-weight: 700;
-      background: rgba(250, 233, 224, 0.65);
-    }
-    .hero h1 {
-      font-family: var(--serif);
-      font-weight: 330;
-      font-size: clamp(30px, 4.1vw, 54px);
-      letter-spacing: -0.03em;
-      line-height: 1.08;
-      max-width: 24ch;
-      margin-bottom: 10px;
-    }
-    .hero h1 em {
-      font-style: italic;
-      color: var(--green-2);
-    }
-    .hero p {
-      color: var(--ink-2);
-      max-width: 80ch;
-    }
-
-    .grant-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.25fr);
-      gap: 14px;
-      align-items: start;
-    }
-
-    .benefits {
-      border: 1px solid rgba(179, 162, 198, 0.56);
-      border-radius: 18px;
-      background: var(--surface);
-      box-shadow: 0 18px 32px -30px rgba(40, 25, 10, 0.22);
-      padding: 16px;
-      display: grid;
-      gap: 10px;
-    }
-    .benefits h2 {
-      font-family: var(--serif);
-      font-size: 29px;
-      font-weight: 360;
-      letter-spacing: -0.02em;
-      line-height: 1.08;
-    }
-    .benefit-card {
-      border: 1px solid rgba(211, 200, 218, 0.8);
-      border-radius: 12px;
-      background: #fff;
-      padding: 12px;
-    }
-    .benefit-card .title {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: var(--ink-3);
-      margin-bottom: 5px;
-      font-weight: 700;
-    }
-    .benefit-card p {
-      color: var(--ink-2);
-      font-size: 13.5px;
-    }
-
-    .form-wrap {
-      border: 1px solid rgba(179, 162, 198, 0.58);
-      border-radius: 18px;
-      background: var(--surface);
-      box-shadow:
-        0 20px 36px -34px rgba(40, 25, 10, 0.26),
-        0 0 0 1px rgba(255, 255, 255, 0.38) inset;
-      padding: 16px;
-    }
-    .form-wrap h2 {
-      font-family: var(--serif);
-      font-size: 32px;
-      font-weight: 350;
-      letter-spacing: -0.02em;
-      line-height: 1.08;
-      margin-bottom: 6px;
-    }
-    .form-sub {
-      color: var(--ink-2);
-      font-size: 13.5px;
-      margin-bottom: 12px;
-    }
-    .form-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px 12px;
-    }
-    .field {
-      display: grid;
-      gap: 6px;
-    }
-    .field.full {
-      grid-column: 1 / -1;
-    }
-    .field label {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.11em;
-      color: var(--ink-3);
-      font-weight: 700;
-    }
-    .field input,
-    .field select,
-    .field textarea {
-      width: 100%;
-      border: 1px solid rgba(211, 200, 218, 0.95);
-      border-radius: 10px;
-      background: #fff;
-      color: var(--ink);
-      padding: 10px 11px;
-      font: inherit;
-      font-size: 14px;
-      outline: none;
-      transition: border-color .15s ease, box-shadow .15s ease;
-    }
-    .field textarea {
-      resize: vertical;
-      min-height: 92px;
-    }
-    .field input:focus,
-    .field select:focus,
-    .field textarea:focus {
-      border-color: color-mix(in oklab, var(--hug) 52%, #b7abc9);
-      box-shadow: 0 0 0 3px rgba(196, 74, 63, 0.13);
-    }
-    .check {
-      grid-column: 1 / -1;
-      display: flex;
-      align-items: flex-start;
-      gap: 8px;
-      font-size: 12.5px;
-      color: var(--ink-2);
-    }
-    .check input {
-      margin-top: 2px;
-      width: 14px;
-      height: 14px;
-      flex: 0 0 14px;
-    }
-    .actions {
-      grid-column: 1 / -1;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 10px;
-      margin-top: 4px;
-    }
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 999px;
-      text-decoration: none;
-      border: 1px solid var(--ink);
-      background: var(--ink);
-      color: #fff;
-      padding: 9px 14px;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      font-size: 10px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: transform .14s ease, background .15s ease;
-    }
-    .btn:hover {
-      transform: translateY(-1px);
-      background: #2d2720;
-    }
-    .btn:disabled {
-      opacity: 0.62;
-      cursor: progress;
-      transform: none;
-    }
-    .actions .note {
-      color: var(--ink-3);
-      font-size: 12px;
-    }
-    .grant-result {
-      margin-top: 12px;
-      border: 1px solid rgba(47, 107, 64, 0.42);
-      border-radius: 12px;
-      background: rgba(47, 107, 64, 0.08);
-      color: #1f5e31;
-      padding: 10px 12px;
-      font-size: 13px;
-      display: none;
-    }
-    .grant-result.show {
-      display: block;
-    }
-    .grant-result.error {
-      border-color: rgba(153, 49, 41, 0.55);
-      background: rgba(196, 74, 63, 0.1);
-      color: #7d2d28;
-    }
-
-    footer.bottom {
-      margin-top: 20px;
-      padding-top: 16px;
-      border-top: 1px solid var(--line);
-      color: var(--ink-3);
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-    footer.bottom em {
-      text-transform: none;
-      letter-spacing: 0;
-      font-size: 12px;
-      color: var(--ink-2);
-      font-style: italic;
-    }
-
-    @media (max-width: 980px) {
-      .grant-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-    @media (max-width: 760px) {
-      .app { padding: 0 14px 30px; }
-      header.top {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      .hero, .benefits, .form-wrap {
-        padding: 14px;
-      }
-      .form-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
-</head>
-<body>
-  <div class="app">
-    <header class="top">
-      <a class="brand-link" href="/" aria-label="Hug Claims home">
-        <span class="brand-text">Hug<span class="em">.</span><span class="small">claims</span></span>
-      </a>
-      <nav class="nav" aria-label="Main">
-        <a href="/">home</a>
-        <a href="/claim.html">file a claim</a>
-        <a href="/forum.html">forum</a>
-        <a href="/enterprise.html">enterprise</a>
-        <a href="/enterprise-grant.html" aria-current="page">enterprise grant</a>
-        <a href="/career.html">careers</a>
-      </nav>
-    </header>
-
-    <section class="hero" aria-labelledby="grant-title">
-      <div class="kicker">hug claims enterprise grant</div>
-      <h1 id="grant-title">Get a three-month period of <em>free access to Hug Claims data</em>.</h1>
-      <p>The Enterprise Grant gives qualified enterprise teams and nonprofit researchers zero-cost access to Hug Claims data for up to three months. Use this period to explore, prototype, and validate what matters most for your goals, and our team can support you along the way.</p>
-    </section>
-
-    <section class="grant-grid" aria-label="Enterprise grant details and application">
-      <aside class="benefits">
-        <h2>What the grant includes</h2>
-        <article class="benefit-card">
-          <div class="title">Data Access</div>
-          <p>Up to three months of free access to Hug Claims data, with onboarding support and integration guidance based on your selected focus areas.</p>
-        </article>
-        <article class="benefit-card">
-          <div class="title">Technical Enablement</div>
-          <p>A setup session for taxonomy mapping, data workflows, and reporting expectations so your team can evaluate value quickly.</p>
-        </article>
-        <article class="benefit-card">
-          <div class="title">Decision Package</div>
-          <p>When you are ready, you receive a recommended annual or quarterly plan aligned to your scope, governance, and budget.</p>
-        </article>
-      </aside>
-
-      <section class="form-wrap" aria-labelledby="apply-title">
-        <h2 id="apply-title">Grant Application</h2>
-        <p class="form-sub">Use your company email. Most applications receive an initial response within 3 business days.</p>
-        <div class="form-grid">
-          <div class="field full">
-            <label>Application Portal</label>
-            <p class="form-sub">Applications are now handled through our Google Form.</p>
-          </div>
-          <div class="actions">
-            <a class="btn" href="https://forms.gle/BCYkjEKL7jAV2yas8" target="_blank" rel="noopener noreferrer">open grant application form</a>
-            <span class="note">You will be redirected to Google Forms to submit your application.</span>
-          </div>
-        </div>
+      <section class="hero" aria-labelledby="grant-title">
+        <div class="kicker">hug claims enterprise grant</div>
+        <h1 id="grant-title">
+          Get a three-month period of <em>free access to Hug Claims data</em>.
+        </h1>
+        <p>
+          The Enterprise Grant gives qualified enterprise teams and nonprofit
+          researchers zero-cost access to Hug Claims data for up to three
+          months. Use this period to explore, prototype, and validate what
+          matters most for your goals, and our team can support you along the
+          way.
+        </p>
       </section>
-    </section>
 
-    <footer class="bottom">
-      <div>hug.claims</div>
-      <div><em>enterprise grant application</em></div>
-    </footer>
-  </div>
+      <section
+        class="grant-grid"
+        aria-label="Enterprise grant details and application"
+      >
+        <aside class="benefits">
+          <h2>What the grant includes</h2>
+          <article class="benefit-card">
+            <div class="title">Data Access</div>
+            <p>
+              Up to three months of free access to Hug Claims data, with
+              onboarding support and integration guidance based on your selected
+              focus areas.
+            </p>
+          </article>
+          <article class="benefit-card">
+            <div class="title">Technical Enablement</div>
+            <p>
+              A setup session for taxonomy mapping, data workflows, and
+              reporting expectations so your team can evaluate value quickly.
+            </p>
+          </article>
+          <article class="benefit-card">
+            <div class="title">Decision Package</div>
+            <p>
+              When you are ready, you receive a recommended annual or quarterly
+              plan aligned to your scope, governance, and budget.
+            </p>
+          </article>
+        </aside>
 
-</body>
+        <section class="form-wrap" aria-labelledby="apply-title">
+          <h2 id="apply-title">Grant Application</h2>
+          <p class="form-sub">
+            Use your company email. Most applications receive an initial
+            response within 3 business days.
+          </p>
+          <div class="form-grid">
+            <div class="field full">
+              <label>Application Portal</label>
+              <p class="form-sub">
+                Applications are now handled through our Google Form.
+              </p>
+            </div>
+            <div class="actions">
+              <a
+                class="btn"
+                href="https://forms.gle/BCYkjEKL7jAV2yas8"
+                target="_blank"
+                rel="noopener noreferrer"
+                >open grant application form</a
+              >
+              <span class="note"
+                >You will be redirected to Google Forms to submit your
+                application.</span
+              >
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <footer class="bottom">
+        <div>hug.claims</div>
+        <div><em>enterprise grant application</em></div>
+      </footer>
+    </div>
+  </body>
 </html>

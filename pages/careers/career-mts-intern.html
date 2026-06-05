@@ -1,89 +1,141 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="icon" type="image/png" href="/assets/hug-logo.png?v=20260601" />
-  <link rel="apple-touch-icon" href="/assets/hug-logo.png?v=20260601" />
-  <title>Member of Technical Intern - HugClaim.com careers</title>
-  <style>
-    :root {
-      --paper:#f1edf6; --ink:#1a1612; --ink-2:#4b4339; --ink-3:#8a8073;
-      --hug:#c44a3f; --line:#d3c8da;
-      --serif:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue",Arial,sans-serif;
-      --sans:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display","Helvetica Neue",Arial,sans-serif;
-    }
-    *{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:var(--sans);color:var(--ink);background:var(--paper);background-image:radial-gradient(ellipse 60% 40% at 85% -5%, rgba(132,102,178,.14) 0%, transparent 60%),radial-gradient(ellipse 70% 50% at -5% 105%, rgba(196,74,63,.07) 0%, transparent 55%);line-height:1.55;font-size:17.5px;-webkit-font-smoothing:antialiased}
-    .app{max-width:1280px;margin:0 auto;padding:0 32px 48px}
-    header.top{display:flex;justify-content:space-between;align-items:baseline;padding:32px 0 24px;border-bottom:1px solid var(--line);gap:12px}
-    .brand-link{text-decoration:none;color:inherit;display:inline-flex;align-items:baseline}
-    .brand-text{font-family:var(--serif);font-style:italic;letter-spacing:-.02em;font-size:30px;line-height:1}
-    .brand-text .em{color:var(--hug)} .brand-text .small{font-size:18px;color:var(--ink-3);margin-left:1px}
-    .nav{display:flex;gap:24px;align-items:baseline;flex-wrap:wrap}
-    .nav a{font-family:var(--serif);font-style:italic;font-size:14px;color:var(--ink-2);text-decoration:none;border-bottom:1px solid transparent;padding-bottom:1px;transition:border-color .15s,color .15s}
-    .nav a:hover{color:var(--hug);border-bottom-color:var(--hug)}
-    .nav a.cta{font-family:var(--sans);font-style:normal;font-weight:500;text-transform:uppercase;letter-spacing:.16em;font-size:11px;background:var(--ink);color:var(--paper);padding:10px 18px;border-radius:999px;border-bottom:0;transition:background .18s,transform .15s;white-space:nowrap}
-    .nav a.cta:hover{background:var(--hug);color:var(--paper);transform:translateY(-1px);border-bottom:0}
-    .panel{margin-top:28px;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.72);padding:24px}
-    .back-btn{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;color:var(--ink-2);border:1px solid var(--line);border-radius:999px;padding:8px 12px;background:rgba(255,255,255,.82);margin-bottom:14px;transition:border-color .15s,color .15s,transform .15s}
-    .back-btn:hover{color:var(--hug);border-color:var(--hug);transform:translateY(-1px)}
-    h1{font-size:clamp(30px,3.5vw,44px);letter-spacing:-.03em;line-height:1.08;margin-bottom:8px}
-    h2{font-size:20px;letter-spacing:-.01em;margin:20px 0 8px}
-    p{color:var(--ink-2);margin-bottom:10px}
-    ul{padding-left:20px;color:var(--ink-2)} li{margin:6px 0}
-    .location{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);margin-bottom:10px}
-    .apply-btn{display:inline-flex;align-items:center;justify-content:center;font-family:var(--sans);font-style:normal;font-weight:600;text-transform:uppercase;letter-spacing:.14em;font-size:11px;background:var(--ink);color:var(--paper);text-decoration:none;padding:11px 18px;border-radius:999px;border:0;transition:background .18s,transform .15s}
-    .apply-btn:hover{background:var(--hug);color:var(--paper);transform:translateY(-1px)}
-    @media (max-width:860px){.app{padding:0 20px 40px}header.top{flex-direction:column;align-items:flex-start;gap:18px;padding:28px 0 22px}.nav{width:100%;gap:16px}.nav a.cta{padding:9px 14px;font-size:10px;letter-spacing:.14em}}
-  </style>
-</head>
-<body>
-  <div class="app">
-    <header class="top">
-      <a class="brand-link" href="/" aria-label="Hug Claims home"><span class="brand-text">Hug<span class="em">.</span><span class="small">claims</span></span></a>
-      <nav class="nav" aria-label="Main"><a href="/forum.html">forum</a><a href="/claim.html">file a claim</a><a href="/enterprise.html">enterprise</a><a href="/career.html">careers</a><a href="/login.html">login</a><a href="/chat.html" class="cta">try the chat &rarr;</a></nav>
-    </header>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="/assets/hug-logo.png?v=20260601" />
+    <link rel="apple-touch-icon" href="/assets/hug-logo.png?v=20260601" />
+    <title>Member of Technical Intern - HugClaim.com careers</title>
+    <link
+      rel="stylesheet"
+      href="/assets/css/pages/careers/career-mts-intern.css"
+    />
+  </head>
+  <body>
+    <div class="app">
+      <header class="top">
+        <a class="brand-link" href="/" aria-label="Hug Claims home"
+          ><span class="brand-text"
+            >Hug<span class="em">.</span><span class="small">claims</span></span
+          ></a
+        >
+        <nav class="nav" aria-label="Main">
+          <a href="/forum.html">forum</a><a href="/claim.html">file a claim</a
+          ><a href="/enterprise.html">enterprise</a
+          ><a href="/career.html">careers</a><a href="/login.html">login</a
+          ><a href="/chat.html" class="cta">try the chat &rarr;</a>
+        </nav>
+      </header>
 
-    <section class="panel">
-      <a class="back-btn" href="/career.html" aria-label="Back to careers">&larr; Back to Careers</a>
-      <h1>Member of Technical Intern</h1>
-      <div class="location">Location: Hybrid / San Francisco, CA</div>
-      <p>Contribute to model quality and product reliability through a PhD-focused internship in failure-driven LLM research.</p>
+      <section class="panel">
+        <a class="back-btn" href="/career.html" aria-label="Back to careers"
+          >&larr; Back to Careers</a
+        >
+        <h1>Member of Technical Intern</h1>
+        <div class="location">Location: Hybrid / San Francisco, CA</div>
+        <p>
+          Contribute to model quality and product reliability through a
+          PhD-focused internship in failure-driven LLM research.
+        </p>
 
-      <h2>Role Context</h2>
-      <p>This internship is designed for PhD candidates who want to move quickly in a production AI environment. You will work with engineering and research partners to identify failure patterns, run controlled experiments, and ship measurable reliability improvements.</p>
-      <ul>
-        <li>Assist with evaluation datasets, labeling quality checks, and benchmark tracking.</li>
-        <li>Prototype improvements in model behavior and claims workflow instrumentation.</li>
-        <li>Communicate findings clearly in written summaries and team reviews.</li>
-      </ul>
+        <h2>Role Context</h2>
+        <p>
+          This internship is designed for PhD candidates who want to move
+          quickly in a production AI environment. You will work with engineering
+          and research partners to identify failure patterns, run controlled
+          experiments, and ship measurable reliability improvements.
+        </p>
+        <ul>
+          <li>
+            Assist with evaluation datasets, labeling quality checks, and
+            benchmark tracking.
+          </li>
+          <li>
+            Prototype improvements in model behavior and claims workflow
+            instrumentation.
+          </li>
+          <li>
+            Communicate findings clearly in written summaries and team reviews.
+          </li>
+        </ul>
 
-      <h2>What You Will Work On</h2>
-      <p>We provide full support across mentorship, compute resources, data access, and research guidance for each direction below.</p>
-      <p>We actively encourage interns to develop original research ideas and publish papers from internship outcomes. Potential venues include NeurIPS, ICML, ICLR, CHI, and journals such as Nature Computational Science and Nature Communications.</p>
-      <ul>
-        <li><strong>Build LLM verifiers:</strong> Improve model capability to automatically detect and surface failures across the end-to-end pipeline.</li>
-        <li><strong>Build failure analysis systems:</strong> Construct robust methods to capture and organize a diverse, raw corpus from real-world failure-claim submissions.</li>
-        <li><strong>Post-train models on failure data:</strong> Develop post-training approaches that learn from out-of-distribution failure data without contaminating baseline model performance.</li>
-        <li><strong>Multimodal failure analysis:</strong> Develop cross-fusion methods to analyze and connect failures across different modality types.</li>
-      </ul>
+        <h2>What You Will Work On</h2>
+        <p>
+          We provide full support across mentorship, compute resources, data
+          access, and research guidance for each direction below.
+        </p>
+        <p>
+          We actively encourage interns to develop original research ideas and
+          publish papers from internship outcomes. Potential venues include
+          NeurIPS, ICML, ICLR, CHI, and journals such as Nature Computational
+          Science and Nature Communications.
+        </p>
+        <ul>
+          <li>
+            <strong>Build LLM verifiers:</strong> Improve model capability to
+            automatically detect and surface failures across the end-to-end
+            pipeline.
+          </li>
+          <li>
+            <strong>Build failure analysis systems:</strong> Construct robust
+            methods to capture and organize a diverse, raw corpus from
+            real-world failure-claim submissions.
+          </li>
+          <li>
+            <strong>Post-train models on failure data:</strong> Develop
+            post-training approaches that learn from out-of-distribution failure
+            data without contaminating baseline model performance.
+          </li>
+          <li>
+            <strong>Multimodal failure analysis:</strong> Develop cross-fusion
+            methods to analyze and connect failures across different modality
+            types.
+          </li>
+        </ul>
 
-      <h2>Qualifications</h2>
-      <ul>
-        <li>Current PhD student in computer science, ML, statistics, or a related field.</li>
-        <li>Able to commit at least 3 months of full-time work; part-time continuation and FTE transfer/conversion are possible based on performance and team fit.</li>
-        <li>Relocation bonus is available for qualified candidates.</li>
-        <li>PhD candidates with relevant publications or prior hands-on experience are especially welcome.</li>
-        <li>Strong coding skills in Python and comfort with data analysis workflows.</li>
-        <li>Rich hands-on experience with coding agents such as Claude Code, Cursor, and Codex is strongly preferred.</li>
-        <li>Clear written communication and curiosity for model behavior debugging.</li>
-      </ul>
+        <h2>Qualifications</h2>
+        <ul>
+          <li>
+            Current PhD student in computer science, ML, statistics, or a
+            related field.
+          </li>
+          <li>
+            Able to commit at least 3 months of full-time work; part-time
+            continuation and FTE transfer/conversion are possible based on
+            performance and team fit.
+          </li>
+          <li>Relocation bonus is available for qualified candidates.</li>
+          <li>
+            PhD candidates with relevant publications or prior hands-on
+            experience are especially welcome.
+          </li>
+          <li>
+            Strong coding skills in Python and comfort with data analysis
+            workflows.
+          </li>
+          <li>
+            Rich hands-on experience with coding agents such as Claude Code,
+            Cursor, and Codex is strongly preferred.
+          </li>
+          <li>
+            Clear written communication and curiosity for model behavior
+            debugging.
+          </li>
+        </ul>
 
-      <h2>Application</h2>
-      <p>Please use our standard application form and select the intern role in your submission details.</p>
-      <a class="apply-btn" href="https://forms.gle/1asxrF3KgNUsv1DW6" target="_blank" rel="noopener noreferrer">Apply Now</a>
-    </section>
-  </div>
-</body>
+        <h2>Application</h2>
+        <p>
+          Please use our standard application form and select the intern role in
+          your submission details.
+        </p>
+        <a
+          class="apply-btn"
+          href="https://forms.gle/1asxrF3KgNUsv1DW6"
+          target="_blank"
+          rel="noopener noreferrer"
+          >Apply Now</a
+        >
+      </section>
+    </div>
+  </body>
 </html>

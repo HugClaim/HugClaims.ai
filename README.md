@@ -29,6 +29,7 @@ Cash back when your AI gets it wrong. A prototype of an LLM-error claims platfor
 ## Run it locally
 
 You need one configured LLM provider:
+
 - Azure AI Foundry + Anthropic deployment (existing path), or
 - Azure OpenAI (`AZURE_OPENAI_*`) credentials.
 
@@ -54,44 +55,44 @@ ssh -N -L 8000:127.0.0.1:8000 you@<host>
 
 ### Optional env vars
 
-| var | default | what it does |
-|---|---|---|
-| `ANTHROPIC_API_KEY` | optional | Foundry key, passed to `AsyncAnthropicFoundry` |
-| `FOUNDRY_ENDPOINT` | hardcoded Azure URL | Foundry base URL |
-| `AZURE_OPENAI_API_KEY` | optional | Azure OpenAI API key |
-| `AZURE_OPENAI_ENDPOINT` | optional | Azure OpenAI resource endpoint, e.g. `https://<resource>.openai.azure.com` |
-| `AZURE_OPENAI_DEPLOYMENT` | optional | Azure OpenAI chat deployment name |
-| `AZURE_OPENAI_API_VERSION` | `2024-10-21` | Azure OpenAI API version |
-| `HUG_MODEL` | `claude-haiku-4-5` | model used for chat replies |
-| `HUG_RATER_MODEL` | `claude-haiku-4-5` | model used to score question stakes (0–10) |
-| `HUG_VERIFIER_MODEL` | `claude-haiku-4-5` | model used to grade submitted claims |
-| `HUG_SUGGEST_MODEL` | `claude-haiku-4-5` | model used by `/suggest_edit` (frontend currently unused) |
+| var                        | default             | what it does                                                               |
+| -------------------------- | ------------------- | -------------------------------------------------------------------------- |
+| `ANTHROPIC_API_KEY`        | optional            | Foundry key, passed to `AsyncAnthropicFoundry`                             |
+| `FOUNDRY_ENDPOINT`         | hardcoded Azure URL | Foundry base URL                                                           |
+| `AZURE_OPENAI_API_KEY`     | optional            | Azure OpenAI API key                                                       |
+| `AZURE_OPENAI_ENDPOINT`    | optional            | Azure OpenAI resource endpoint, e.g. `https://<resource>.openai.azure.com` |
+| `AZURE_OPENAI_DEPLOYMENT`  | optional            | Azure OpenAI chat deployment name                                          |
+| `AZURE_OPENAI_API_VERSION` | `2024-10-21`        | Azure OpenAI API version                                                   |
+| `HUG_MODEL`                | `claude-haiku-4-5`  | model used for chat replies                                                |
+| `HUG_RATER_MODEL`          | `claude-haiku-4-5`  | model used to score question stakes (0–10)                                 |
+| `HUG_VERIFIER_MODEL`       | `claude-haiku-4-5`  | model used to grade submitted claims                                       |
+| `HUG_SUGGEST_MODEL`        | `claude-haiku-4-5`  | model used by `/suggest_edit` (frontend currently unused)                  |
 
 ## Backend endpoints
 
 All implemented in `server.py`:
 
-| route | method | purpose |
-|---|---|---|
-| `/chat` | POST | streams a Claude reply (SSE); after the stream finishes, fires a Haiku 4.5 stakes-rating call and emits a final `score` event before `done` |
-| `/verify_claim` | POST | LLM-as-grader. Takes the conversation snapshot + claimed error + user's correction, returns `{verdict: valid\|invalid\|uncertain, confidence, reasoning}` |
-| `/suggest_edit` | POST | Haiku 4.5 suggests a corrected version of one assistant message. The frontend currently does not call this — kept for future re-enable |
-| `/extract_dissatisfaction` | POST | extension helper: summarizes why user is unhappy with an external LLM answer, returns `{summary, reasons[], severity, confidence}` |
-| `/analyze_image_evidence` | POST | optional vision helper: analyzes uploaded screenshot/image evidence for likely AI failures |
-| `/submit_extension_claim` | POST | extension helper: records confirmed extension claim and returns mock payout in `LLM_CREDITS` |
-| `/redact_for_share` | POST | extension helper: detects PII/sensitive content and returns redacted share text + replacement list (`original -> [REDACTED:TYPE]`) |
-| `/detect_failure_signal` | POST | extension auto-agent: predicts likely substantive failure, estimates verification difficulty, and returns cashback offer `$X` |
-| `/event` | POST | logs client interaction events to `data/events.jsonl` |
-| `/enterprise_grant` | POST | stores Enterprise Grant trial applications in `data/enterprise_grants.jsonl` and returns a `grant_id` reference |
-| `/export` | GET | downloads `data/events.jsonl` (optional `HUG_EXPORT_TOKEN` gate) |
-| `/events_count` | GET | returns quick count/size/path for `data/events.jsonl` |
-| `/export_extension` | GET | downloads extension-only records from `data/extension_records.jsonl` |
-| `/extension_records_count` | GET | returns quick count/size/path for `data/extension_records.jsonl` |
-| `/` and any other static path | GET | served from the project directory by FastAPI's `StaticFiles` mount with `html=True`, so `/` resolves to `index.html` |
+| route                         | method | purpose                                                                                                                                                   |
+| ----------------------------- | ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `/chat`                       | POST   | streams a Claude reply (SSE); after the stream finishes, fires a Haiku 4.5 stakes-rating call and emits a final `score` event before `done`               |
+| `/verify_claim`               | POST   | LLM-as-grader. Takes the conversation snapshot + claimed error + user's correction, returns `{verdict: valid\|invalid\|uncertain, confidence, reasoning}` |
+| `/suggest_edit`               | POST   | Haiku 4.5 suggests a corrected version of one assistant message. The frontend currently does not call this — kept for future re-enable                    |
+| `/extract_dissatisfaction`    | POST   | extension helper: summarizes why user is unhappy with an external LLM answer, returns `{summary, reasons[], severity, confidence}`                        |
+| `/analyze_image_evidence`     | POST   | optional vision helper: analyzes uploaded screenshot/image evidence for likely AI failures                                                                |
+| `/submit_extension_claim`     | POST   | extension helper: records confirmed extension claim and returns mock payout in `LLM_CREDITS`                                                              |
+| `/redact_for_share`           | POST   | extension helper: detects PII/sensitive content and returns redacted share text + replacement list (`original -> [REDACTED:TYPE]`)                        |
+| `/detect_failure_signal`      | POST   | extension auto-agent: predicts likely substantive failure, estimates verification difficulty, and returns cashback offer `$X`                             |
+| `/event`                      | POST   | logs client interaction events to `data/events.jsonl`                                                                                                     |
+| `/enterprise_grant`           | POST   | stores Enterprise Grant trial applications in `data/enterprise_grants.jsonl` and returns a `grant_id` reference                                           |
+| `/export`                     | GET    | downloads `data/events.jsonl` (optional `HUG_EXPORT_TOKEN` gate)                                                                                          |
+| `/events_count`               | GET    | returns quick count/size/path for `data/events.jsonl`                                                                                                     |
+| `/export_extension`           | GET    | downloads extension-only records from `data/extension_records.jsonl`                                                                                      |
+| `/extension_records_count`    | GET    | returns quick count/size/path for `data/extension_records.jsonl`                                                                                          |
+| `/` and any other static path | GET    | served from the project directory by FastAPI's `StaticFiles` mount with `html=True`, so `/` resolves to `index.html`                                      |
 
 ## How the cash-back loop works
 
-1. User chats with an AI through `chat.html`. After each response, Haiku 4.5 silently rates the question's *stakes* on a 0–10 scale.
+1. User chats with an AI through `chat.html`. After each response, Haiku 4.5 silently rates the question's _stakes_ on a 0–10 scale.
 2. The stakes score drives a dynamic bounty: `max(2, round(score × 2.7))` — capped under $30. Bigger stakes = more cash back if the AI was wrong.
 3. User clicks **Submit a correct claim →**, which snapshots the conversation into `localStorage["hug:claim"]` and navigates to `claim.html`.
 4. On the claim page, the user hovers any assistant reply to inline-edit it. A live word-level diff preview shows their corrections in coral and the original in red strikethrough.
@@ -113,6 +114,7 @@ The HTML files plus the sample assets under `data/` are everything the UI needs.
 ## Chrome extension MVP (`chrome-extension/`)
 
 This repo now includes a Manifest V3 extension for the flow:
+
 1. User is on ChatGPT / Claude / Gemini / Copilot.
 2. Click extension popup → **Capture From Tab**.
 3. Click **Extract Why** (calls `/extract_dissatisfaction`).
@@ -124,6 +126,7 @@ This repo now includes a Manifest V3 extension for the flow:
 
 When enabled in the popup, the content script periodically checks the current chat transcript and calls `/detect_failure_signal`.
 If a likely substantial model error is detected, HugInsure shows a small in-page prompt with:
+
 - `Log interaction for $X` (submits claim + synced credit/cash-back offer)
 - `Donate` (logs interaction for quality analysis)
 - `Dismiss`
@@ -143,25 +146,30 @@ The popup lets you override backend URL if needed.
 ### Where extension data is saved
 
 Extension activity is persisted on the backend under `data/`:
+
 - `events.jsonl` (all pages + extension events)
 - `extension_records.jsonl` (extension-only records: extract, claim submit, redaction, auto-signal)
 - `extension_images/` (captured image evidence from extension requests, when provided)
 
 For download/export:
+
 - `/export` for all events
 - `/export_extension` for extension-only records
 
 Extension records are deduplicated by input fingerprint:
+
 - exact same input is skipped
 - same conversation with different failure datapoints (summary/reasons/severity/user note) is kept
 
 To dedupe existing historical duplicates in-place:
+
 - `POST /dedupe_extension_records` (creates backup `data/extension_records.jsonl.bak`)
 
 ## Managing HTML files
 
 Public route files remain at repo root (`/chat.html`, `/claim.html`, etc.) as lightweight redirect wrappers.
 Source HTML now lives under:
+
 - `pages/core/`
 - `pages/careers/`
 - `pages/account/`
