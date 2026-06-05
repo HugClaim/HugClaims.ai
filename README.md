@@ -6,23 +6,12 @@ Cash back when your AI gets it wrong. A prototype of an LLM-error claims platfor
 
 ```
 .
-├── index.html            ← landing page (the homepage at /)
-│                            background grid of red ✗ that flip to green ✓ on hover,
-│                            hero with the "v = 1 → −e⁻ˣ" math example, examples
-│                            grid (math / finance / medicine), how-it-works, CTA.
-│
-├── chat.html             ← the chat interface. Two modes: "your chat" (real Claude
-│                            via the backend) and "examples" (canned scenarios).
-│                            Right sidebar shows live stakes (10-segment bar) + a
-│                            dynamic cash-back amount (animated $X). Composer
-│                            supports text + image (paperclip → multimodal block).
-│
-├── claim.html            ← claim-filing page. Snapshot of the chat (loaded from
-│                            localStorage), inline track-changes editing on each
-│                            assistant message (hover to open, side-by-side textarea
-│                            + live diff preview), figure uploads, "Submit claim",
-│                            "LLM Verifier" button (Haiku 4.5 grader), and a
-│                            cash-back receipt on submit.
+├── index.html, chat.html, claim.html, ...   ← stable public route files
+│                                               (lightweight redirect wrappers)
+├── pages/
+│   ├── core/       ← source HTML for landing/chat/claim/forum/enterprise pages
+│   ├── careers/    ← source HTML for careers hub + role pages
+│   └── account/    ← source HTML for login/payment/disclaimer
 │
 ├── server.py             ← FastAPI backend. Streams Claude responses, scores
 │                            stakes, grades claims, suggests corrections.
@@ -168,3 +157,22 @@ Extension records are deduplicated by input fingerprint:
 
 To dedupe existing historical duplicates in-place:
 - `POST /dedupe_extension_records` (creates backup `data/extension_records.jsonl.bak`)
+
+## Managing HTML files
+
+Public route files remain at repo root (`/chat.html`, `/claim.html`, etc.) as lightweight redirect wrappers.
+Source HTML now lives under:
+- `pages/core/`
+- `pages/careers/`
+- `pages/account/`
+
+To manage these pages, use the built-in scripts:
+
+- `python scripts/generate_route_wrappers.py`
+  - regenerates root URL wrapper pages from `pages/routes.json`
+- `python scripts/html_inventory.py`
+  - lists HTML files and buckets them by area (`core`, `careers`, `persona`, `chrome-extension`, etc.)
+- `python scripts/check_html_links.py`
+  - checks local `href/src/action/poster` targets and reports broken links with file + line
+
+Detailed usage and workflow notes live in `HTML_MANAGEMENT.md`.

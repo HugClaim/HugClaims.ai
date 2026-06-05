@@ -1,0 +1,17 @@
+{
+  "index.html": "/pages/core/index.html",
+  "chat.html": "/pages/core/chat.html",
+  "claim.html": "/pages/core/claim.html",
+  "forum.html": "/pages/core/forum.html",
+  "enterprise.html": "/pages/core/enterprise.html",
+  "enterprise-grant.html": "/pages/core/enterprise-grant.html",
+  "career.html": "/pages/careers/career.html",
+  "career-forward-deployed-engineer.html": "/pages/careers/career-forward-deployed-engineer.html",
+  "career-mts-data-analysis.html": "/pages/careers/career-mts-data-analysis.html",
+  "career-mts-intern.html": "/pages/careers/career-mts-intern.html",
+  "career-mts-multimodal.html": "/pages/careers/career-mts-multimodal.html",
+  "career-mts-post-training.html": "/pages/careers/career-mts-post-training.html",
+  "login.html": "/pages/account/login.html",
+  "payment.html": "/pages/account/payment.html",
+  "disclaimer.html": "/pages/account/disclaimer.html"
+}

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="118" height="30" viewBox="0 0 118 30" role="img" aria-label="MIT logo">
+  <rect x="0.5" y="0.5" width="117" height="29" rx="7" fill="#fff" stroke="#d3c8da"/>
+  <g fill="#a31f34" transform="translate(9,6)">
+    <rect x="0" y="0" width="4" height="18"/>
+    <rect x="6" y="0" width="4" height="18"/>
+    <rect x="12" y="6" width="4" height="12"/>
+    <rect x="18" y="0" width="4" height="18"/>
+    <rect x="24" y="0" width="4" height="18"/>
+  </g>
+  <text x="42" y="20" fill="#1a1612" font-family="Arial, sans-serif" font-size="12" font-weight="700">MIT</text>
+</svg>

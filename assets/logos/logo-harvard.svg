@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="136" height="30" viewBox="0 0 136 30" role="img" aria-label="Harvard logo">
+  <rect x="0.5" y="0.5" width="135" height="29" rx="7" fill="#fff" stroke="#d3c8da"/>
+  <path d="M12 6h12v8c0 4-3 7-6 9-3-2-6-5-6-9z" fill="#a51c30"/>
+  <text x="15" y="17" text-anchor="middle" fill="#fff" font-family="Arial, sans-serif" font-size="8" font-weight="700">H</text>
+  <text x="31" y="20" fill="#1a1612" font-family="Arial, sans-serif" font-size="12" font-weight="700">Harvard</text>
+</svg>

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="152" height="30" viewBox="0 0 152 30" role="img" aria-label="UC Berkeley logo">
+  <rect x="0.5" y="0.5" width="151" height="29" rx="7" fill="#fff" stroke="#d3c8da"/>
+  <circle cx="17" cy="15" r="8" fill="#003262"/>
+  <text x="17" y="18" text-anchor="middle" fill="#fdb515" font-family="Arial, sans-serif" font-size="7" font-weight="700">Cal</text>
+  <text x="31" y="20" fill="#003262" font-family="Arial, sans-serif" font-size="12" font-weight="700">UC Berkeley</text>
+</svg>

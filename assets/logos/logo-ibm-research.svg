@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="152" height="30" viewBox="0 0 152 30" role="img" aria-label="IBM Research logo">
+  <rect x="0.5" y="0.5" width="151" height="29" rx="7" fill="#fff" stroke="#d3c8da"/>
+  <g transform="translate(10,9)" fill="#1f70c1">
+    <rect x="0" y="0" width="3" height="12"/>
+    <rect x="5" y="0" width="3" height="12"/>
+    <rect x="10" y="0" width="3" height="12"/>
+  </g>
+  <text x="22" y="20" fill="#1f70c1" font-family="Arial, sans-serif" font-size="12" font-weight="700">IBM Research</text>
+</svg>

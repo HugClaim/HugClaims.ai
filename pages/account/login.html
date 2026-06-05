@@ -1,0 +1,643 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="icon" type="image/png" href="/assets/hug-logo.png?v=20260601" />
+<link rel="apple-touch-icon" href="/assets/hug-logo.png?v=20260601" />
+<title>hug.claims — login</title>
+<style>
+  :root {
+    --paper:   #f1edf6;
+    --paper-2: #e5ddee;
+    --ink:     #1a1612;
+    --ink-2:   #4b4339;
+    --ink-3:   #8a8073;
+    --hug:     #c44a3f;
+    --hug-2:   #a83a30;
+    --hug-soft:#ecb8ad;
+    --hug-bg:  #fae9e0;
+    --line:    #d3c8da;
+    --violet:  #635bff;
+    --serif:   -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+    --sans:    -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    min-height: 100%;
+    font-family: var(--sans);
+    color: var(--ink);
+    background: var(--paper);
+    background-image:
+      radial-gradient(ellipse 60% 40% at 85% -5%, rgba(132,102,178,.15) 0%, transparent 60%),
+      radial-gradient(ellipse 70% 50% at -5% 105%, rgba(196,74,63,.07) 0%, transparent 55%),
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.05 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    background-attachment: fixed;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.55;
+    font-size: 16px;
+  }
+  .app { max-width: 920px; margin: 0 auto; padding: 0 30px 70px; }
+  header.top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 18px;
+    padding: 30px 0 24px;
+    border-bottom: 1px solid var(--line);
+  }
+  .brand-link {
+    display: inline-flex;
+    align-items: baseline;
+    color: inherit;
+    text-decoration: none;
+    transition: opacity .15s, transform .15s;
+  }
+  .brand-link:hover { opacity: .84; transform: translateY(-1px); }
+  .brand-text {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 30px;
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+  .brand-text .em { color: var(--hug); font-weight: 500; }
+  .brand-text .small { font-size: 18px; color: var(--ink-3); margin-left: 1px; }
+  .nav {
+    display: flex;
+    gap: 20px;
+    align-items: baseline;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+  .nav a, footer a {
+    font-family: var(--serif);
+    font-style: italic;
+    color: var(--ink-2);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color .15s, color .15s;
+  }
+  .nav a:hover, footer a:hover { color: var(--hug); border-bottom-color: var(--hug); }
+  .nav a.active { color: var(--ink); border-bottom-color: var(--ink); }
+  main {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 360px;
+    gap: 38px;
+    align-items: start;
+    padding: 52px 0 30px;
+  }
+  h1 {
+    font-family: var(--serif);
+    font-weight: 300;
+    font-size: clamp(42px, 7.4vw, 72px);
+    line-height: .98;
+    letter-spacing: -0.035em;
+    margin-bottom: 18px;
+  }
+  h1 em { color: var(--violet); font-style: italic; }
+  .lede {
+    max-width: 58ch;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 19px;
+    color: var(--ink-2);
+  }
+  .account-card {
+    background: #fffdf8;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 22px;
+    box-shadow: 0 18px 46px -30px rgba(40, 25, 10, 0.26);
+  }
+  .account-card h2 {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: 25px;
+    letter-spacing: -0.02em;
+    margin-bottom: 6px;
+  }
+  .account-card .sub {
+    color: var(--ink-3);
+    font-size: 13px;
+    margin-bottom: 18px;
+  }
+  .system-login {
+    display: grid;
+    gap: 9px;
+    margin-bottom: 14px;
+  }
+  .system-login label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+  .system-login input {
+    width: 100%;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: #fff;
+    color: var(--ink);
+    padding: 10px 11px;
+    font: 500 14px var(--sans);
+    outline: none;
+    transition: border-color .14s, box-shadow .14s;
+  }
+  .system-login input:focus {
+    border-color: rgba(99, 91, 255, .55);
+    box-shadow: 0 0 0 3px rgba(99, 91, 255, .13);
+  }
+  .auth-actions {
+    display: grid;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .auth-btn {
+    width: 100%;
+    min-height: 43px;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    font: 600 11px var(--sans);
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: transform .14s, border-color .14s, background .14s, color .14s;
+  }
+  .auth-btn.primary {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .auth-btn.primary:hover {
+    background: var(--hug);
+    transform: translateY(-1px);
+  }
+  .auth-btn.guest {
+    background: rgba(255, 253, 248, .78);
+    color: var(--ink-2);
+    border-color: var(--line);
+  }
+  .auth-btn.guest:hover {
+    border-color: var(--hug-soft);
+    color: var(--hug-2);
+    transform: translateY(-1px);
+  }
+  .provider-stack {
+    display: grid;
+    gap: 10px;
+  }
+  .provider-btn {
+    width: 100%;
+    min-height: 46px;
+    display: grid;
+    grid-template-columns: 32px 1fr auto;
+    gap: 10px;
+    align-items: center;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: rgba(255, 253, 248, .72);
+    color: var(--ink);
+    padding: 8px 12px;
+    text-align: left;
+    cursor: pointer;
+    transition: border-color .16s, transform .16s, background .16s;
+  }
+  .provider-btn:hover {
+    border-color: var(--hug-soft);
+    background: #fffdf8;
+    transform: translateY(-1px);
+  }
+  .provider-btn strong { display: block; font-size: 14px; }
+  .provider-btn span.copy { display: block; color: var(--ink-3); font-size: 12px; }
+  .provider-btn span.state {
+    color: var(--hug);
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .14em;
+  }
+  .brand-logo {
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    border: 1px solid rgba(26,22,18,.10);
+    box-shadow: inset 0 -8px 16px rgba(26,22,18,.04);
+    font-weight: 800;
+  }
+  .google-logo .g {
+    font-size: 21px;
+    line-height: 1;
+    background: conic-gradient(from -35deg, #4285f4 0 24%, #34a853 24% 43%, #fbbc05 43% 63%, #ea4335 63% 82%, #4285f4 82% 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-family: Arial, sans-serif;
+  }
+  .meta-logo {
+    background: #eef4ff;
+    color: #0866ff;
+    font-size: 22px;
+    font-weight: 900;
+    letter-spacing: -.1em;
+  }
+  .email-logo {
+    background: var(--ink);
+    color: #fff;
+    font-size: 18px;
+  }
+  .openai-logo {
+    background: #f4f1e9;
+    color: #171717;
+    font-size: 17px;
+    letter-spacing: -.03em;
+  }
+  .anthropic-logo {
+    background: #f0e8dd;
+    color: #1f1a14;
+    font-family: Georgia, serif;
+    font-size: 21px;
+  }
+  .provider-divider {
+    margin: 4px 0 0;
+    padding-top: 4px;
+    color: var(--ink-3);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+  }
+  .profile-preview {
+    width: 100%;
+    margin-top: 18px;
+    padding: 14px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: var(--paper-2);
+    color: inherit;
+    cursor: default;
+    text-align: left;
+    transition: border-color .16s, box-shadow .16s, transform .16s, background .16s;
+    font: inherit;
+  }
+  .profile-preview:hover {
+    transform: none;
+  }
+  .profile-preview.signed {
+    border-color: rgba(99, 91, 255, .44);
+    background: #f4effb;
+    cursor: pointer;
+  }
+  .profile-preview.signed:hover {
+    border-color: rgba(99, 91, 255, .52);
+    background: #eee7f6;
+    box-shadow: 0 14px 34px -26px rgba(40, 25, 10, .36);
+    transform: translateY(-1px);
+  }
+  .profile-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--hug);
+    color: #fff;
+    font-weight: 700;
+    letter-spacing: .04em;
+  }
+  .profile-row strong { display: block; }
+  .profile-row span { display: block; color: var(--ink-3); font-size: 12.5px; }
+  .profile-action {
+    margin-top: 10px;
+    color: var(--violet);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+  .demo-signout {
+    margin-top: 10px;
+    border: 0;
+    background: transparent;
+    color: var(--ink-3);
+    cursor: pointer;
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 13px;
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-underline-offset: 3px;
+    transition: color .15s, text-decoration-color .15s;
+  }
+  .demo-signout:hover { color: var(--hug); text-decoration-color: var(--hug); }
+  .note {
+    margin-top: 18px;
+    padding: 14px 16px;
+    background: var(--hug-bg);
+    border: 1px solid rgba(196,74,63,.20);
+    border-radius: 12px;
+    color: var(--ink-2);
+    font-size: 14px;
+  }
+  .setup-list {
+    margin-top: 26px;
+    display: grid;
+    gap: 12px;
+    max-width: 620px;
+  }
+  .setup-list div {
+    padding: 14px 16px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: rgba(255,253,248,.52);
+  }
+  .setup-list strong { display: block; margin-bottom: 4px; }
+  .setup-list p { color: var(--ink-2); }
+  footer {
+    border-top: 1px solid var(--line);
+    padding-top: 24px;
+    margin-top: 18px;
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+    flex-wrap: wrap;
+    color: var(--ink-3);
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: .18em;
+  }
+  footer em {
+    font-family: var(--serif);
+    font-style: italic;
+    text-transform: none;
+    letter-spacing: 0;
+    color: var(--ink-2);
+    font-size: 13px;
+  }
+  @media (max-width: 820px) {
+    header.top { align-items: flex-start; flex-direction: column; }
+    .nav { justify-content: flex-start; gap: 14px; }
+    main { grid-template-columns: 1fr; padding-top: 38px; }
+  }
+</style>
+<script src="/hug-config.js"></script>
+<script src="/hug-events.js" defer></script>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <a class="brand-link" href="/" aria-label="Hug Claims home">
+      <span class="brand-text">Hug<span class="em">.</span><span class="small">claims</span></span>
+    </a>
+    <nav class="nav">
+      <a href="/forum.html">forum</a>
+      <a href="/claim.html">file a claim</a>
+      <a href="/chat.html">try the chat</a>
+      <a href="/login.html" class="active">login</a>
+    </nav>
+  </header>
+
+  <main>
+    <section>
+      <h1>Set up your <em>Hug account</em>.</h1>
+      <p class="lede">Use your Hug account for saved conversations, forum posts, claim history, and cash-back settings. You can also continue as a guest for quick access.</p>
+      <div class="setup-list">
+        <div>
+          <strong>Claims should belong to the right person.</strong>
+          <p>Future login will replace the current local demo identity so forum posts and payouts are tied to the signed-in user.</p>
+        </div>
+        <div>
+          <strong>OAuth and imports come next.</strong>
+          <p>This page is ready for Google, Meta, and email sign-in. OpenAI and Anthropic are shown as future chat-history import paths for failure-mode collection.</p>
+        </div>
+      </div>
+    </section>
+
+    <aside class="account-card">
+      <h2>Continue with</h2>
+      <p class="sub">Log in to Hug or continue as guest.</p>
+      <div class="system-login">
+        <label for="systemEmail">Hug account email</label>
+        <input id="systemEmail" type="email" placeholder="you@hug.claims" autocomplete="email" />
+        <label for="systemPassword">Password</label>
+        <input id="systemPassword" type="password" placeholder="Enter password" autocomplete="current-password" />
+      </div>
+      <div class="auth-actions">
+        <button class="auth-btn primary" id="systemLoginBtn" type="button">Log in to Hug</button>
+        <button class="auth-btn guest" id="guestLoginBtn" type="button">Continue as guest</button>
+      </div>
+      <div class="provider-stack">
+        <button class="provider-btn" data-provider="google" type="button">
+          <span class="brand-logo google-logo" aria-hidden="true"><span class="g">G</span></span>
+          <span><strong>Google</strong><span class="copy">Use a Google account for claims and forum identity</span></span>
+          <span class="state">soon</span>
+        </button>
+        <button class="provider-btn" data-provider="meta" type="button">
+          <span class="brand-logo meta-logo" aria-hidden="true">∞</span>
+          <span><strong>Meta</strong><span class="copy">Connect Facebook or Instagram identity later</span></span>
+          <span class="state">soon</span>
+        </button>
+        <button class="provider-btn" data-provider="email" type="button">
+          <span class="brand-logo email-logo" aria-hidden="true">@</span>
+          <span><strong>Email</strong><span class="copy">Reserve an email-only account path</span></span>
+          <span class="state">soon</span>
+        </button>
+        <div class="provider-divider">future chat imports</div>
+        <button class="provider-btn" data-provider="openai" type="button">
+          <span class="brand-logo openai-logo" aria-hidden="true">AI</span>
+          <span><strong>OpenAI</strong><span class="copy">Plan for exported ChatGPT histories and shared conversations</span></span>
+          <span class="state">import</span>
+        </button>
+        <button class="provider-btn" data-provider="anthropic" type="button">
+          <span class="brand-logo anthropic-logo" aria-hidden="true">A</span>
+          <span><strong>Anthropic</strong><span class="copy">Plan for exported Claude chats and shared transcripts</span></span>
+          <span class="state">import</span>
+        </button>
+      </div>
+
+      <button class="profile-preview" id="demoProfile" type="button" aria-pressed="false">
+        <div class="profile-row">
+          <span class="avatar" id="profileAvatar">YU</span>
+          <span>
+            <strong id="profileTitle">Demo local profile</strong>
+            <span id="profileSubtitle">Not signed in. Stored only in this browser.</span>
+          </span>
+        </div>
+        <div class="profile-action" id="profileAction">Sign in above, or continue as guest.</div>
+      </button>
+      <button class="demo-signout" id="demoSignOut" type="button" hidden>Sign out</button>
+      <p class="note" id="loginStatus">No active account yet. Log in to Hug or continue as guest.</p>
+    </aside>
+  </main>
+
+  <footer>
+    <div>hug.claims &middot; <em>account setup preview</em></div>
+    <div>
+      <a href="/forum.html">forum</a>
+      &nbsp;&middot;&nbsp;
+      <a href="/claim.html">file a claim</a>
+      &nbsp;&middot;&nbsp;
+      <a href="/disclaimer.html">Disclaimer</a>
+      &nbsp;&middot;&nbsp;
+      <a data-hug-export>Export my session</a>
+    </div>
+  </footer>
+</div>
+
+<script>
+  const HUG_USER_KEY = 'hug:user';
+  const DEFAULT_MEMBER_EMAIL = 'yuexing@hug.claims';
+  const guestUser = {
+    id: 'guest',
+    username: 'guest',
+    displayName: 'Guest',
+    avatar: 'GS',
+    provider: 'guest',
+    signedIn: true,
+    isGuest: true,
+  };
+
+  function readHugUser() {
+    try { return JSON.parse(localStorage.getItem(HUG_USER_KEY) || 'null'); }
+    catch (err) { return null; }
+  }
+
+  function writeHugUser(user) {
+    try { localStorage.setItem(HUG_USER_KEY, JSON.stringify({ ...user, signedInAt: new Date().toISOString() })); }
+    catch (err) { console.warn('Could not save demo user:', err); }
+  }
+
+  function clearHugUser() {
+    try { localStorage.removeItem(HUG_USER_KEY); }
+    catch (err) { console.warn('Could not clear demo user:', err); }
+  }
+
+  function avatarFromName(name) {
+    const safe = String(name || '').replace(/[^a-zA-Z0-9 ]/g, ' ').trim();
+    if (!safe) return 'HU';
+    const parts = safe.split(/\s+/).filter(Boolean);
+    if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+    return `${parts[0][0] || ''}${parts[1][0] || ''}`.toUpperCase();
+  }
+
+  function usernameFromEmail(email) {
+    const local = String(email || '').split('@')[0] || '';
+    const cleaned = local.toLowerCase().replace(/[^a-z0-9._-]/g, '');
+    return cleaned || 'member';
+  }
+
+  function buildMemberUser(email) {
+    const username = usernameFromEmail(email);
+    return {
+      id: `member-${username}`,
+      username,
+      displayName: username,
+      avatar: avatarFromName(username),
+      provider: 'hug-local',
+      signedIn: true,
+      isGuest: false,
+    };
+  }
+
+  function renderProfile() {
+    const user = readHugUser();
+    const signedIn = Boolean(user && user.signedIn);
+    const isGuest = Boolean(user && user.isGuest);
+    const card = document.getElementById('demoProfile');
+    const avatar = document.getElementById('profileAvatar');
+    const title = document.getElementById('profileTitle');
+    const subtitle = document.getElementById('profileSubtitle');
+    const action = document.getElementById('profileAction');
+    const signOut = document.getElementById('demoSignOut');
+    const status = document.getElementById('loginStatus');
+
+    card.classList.toggle('signed', signedIn);
+    card.setAttribute('aria-pressed', signedIn ? 'true' : 'false');
+    avatar.textContent = signedIn ? (user.avatar || 'HU') : 'HU';
+    title.textContent = signedIn ? `Signed in as ${user.username || 'member'}` : 'No active account';
+    subtitle.textContent = signedIn
+      ? (isGuest
+        ? 'Guest mode active. Local session only in this browser.'
+        : 'Hug account active. Claims and forum drafts use this local identity.')
+      : 'Not signed in. Stored only in this browser.';
+    action.textContent = signedIn ? 'Open chat with this account' : 'Sign in above, or continue as guest.';
+    signOut.hidden = !signedIn;
+    if (signedIn) {
+      status.textContent = isGuest
+        ? 'Guest session active. You can browse and test flows, then switch to a Hug account anytime.'
+        : 'Signed in to Hug local demo account. This is browser-only auth until OAuth backend is connected.';
+    }
+  }
+
+  document.getElementById('systemLoginBtn').addEventListener('click', () => {
+    const emailInput = document.getElementById('systemEmail');
+    const passwordInput = document.getElementById('systemPassword');
+    const status = document.getElementById('loginStatus');
+    const email = String(emailInput.value || '').trim() || DEFAULT_MEMBER_EMAIL;
+    const password = String(passwordInput.value || '').trim();
+
+    if (!email.includes('@')) {
+      status.textContent = 'Use a valid email to log in to Hug.';
+      emailInput.focus();
+      return;
+    }
+    if (!password) {
+      status.textContent = 'Enter a password to continue.';
+      passwordInput.focus();
+      return;
+    }
+
+    const member = buildMemberUser(email);
+    writeHugUser(member);
+    renderProfile();
+    if (window.hugEvent) hugEvent('system_login_clicked', { user: member.username, provider: 'hug-local' });
+    window.location.href = '/chat.html';
+  });
+
+  document.getElementById('guestLoginBtn').addEventListener('click', () => {
+    writeHugUser(guestUser);
+    renderProfile();
+    if (window.hugEvent) hugEvent('guest_login_clicked', { user: guestUser.username });
+    window.location.href = '/chat.html';
+  });
+
+  document.getElementById('demoProfile').addEventListener('click', () => {
+    const user = readHugUser();
+    if (user && user.signedIn) {
+      window.location.href = '/chat.html';
+    }
+  });
+
+  document.getElementById('demoSignOut').addEventListener('click', () => {
+    clearHugUser();
+    renderProfile();
+    document.getElementById('loginStatus').textContent = 'Signed out. Log in to Hug or continue as guest.';
+    if (window.hugEvent) hugEvent('demo_login_signed_out', { user: 'local' });
+  });
+
+  document.querySelectorAll('.provider-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const provider = btn.dataset.provider || 'provider';
+      const status = document.getElementById('loginStatus');
+      const label = `${provider[0].toUpperCase()}${provider.slice(1)}`;
+      status.textContent = ['openai', 'anthropic'].includes(provider)
+        ? `${label} is reserved as a future chat-history import path for AI failure-mode collection.`
+        : `${label} login is reserved for the next OAuth setup.`;
+      if (window.hugEvent) hugEvent('login_provider_preview_clicked', { provider });
+    });
+  });
+
+  renderProfile();
+</script>
+</body>
+</html>
