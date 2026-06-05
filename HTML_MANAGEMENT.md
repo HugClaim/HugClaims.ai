@@ -4,7 +4,9 @@ This repo keeps public routes stable while organizing source pages in subfolders
 
 Current layout:
 
-- Route wrappers (public URLs): repo root, e.g. `chat.html`, `claim.html`
+- Route wrappers (public URLs):
+  - repo root for core/account pages, e.g. `chat.html`, `claim.html`
+  - `careers/` subfolder for career routes, e.g. `careers/career.html`
 - Source pages: `pages/core/`, `pages/careers/`, `pages/account/`
 - Route map: `pages/routes.json`
 - Existing subareas: `persona/`, `chrome-extension/`
@@ -55,7 +57,7 @@ python scripts/generate_route_wrappers.py
 What it does:
 
 - Reads `pages/routes.json`
-- Generates root wrapper pages (for stable public URLs)
+- Generates wrapper pages from route keys (supports nested keys like `careers/*.html`)
 - Preserves query string and hash while redirecting to the source page
 
 Check mode (CI-friendly):

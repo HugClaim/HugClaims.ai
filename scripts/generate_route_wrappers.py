@@ -40,7 +40,12 @@ def load_routes(path: Path) -> dict[str, str]:
         raise ValueError(f"Route map must be a non-empty object: {path}")
     routes: dict[str, str] = {}
     for route, target in data.items():
-        if not isinstance(route, str) or not route.endswith(".html") or "/" in route:
+        if (
+            not isinstance(route, str)
+            or not route.endswith(".html")
+            or route.startswith("/")
+            or ".." in route
+        ):
             raise ValueError(f"Invalid route key: {route!r}")
         if not isinstance(target, str) or not target.startswith("/pages/") or not target.endswith(".html"):
             raise ValueError(f"Invalid route target for {route!r}: {target!r}")
@@ -65,6 +70,7 @@ def write_wrappers(routes: dict[str, str], *, check: bool) -> tuple[int, int]:
         if check:
             changed += 1
             continue
+        out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(expected, encoding="utf-8")
         changed += 1
     return changed, unchanged

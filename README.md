@@ -167,8 +167,11 @@ To dedupe existing historical duplicates in-place:
 
 ## Managing HTML files
 
-Public route files remain at repo root (`/chat.html`, `/claim.html`, etc.) as lightweight redirect wrappers.
-Source HTML now lives under:
+Public route files are lightweight redirect wrappers, with:
+
+- root-level routes for core/account pages (`/chat.html`, `/claim.html`, etc.)
+- `careers/` routes for career pages (`/careers/career.html`, etc.)
+  Source HTML now lives under:
 
 - `pages/core/`
 - `pages/careers/`
@@ -177,7 +180,7 @@ Source HTML now lives under:
 To manage these pages, use the built-in scripts:
 
 - `python scripts/generate_route_wrappers.py`
-  - regenerates root URL wrapper pages from `pages/routes.json`
+  - regenerates wrapper pages from `pages/routes.json` (including nested route keys)
 - `python scripts/html_inventory.py`
   - lists HTML files and buckets them by area (`core`, `careers`, `persona`, `chrome-extension`, etc.)
 - `python scripts/check_html_links.py`

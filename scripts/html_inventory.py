@@ -10,23 +10,7 @@ from pathlib import Path
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-ROUTE_WRAPPERS = {
-    "index.html",
-    "chat.html",
-    "claim.html",
-    "forum.html",
-    "enterprise.html",
-    "enterprise-grant.html",
-    "career.html",
-    "career-forward-deployed-engineer.html",
-    "career-mts-data-analysis.html",
-    "career-mts-intern.html",
-    "career-mts-multimodal.html",
-    "career-mts-post-training.html",
-    "login.html",
-    "payment.html",
-    "disclaimer.html",
-}
+ROUTES_MAP = REPO_ROOT / "pages" / "routes.json"
 
 
 @dataclass(frozen=True)
@@ -36,20 +20,45 @@ class HtmlEntry:
     page_type: str
 
 
+def route_wrapper_paths() -> set[str]:
+    if not ROUTES_MAP.exists():
+        return set()
+    data = json.loads(ROUTES_MAP.read_text(encoding="utf-8"))
+    if not isinstance(data, dict):
+        return set()
+    out: set[str] = set()
+    for key in data.keys():
+        if isinstance(key, str) and key.endswith(".html"):
+            out.add(key)
+    return out
+
+
 def collect_html_files() -> list[Path]:
-    files: list[Path] = []
-    files.extend(sorted(REPO_ROOT.glob("*.html")))
-    files.extend(sorted((REPO_ROOT / "pages" / "core").glob("*.html")))
-    files.extend(sorted((REPO_ROOT / "pages" / "careers").glob("*.html")))
-    files.extend(sorted((REPO_ROOT / "pages" / "account").glob("*.html")))
-    files.extend(sorted((REPO_ROOT / "persona").glob("*.html")))
-    files.extend(sorted((REPO_ROOT / "chrome-extension").glob("*.html")))
-    return files
+    files: set[Path] = set()
+    for path in REPO_ROOT.glob("*.html"):
+        files.add(path)
+    for path in (REPO_ROOT / "pages" / "core").glob("*.html"):
+        files.add(path)
+    for path in (REPO_ROOT / "pages" / "careers").glob("*.html"):
+        files.add(path)
+    for path in (REPO_ROOT / "pages" / "account").glob("*.html"):
+        files.add(path)
+    for path in (REPO_ROOT / "persona").glob("*.html"):
+        files.add(path)
+    for path in (REPO_ROOT / "chrome-extension").glob("*.html"):
+        files.add(path)
+    for rel in route_wrapper_paths():
+        candidate = REPO_ROOT / rel
+        if candidate.exists():
+            files.add(candidate)
+    return sorted(files)
 
 
-def classify(path: Path) -> HtmlEntry:
+def classify(path: Path, wrappers: set[str]) -> HtmlEntry:
     rel = path.relative_to(REPO_ROOT).as_posix()
     name = path.name
+    if rel in wrappers:
+        return HtmlEntry(path=rel, bucket="route-wrapper", page_type="redirect")
     if rel.startswith("pages/core/"):
         return HtmlEntry(path=rel, bucket="pages-core", page_type="source")
     if rel.startswith("pages/careers/"):
@@ -60,8 +69,6 @@ def classify(path: Path) -> HtmlEntry:
         return HtmlEntry(path=rel, bucket="persona", page_type="persona")
     if rel.startswith("chrome-extension/"):
         return HtmlEntry(path=rel, bucket="chrome-extension", page_type="extension")
-    if name in ROUTE_WRAPPERS:
-        return HtmlEntry(path=rel, bucket="route-wrapper", page_type="redirect")
     if name.startswith("career-") and name != "career.html":
         return HtmlEntry(path=rel, bucket="careers", page_type="job-posting")
     if name in {"disclaimer.html", "payment.html", "login.html"}:
@@ -88,7 +95,8 @@ def main() -> int:
     parser.add_argument("--json", action="store_true", help="Print JSON instead of a table.")
     args = parser.parse_args()
 
-    entries = [classify(path) for path in collect_html_files()]
+    wrappers = route_wrapper_paths()
+    entries = [classify(path, wrappers) for path in collect_html_files()]
     if args.json:
         print(json.dumps([asdict(e) for e in entries], indent=2))
     else:

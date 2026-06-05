@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 import re
 from dataclasses import dataclass
 from html.parser import HTMLParser
@@ -11,6 +12,7 @@ from pathlib import Path
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
+ROUTES_MAP = REPO_ROOT / "pages" / "routes.json"
 SCHEME_RE = re.compile(r"^[a-zA-Z][a-zA-Z0-9+.-]*:")
 ATTRS_BY_TAG = {
     "a": {"href"},
@@ -39,15 +41,39 @@ class BrokenLink:
     resolved: Path
 
 
+def route_wrapper_files() -> list[Path]:
+    if not ROUTES_MAP.exists():
+        return []
+    data = json.loads(ROUTES_MAP.read_text(encoding="utf-8"))
+    if not isinstance(data, dict):
+        return []
+    out: list[Path] = []
+    for key in data.keys():
+        if not isinstance(key, str) or not key.endswith(".html"):
+            continue
+        path = REPO_ROOT / key
+        if path.exists():
+            out.append(path)
+    return out
+
+
 def collect_html_files() -> list[Path]:
-    files: list[Path] = []
-    files.extend(sorted(REPO_ROOT.glob("*.html")))
-    files.extend(sorted((REPO_ROOT / "pages" / "core").glob("*.html")))
-    files.extend(sorted((REPO_ROOT / "pages" / "careers").glob("*.html")))
-    files.extend(sorted((REPO_ROOT / "pages" / "account").glob("*.html")))
-    files.extend(sorted((REPO_ROOT / "persona").glob("*.html")))
-    files.extend(sorted((REPO_ROOT / "chrome-extension").glob("*.html")))
-    return files
+    files: set[Path] = set()
+    for path in REPO_ROOT.glob("*.html"):
+        files.add(path)
+    for path in (REPO_ROOT / "pages" / "core").glob("*.html"):
+        files.add(path)
+    for path in (REPO_ROOT / "pages" / "careers").glob("*.html"):
+        files.add(path)
+    for path in (REPO_ROOT / "pages" / "account").glob("*.html"):
+        files.add(path)
+    for path in (REPO_ROOT / "persona").glob("*.html"):
+        files.add(path)
+    for path in (REPO_ROOT / "chrome-extension").glob("*.html"):
+        files.add(path)
+    for path in route_wrapper_files():
+        files.add(path)
+    return sorted(files)
 
 
 class LinkExtractor(HTMLParser):
