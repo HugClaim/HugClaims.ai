@@ -5,11 +5,16 @@ This repo keeps public routes stable while organizing source pages in subfolders
 Current layout:
 
 - Route wrappers (public URLs):
-  - repo root for core/account pages, e.g. `chat.html`, `claim.html`
+  - repo root for most core/account pages, e.g. `chat.html`, `claim.html`
   - `careers/` subfolder for career routes, e.g. `careers/career.html`
 - Source pages: `pages/core/`, `pages/careers/`, `pages/account/`
 - Route map: `pages/routes.json`
 - Existing subareas: `persona/`, `chrome-extension/`
+
+Exception:
+
+- `forum.html` is canonical at root (full page content)
+- `pages/core/forum.html` is a legacy redirect to `/forum.html`
 
 Use these scripts to keep changes manageable and safe:
 

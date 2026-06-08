@@ -204,9 +204,10 @@ exCards.forEach((card) => {
   const heroTotalEl = document.getElementById("heroVerifiedClaims");
   const renderedDotTotal = 1286;
   const SHARED_VERIFIED_TOTAL_KEY = "hugClaimsSharedVerifiedTotal";
-  const SHARED_VERIFIED_MIN = 35000;
+  const SHARED_VERIFIED_HEARTBEAT_KEY = "hugClaimsSharedVerifiedHeartbeat";
+  const SHARED_VERIFIED_MIN = 40745;
   function randomSharedVerifiedStart() {
-    return SHARED_VERIFIED_MIN + Math.floor(Math.random() * 5001);
+    return SHARED_VERIFIED_MIN;
   }
   function parsePositiveInt(value) {
     const parsed = Number.parseInt(
@@ -239,9 +240,14 @@ exCards.forEach((card) => {
     const parsed = parsePositiveInt(total);
     if (parsed === null) return;
     try {
+      const normalized = Math.max(parsed, SHARED_VERIFIED_MIN);
       window.localStorage.setItem(
         SHARED_VERIFIED_TOTAL_KEY,
-        String(Math.max(parsed, SHARED_VERIFIED_MIN)),
+        String(normalized),
+      );
+      window.localStorage.setItem(
+        SHARED_VERIFIED_HEARTBEAT_KEY,
+        String(Date.now()),
       );
     } catch (_) {}
   }
@@ -337,7 +343,8 @@ exCards.forEach((card) => {
   }
   function getHeroVerifiedTotal() {
     if (!heroTotalEl) return readSharedVerifiedTotal(SHARED_VERIFIED_MIN);
-    const raw = heroTotalEl.dataset.value || heroTotalEl.textContent || "1286";
+    const raw =
+      heroTotalEl.dataset.value || heroTotalEl.textContent || "40745";
     const fallback = Math.max(
       parsePositiveInt(raw) || SHARED_VERIFIED_MIN,
       SHARED_VERIFIED_MIN,
@@ -795,9 +802,10 @@ function formatInt(n) {
 }
 
 const SHARED_VERIFIED_TOTAL_KEY = "hugClaimsSharedVerifiedTotal";
-const SHARED_VERIFIED_MIN = 35000;
+const SHARED_VERIFIED_HEARTBEAT_KEY = "hugClaimsSharedVerifiedHeartbeat";
+const SHARED_VERIFIED_MIN = 40745;
 function randomSharedVerifiedStart() {
-  return SHARED_VERIFIED_MIN + Math.floor(Math.random() * 5001);
+  return SHARED_VERIFIED_MIN;
 }
 function parseSharedTotal(value) {
   const parsed = Number.parseInt(String(value || "").replace(/[^\d]/g, ""), 10);
@@ -827,9 +835,14 @@ function writeSharedVerifiedTotal(total) {
   const parsed = parseSharedTotal(total);
   if (parsed === null) return;
   try {
+    const normalized = Math.max(parsed, SHARED_VERIFIED_MIN);
     window.localStorage.setItem(
       SHARED_VERIFIED_TOTAL_KEY,
-      String(Math.max(parsed, SHARED_VERIFIED_MIN)),
+      String(normalized),
+    );
+    window.localStorage.setItem(
+      SHARED_VERIFIED_HEARTBEAT_KEY,
+      String(Date.now()),
     );
   } catch (_) {}
 }
@@ -843,7 +856,7 @@ function currentHeroTotal() {
     parseSharedTotal(
       heroVerifiedClaimsEl.dataset.value ||
         heroVerifiedClaimsEl.textContent ||
-        "1286",
+        "40745",
     ) || SHARED_VERIFIED_MIN,
     SHARED_VERIFIED_MIN,
   );
@@ -860,6 +873,7 @@ function syncCorpusTotalFromHero() {
 }
 function tickHeroVerifiedClaims() {
   if (!heroVerifiedClaimsEl) return;
+  if (document.visibilityState !== "visible") return;
   const current = currentHeroTotal();
   const next = current + 1;
   setHeroTotal(next);

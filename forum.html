@@ -1,20 +1,900 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Redirecting...</title>
-  <meta http-equiv="refresh" content="0; url=/pages/core/forum.html" />
-  <script>
-    (function () {
-      var target = '/pages/core/forum.html' + window.location.search + window.location.hash;
-      if (window.location.pathname + window.location.search + window.location.hash !== target) {
-        window.location.replace(target);
-      }
-    }());
-  </script>
-</head>
-<body>
-  <p>Redirecting to <a href="/pages/core/forum.html">/pages/core/forum.html</a>...</p>
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/png" href="/assets/hug-logo.png?v=20260601" />
+    <link rel="apple-touch-icon" href="/assets/hug-logo.png?v=20260601" />
+    <title>hug. — community claims</title>
+    <link rel="stylesheet" href="/assets/css/pages/core/forum.css" />
+    <script src="/hug-config.js"></script>
+    <script src="/hug-events.js" defer></script>
+  </head>
+  <body>
+    <div class="app">
+      <header class="top">
+        <a class="brand-link" href="/" aria-label="Hug Claims home">
+          <span class="brand-text"
+            >Hug<span class="em">.</span><span class="small">claims</span></span
+          >
+        </a>
+        <nav class="nav">
+          <a href="/forum.html" class="active">forum</a>
+          <a href="/claim.html">file a claim</a>
+          <a href="/login.html">login</a>
+          <a href="/chat.html" class="cta">try the chat &rarr;</a>
+        </nav>
+      </header>
+
+      <section class="page-head">
+        <h1>What others <em>caught</em>.</h1>
+        <p class="lede">
+          Verified AI mistakes from the community. Read the diffs, open attached
+          evidence docs/images, weigh in, learn what to watch for &mdash; and
+          earn cash back when your own corrections hold up.
+        </p>
+        <div class="stat-row">
+          <span
+            ><span class="num" id="verifiedClaims" data-value="40745"
+              >40,745</span
+            >
+            verified claims</span
+          >
+          <span
+            ><span class="num" id="paidOut" data-value="31558">$31,558</span>
+            paid out</span
+          >
+          <span
+            ><span class="num" id="verifierAgreement" data-value="69">69%</span>
+            verifier agreement</span
+          >
+        </div>
+        <div class="live-note">
+          <span class="live-dot"></span
+          ><span id="liveStatsNote">live community feed</span>
+        </div>
+      </section>
+
+      <section class="leaderboard" aria-label="Top AI error contributors">
+        <div class="leaderboard-head">
+          <h2>Leaderboard</h2>
+          <div class="caption">Most verified AI errors submitted</div>
+        </div>
+
+        <div class="leader-row">
+          <div class="leader-rank">1.</div>
+          <div class="leader-user">
+            <span
+              class="avatar photo p1"
+              aria-label="Fake headshot for @yuexing"
+              >YH</span
+            >
+            <div>
+              <div class="leader-name">@yuexing</div>
+              <div class="leader-domain">math + reasoning</div>
+            </div>
+          </div>
+          <div class="leader-stat"><strong>42</strong><span>errors</span></div>
+          <div class="leader-stat">
+            <strong>$684</strong><span>cash back</span>
+          </div>
+        </div>
+
+        <div class="leader-row">
+          <div class="leader-rank">2.</div>
+          <div class="leader-user">
+            <span class="avatar photo p2" aria-label="Fake headshot for @sara_k"
+              >SK</span
+            >
+            <div>
+              <div class="leader-name">@sara_k</div>
+              <div class="leader-domain">medical triage</div>
+            </div>
+          </div>
+          <div class="leader-stat"><strong>31</strong><span>errors</span></div>
+          <div class="leader-stat">
+            <strong>$527</strong><span>cash back</span>
+          </div>
+        </div>
+
+        <div class="leader-row">
+          <div class="leader-rank">3.</div>
+          <div class="leader-user">
+            <span class="avatar c2">MO</span>
+            <div>
+              <div class="leader-name">@mark_oh</div>
+              <div class="leader-domain">finance + data</div>
+            </div>
+          </div>
+          <div class="leader-stat"><strong>27</strong><span>errors</span></div>
+          <div class="leader-stat">
+            <strong>$463</strong><span>cash back</span>
+          </div>
+        </div>
+
+        <div class="leader-row">
+          <div class="leader-rank">4.</div>
+          <div class="leader-user">
+            <span class="avatar c3">MA</span>
+            <div>
+              <div class="leader-name">@marcus_a</div>
+              <div class="leader-domain">legal citations</div>
+            </div>
+          </div>
+          <div class="leader-stat"><strong>19</strong><span>errors</span></div>
+          <div class="leader-stat">
+            <strong>$288</strong><span>cash back</span>
+          </div>
+        </div>
+      </section>
+
+      <div class="toolbar">
+        <div class="filter-group" id="filterGroup">
+          <button class="filter-btn active" data-filter="all">all</button>
+          <button class="filter-btn" data-filter="medicine">medicine</button>
+          <button class="filter-btn" data-filter="legal">legal</button>
+          <button class="filter-btn" data-filter="math">math</button>
+          <button class="filter-btn" data-filter="finance">finance</button>
+        </div>
+        <div class="sort-group">
+          <label for="sort">sort</label>
+          <select id="sort">
+            <option value="recent">most recent</option>
+            <option value="cashback">highest cash back</option>
+            <option value="discussed">most discussed</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="posts" id="posts">
+        <!-- Post 1: Math induction proof -->
+        <article class="post" data-domain="math">
+          <div class="post-head">
+            <span class="avatar c1">YH</span>
+            <span class="author">@yuexing</span>
+            <span class="sep">&middot;</span>
+            <span class="tag brand">Claude Haiku 4.5</span>
+            <span class="tag domain">math</span>
+            <span class="sep">&middot;</span>
+            <span class="time">2h ago</span>
+            <span class="status verified"
+              >verified <span class="amt">$16</span></span
+            >
+          </div>
+          <h3>
+            Wrong substitution in integration by parts &mdash; v isn&rsquo;t the
+            definite integral
+          </h3>
+          <div class="excerpt">
+            <em class="q">claude said:</em>
+            &ldquo;u = x<sup>n+1</sup>, dv = e<sup>&minus;x</sup>dx, so v =
+            <s class="struck">1</s
+            ><ins class="correction">&minus;e<sup>&minus;x</sup></ins
+            >. Multiply through, apply the inductive hypothesis, and you arrive
+            at (n+1)!.&rdquo;
+          </div>
+          <p class="context">
+            Was checking my induction proof for &int;<sub>0</sub
+            ><sup>&infin;</sup> x<sup>n</sup>e<sup>&minus;x</sup>dx = n!. Claude
+            treated v as the definite integral &int;<sub>0</sub
+            ><sup>&infin;</sup>e<sup>&minus;x</sup>dx = 1, but in IBP v has to
+            be the antiderivative. Final answer happened to be right, the proof
+            was broken.
+          </p>
+          <div class="post-foot">
+            <button class="vote-pill" data-votes="47">
+              <span class="arrow">&#9650;</span> <span class="v">47</span>
+            </button>
+            <button class="meta-link toggle-comments">12 comments</button>
+            <button class="reply-btn">reply</button>
+          </div>
+          <div class="comments">
+            <div class="comment">
+              <span class="avatar c2">GS</span>
+              <div class="comment-body">
+                <div class="comment-head">
+                  <span class="author">@gradstudent_ml</span>
+                  <span class="role-tag expert">PhD math</span>
+                  <span class="time">1h ago</span>
+                </div>
+                <p>
+                  Classic. The model conflated &ldquo;definite integral
+                  evaluates to 1&rdquo; with &ldquo;v = 1.&rdquo; Worth flagging
+                  for the eval team &mdash; this comes up in any IBP problem
+                  with limits at infinity.
+                </p>
+                <div class="comment-foot">
+                  <button class="vote-mini">&#9650; 8</button>
+                  <button class="reply-mini">reply</button>
+                </div>
+              </div>
+            </div>
+            <div class="comment">
+              <span class="avatar c3">DR</span>
+              <div class="comment-body">
+                <div class="comment-head">
+                  <span class="author">@drewr</span>
+                  <span class="time">38m ago</span>
+                </div>
+                <p>
+                  Got the same hallucination yesterday on a Laplace transform
+                  problem. I think the issue is models pattern-match
+                  &ldquo;e<sup>&minus;x</sup> integrated from 0 to
+                  &infin;&rdquo; to its evaluated form even when the context
+                  wants the antiderivative.
+                </p>
+                <div class="comment-foot">
+                  <button class="vote-mini">&#9650; 4</button>
+                  <button class="reply-mini">reply</button>
+                </div>
+              </div>
+            </div>
+            <div class="comment">
+              <span class="avatar c1">YH</span>
+              <div class="comment-body">
+                <div class="comment-head">
+                  <span class="author">@yuexing</span>
+                  <span class="role-tag author-self">op</span>
+                  <span class="time">22m ago</span>
+                </div>
+                <p>
+                  That tracks &mdash; I bet this is in the training set as a
+                  worked example with definite integrals and the IBP variant got
+                  entangled.
+                </p>
+                <div class="comment-foot">
+                  <button class="vote-mini">&#9650; 2</button>
+                  <button class="reply-mini">reply</button>
+                </div>
+              </div>
+            </div>
+            <div class="add-comment">
+              <input type="text" placeholder="add a comment&hellip;" />
+              <button type="button">post</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Post 2: Medicine -->
+        <article class="post" data-domain="medicine">
+          <div class="post-head">
+            <span class="avatar c5">SK</span>
+            <span class="author">@sara_k</span>
+            <span class="sep">&middot;</span>
+            <span class="tag brand">GPT-4o</span>
+            <span class="tag domain">medicine</span>
+            <span class="sep">&middot;</span>
+            <span class="time">5h ago</span>
+            <span class="status verified"
+              >verified <span class="amt">$24</span></span
+            >
+          </div>
+          <h3>
+            AI told me to get an MRI for what turned out to be allergies and
+            sinus inflammation
+          </h3>
+          <div class="excerpt">
+            <em class="q">gpt said:</em>
+            &ldquo;Persistent headaches plus dizziness
+            <s class="struck">point to a brain tumor and need same-day MRI</s
+            ><ins class="correction"
+              >are usually allergy/sinus related unless red flags are
+              present</ins
+            >. <s class="struck">Skip primary care and go straight to imaging</s
+            ><ins class="correction"
+              >start with PCP or ENT exam, trial antihistamine + nasal steroid,
+              then escalate to imaging if symptoms persist or worsen</ins
+            >.&rdquo;
+          </div>
+          <p class="context">
+            I asked after 12 days of pressure headaches, light dizziness, and
+            clogged ears during high pollen counts. GPT jumped to tumor risk and
+            suggested urgent MRI + neuro referral before basic allergy workup.
+            My ENT exam showed swollen nasal passages, postnasal drip, and no
+            focal neurologic deficits; we treated for allergic rhinitis/sinus
+            inflammation first. Within 72 hours on Allegra + fluticasone the
+            headaches resolved and the dizziness tapered off.
+          </p>
+          <div class="evidence-grid" aria-label="Attached medical evidence">
+            <a
+              class="evidence-card"
+              href="https://hugclaim.com/data/Allergy_Diagnosis_Report.txt"
+              target="_blank"
+              rel="noopener"
+            >
+              <span class="evidence-doc">TXT</span>
+              <strong>ENT diagnosis report</strong>
+              <span
+                >Visit summary documenting allergic rhinitis/sinus pressure and
+                no MRI red flags.</span
+              >
+            </a>
+            <a
+              class="evidence-card"
+              href="https://hugclaim.com/data/allergy-symptom-log.svg"
+              target="_blank"
+              rel="noopener"
+            >
+              <img
+                class="evidence-thumb"
+                src="https://hugclaim.com/data/allergy-symptom-log.svg"
+                alt="Symptom timeline chart for headache, dizziness, and pollen index"
+              />
+              <strong>Symptom timeline image</strong>
+              <span
+                >Headache severity drops after antihistamine + nasal steroid
+                treatment starts.</span
+              >
+            </a>
+          </div>
+          <div class="post-foot">
+            <button class="vote-pill" data-votes="129">
+              <span class="arrow">&#9650;</span> <span class="v">129</span>
+            </button>
+            <button class="meta-link toggle-comments">31 comments</button>
+            <button class="reply-btn">reply</button>
+          </div>
+          <div class="comments">
+            <div class="comment">
+              <span class="avatar c4">MD</span>
+              <div class="comment-body">
+                <div class="comment-head">
+                  <span class="author">@m.delgado_md</span>
+                  <span class="role-tag expert">family medicine</span>
+                  <span class="time">4h ago</span>
+                </div>
+                <p>
+                  This is textbook anchoring on worst-case differential. The
+                  base rate for tumor in this presentation is &lt;0.1%; allergic
+                  rhinitis with eustachian dysfunction is closer to 30%. Models
+                  need calibrated priors on epidemiology.
+                </p>
+                <div class="comment-foot">
+                  <button class="vote-mini">&#9650; 42</button>
+                  <button class="reply-mini">reply</button>
+                  <a
+                    class="source-link"
+                    href="https://www.aafp.org/pubs/afp/issues/2022/0900/acute-headache-adults.html"
+                    target="_blank"
+                    rel="noopener"
+                    >AAFP</a
+                  >
+                  <a
+                    class="source-link"
+                    href="https://www.mayoclinic.org/first-aid/first-aid-headache/basics/art-20056639"
+                    target="_blank"
+                    rel="noopener"
+                    >Mayo</a
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="comment">
+              <span class="avatar c6">JT</span>
+              <div class="comment-body">
+                <div class="comment-head">
+                  <span class="author">@jamie_t</span>
+                  <span class="time">3h ago</span>
+                </div>
+                <p>
+                  Same thing happened to me but the AI was right &mdash; I had a
+                  benign acoustic neuroma. I&rsquo;d argue the disclaimer
+                  (&ldquo;see a clinician&rdquo;) is more important than getting
+                  the differential perfect.
+                </p>
+                <div class="comment-foot">
+                  <button class="vote-mini">&#9650; 17</button>
+                  <button class="reply-mini">reply</button>
+                </div>
+              </div>
+            </div>
+            <div class="comment">
+              <span class="avatar c2">RV</span>
+              <div class="comment-body">
+                <div class="comment-head">
+                  <span class="author">@rvelez</span>
+                  <span class="time">2h ago</span>
+                </div>
+                <p>
+                  The verifier&rsquo;s reasoning was great here &mdash; cited
+                  two NEJM diagnostic-prior papers in the verdict. Worth reading
+                  even if you don&rsquo;t care about the cash back.
+                </p>
+                <div class="comment-foot">
+                  <button class="vote-mini">&#9650; 9</button>
+                  <button class="reply-mini">reply</button>
+                </div>
+              </div>
+            </div>
+            <div class="add-comment">
+              <input type="text" placeholder="add a comment&hellip;" />
+              <button type="button">post</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Post 3: Legal -->
+        <article class="post" data-domain="legal">
+          <div class="post-head">
+            <span class="avatar c3">MA</span>
+            <span class="author">@marcus_a</span>
+            <span class="sep">&middot;</span>
+            <span class="tag brand">Gemini 2.0</span>
+            <span class="tag domain">legal</span>
+            <span class="sep">&middot;</span>
+            <span class="time">9h ago</span>
+            <span class="status pending"
+              >pending <span class="amt">$12</span></span
+            >
+          </div>
+          <h3>Wrong section cited for landlord-entry rules in California</h3>
+          <div class="excerpt">
+            <em class="q">gemini said:</em>
+            &ldquo;Landlords must give <s class="struck">48 hours&rsquo;</s
+            ><ins class="correction">24 hours&rsquo;</ins> written notice under
+            <s class="struck">California Civil Code &sect;1947</s
+            ><ins class="correction">California Civil Code &sect;1954</ins
+            >.&rdquo;
+          </div>
+          <p class="context">
+            Was reading my lease and asked Gemini to verify entry-notice rules.
+            Both the hours and the section were off. &sect;1947 is about rent
+            payment; &sect;1954 is the actual entry statute. Real attorney
+            confirmed.
+          </p>
+          <button
+            class="pdf-toggle"
+            type="button"
+            data-pdf-src="/data/Sample_Housing_Contract.pdf#toolbar=0&navpanes=0&page=1"
+          >
+            <span class="mini-doc">PDF</span>
+            Look into Sample_Housing_Contract.pdf
+          </button>
+          <div class="post-foot">
+            <button class="vote-pill" data-votes="22">
+              <span class="arrow">&#9650;</span> <span class="v">22</span>
+            </button>
+            <button class="meta-link toggle-comments">7 comments</button>
+            <button class="reply-btn">reply</button>
+          </div>
+          <div class="comments">
+            <div class="comment">
+              <span class="avatar c1">LP</span>
+              <div class="comment-body">
+                <div class="comment-head">
+                  <span class="author">@lpark_esq</span>
+                  <span class="role-tag expert">housing attorney</span>
+                  <span class="time">8h ago</span>
+                </div>
+                <p>
+                  Confirming: &sect;1954(a) requires 24 hr written notice. The
+                  48-hour figure may come from local rent-board overlays (e.g.,
+                  Berkeley) but those are jurisdiction-specific. Models keep
+                  mixing state and city rules.
+                </p>
+                <div class="comment-foot">
+                  <button class="vote-mini">&#9650; 11</button>
+                  <button class="reply-mini">reply</button>
+                  <a
+                    class="source-link"
+                    href="https://california.public.law/codes/civil_code_section_1954"
+                    target="_blank"
+                    rel="noopener"
+                    >§1954</a
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="comment">
+              <span class="avatar c4">AB</span>
+              <div class="comment-body">
+                <div class="comment-head">
+                  <span class="author">@ash_b</span>
+                  <span class="time">6h ago</span>
+                </div>
+                <p>Why is this still pending? Seems open and shut to me.</p>
+                <div class="comment-foot">
+                  <button class="vote-mini">&#9650; 1</button>
+                  <button class="reply-mini">reply</button>
+                </div>
+              </div>
+            </div>
+            <div class="comment">
+              <span class="avatar c3">MA</span>
+              <div class="comment-body">
+                <div class="comment-head">
+                  <span class="author">@marcus_a</span>
+                  <span class="role-tag author-self">op</span>
+                  <span class="time">5h ago</span>
+                </div>
+                <p>
+                  Verifier flagged it for human review since I cited only the
+                  section, not a court ruling. Adding a Westlaw link in a
+                  follow-up.
+                </p>
+                <div class="comment-foot">
+                  <button class="vote-mini">&#9650; 3</button>
+                  <button class="reply-mini">reply</button>
+                </div>
+              </div>
+            </div>
+            <div class="add-comment">
+              <input type="text" placeholder="add a comment&hellip;" />
+              <button type="button">post</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Post 4: Finance -->
+        <article class="post" data-domain="finance">
+          <div class="post-head">
+            <span class="avatar c2">MO</span>
+            <span class="author">@mark_oh</span>
+            <span class="sep">&middot;</span>
+            <span class="tag brand">Claude Sonnet 4.6</span>
+            <span class="tag domain">finance</span>
+            <span class="sep">&middot;</span>
+            <span class="time">1d ago</span>
+            <span class="status verified"
+              >verified <span class="amt">$19</span></span
+            >
+          </div>
+          <h3>Inverted Q4 NVIDIA revenue beat as a miss</h3>
+          <div class="excerpt">
+            <em class="q">claude said:</em>
+            &ldquo;NVIDIA Q4 revenue <s class="struck">missed by $1B</s
+            ><ins class="correction">beat consensus by $1.2B</ins>; forward
+            guide <s class="struck">conservative</s
+            ><ins class="correction">ahead of Street estimates</ins>.&rdquo;
+          </div>
+          <p class="context">
+            Pulled the press release after a colleague flagged the bot was off.
+            Reported revenue was $39.3B vs $38.1B consensus &mdash; a beat, not
+            a miss. Forward guide $43B vs $42.1B Street.
+          </p>
+          <div class="post-foot">
+            <button class="vote-pill" data-votes="74">
+              <span class="arrow">&#9650;</span> <span class="v">74</span>
+            </button>
+            <button class="meta-link toggle-comments">19 comments</button>
+            <button class="reply-btn">reply</button>
+          </div>
+          <div class="comments">
+            <div class="comment">
+              <span class="avatar c5">EK</span>
+              <div class="comment-body">
+                <div class="comment-head">
+                  <span class="author">@e_kowalski</span>
+                  <span class="role-tag expert">sell-side analyst</span>
+                  <span class="time">22h ago</span>
+                </div>
+                <p>
+                  This is the most dangerous failure mode &mdash; sign-flip on a
+                  magnitude. If a trader had acted on this verbatim before the
+                  open, it&rsquo;s real money.
+                </p>
+                <div class="comment-foot">
+                  <button class="vote-mini">&#9650; 33</button>
+                  <button class="reply-mini">reply</button>
+                  <a
+                    class="source-link"
+                    href="https://investor.nvidia.com/news/press-release-details/2025/NVIDIA-Announces-Financial-Results-for-Fourth-Quarter-and-Fiscal-2025/default.aspx"
+                    target="_blank"
+                    rel="noopener"
+                    >NVIDIA</a
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="comment">
+              <span class="avatar c6">TI</span>
+              <div class="comment-body">
+                <div class="comment-head">
+                  <span class="author">@tina_i</span>
+                  <span class="time">20h ago</span>
+                </div>
+                <p>
+                  How did the cache let this through? Was the model citing
+                  pre-release whisper numbers vs posted? The diff is too clean
+                  for a hallucination &mdash; smells like a stale-data issue.
+                </p>
+                <div class="comment-foot">
+                  <button class="vote-mini">&#9650; 12</button>
+                  <button class="reply-mini">reply</button>
+                </div>
+              </div>
+            </div>
+            <div class="add-comment">
+              <input type="text" placeholder="add a comment&hellip;" />
+              <button type="button">post</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Post 5: Medicine - disputed -->
+        <article class="post" data-domain="medicine">
+          <div class="post-head">
+            <span class="avatar c6">PR</span>
+            <span class="author">@priya_r</span>
+            <span class="sep">&middot;</span>
+            <span class="tag brand">MetaAI Llama 4</span>
+            <span class="tag domain">medicine</span>
+            <span class="sep">&middot;</span>
+            <span class="time">2d ago</span>
+            <span class="status disputed"
+              >disputed <span class="amt">$22</span></span
+            >
+          </div>
+          <h3>Drug interaction call: AI said sertraline + tramadol is fine</h3>
+          <div class="excerpt">
+            <em class="q">meta said:</em>
+            &ldquo;Sertraline and tramadol can be co-prescribed
+            <s class="struck">without significant interaction</s
+            ><ins class="correction"
+              >only with caution &mdash; both are serotonergic and combined use
+              raises serotonin syndrome risk; monitor closely</ins
+            >.&rdquo;
+          </div>
+          <p class="context">
+            My friend (RN) flagged this immediately. Both drugs increase
+            serotonin, and the combo carries a real serotonin syndrome risk.
+            Even &ldquo;monitor closely&rdquo; is doing a lot of work &mdash;
+            many guidelines recommend avoidance unless necessary.
+          </p>
+          <div class="post-foot">
+            <button class="vote-pill" data-votes="58">
+              <span class="arrow">&#9650;</span> <span class="v">58</span>
+            </button>
+            <button class="meta-link toggle-comments">24 comments</button>
+            <button class="reply-btn">reply</button>
+          </div>
+          <div class="comments">
+            <div class="comment">
+              <span class="avatar c4">CM</span>
+              <div class="comment-body">
+                <div class="comment-head">
+                  <span class="author">@c.matsumoto_pharmd</span>
+                  <span class="role-tag expert">clinical pharmacist</span>
+                  <span class="time">2d ago</span>
+                </div>
+                <p>
+                  Disputing partial. The original response wasn&rsquo;t
+                  &ldquo;safe&rdquo; &mdash; it was incomplete. Most pharmacy
+                  databases flag this as a moderate interaction with monitoring,
+                  not contraindicated. The OP&rsquo;s correction overstates the
+                  risk by implying avoidance.
+                </p>
+                <div class="comment-foot">
+                  <button class="vote-mini">&#9650; 28</button>
+                  <button class="reply-mini">reply</button>
+                  <a
+                    class="source-link"
+                    href="https://www.fda.gov/drugs/postmarket-drug-safety-information-patients-and-providers/sertraline-marketed-zoloft-information"
+                    target="_blank"
+                    rel="noopener"
+                    >FDA</a
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="comment">
+              <span class="avatar c1">NS</span>
+              <div class="comment-body">
+                <div class="comment-head">
+                  <span class="author">@n.singh_rn</span>
+                  <span class="role-tag expert">ICU nurse</span>
+                  <span class="time">1d ago</span>
+                </div>
+                <p>
+                  I&rsquo;ve seen serotonin syndrome from this exact combo.
+                  &ldquo;Without significant interaction&rdquo; is genuinely
+                  wrong. The dispute should be about wording, not whether
+                  there&rsquo;s an error.
+                </p>
+                <div class="comment-foot">
+                  <button class="vote-mini">&#9650; 19</button>
+                  <button class="reply-mini">reply</button>
+                </div>
+              </div>
+            </div>
+            <div class="comment">
+              <span class="avatar c6">PR</span>
+              <div class="comment-body">
+                <div class="comment-head">
+                  <span class="author">@priya_r</span>
+                  <span class="role-tag author-self">op</span>
+                  <span class="time">1d ago</span>
+                </div>
+                <p>
+                  Fair pushback @c.matsumoto_pharmd &mdash; I&rsquo;ll edit the
+                  correction to match Lexi-Comp&rsquo;s &ldquo;moderate,
+                  monitor&rdquo; phrasing rather than implying avoidance. The
+                  original is still wrong on &ldquo;without significant
+                  interaction.&rdquo;
+                </p>
+                <div class="comment-foot">
+                  <button class="vote-mini">&#9650; 14</button>
+                  <button class="reply-mini">reply</button>
+                </div>
+              </div>
+            </div>
+            <div class="add-comment">
+              <input type="text" placeholder="add a comment&hellip;" />
+              <button type="button">post</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Post 6: Math (smaller) -->
+        <article class="post" data-domain="math">
+          <div class="post-head">
+            <span class="avatar c5">DT</span>
+            <span class="author">@dtanaka</span>
+            <span class="sep">&middot;</span>
+            <span class="tag brand">GPT-4o</span>
+            <span class="tag domain">math</span>
+            <span class="sep">&middot;</span>
+            <span class="time">3d ago</span>
+            <span class="status verified"
+              >verified <span class="amt">$8</span></span
+            >
+          </div>
+          <h3>Sign error in eigenvalue derivation</h3>
+          <div class="excerpt">
+            <em class="q">gpt said:</em>
+            &ldquo;det(A &minus; &lambda;I) =
+            <s class="struck">&lambda;² &minus; 5&lambda; + 6</s
+            ><ins class="correction">&lambda;² &minus; 5&lambda; &minus; 6</ins
+            >, so eigenvalues are <s class="struck">2 and 3</s
+            ><ins class="correction">6 and &minus;1</ins>.&rdquo;
+          </div>
+          <p class="context">
+            Linear algebra homework. The constant term was off by sign and the
+            eigenvalues followed. Easy to miss because the structure looked
+            right.
+          </p>
+          <div class="post-foot">
+            <button class="vote-pill" data-votes="31">
+              <span class="arrow">&#9650;</span> <span class="v">31</span>
+            </button>
+            <button class="meta-link toggle-comments">5 comments</button>
+            <button class="reply-btn">reply</button>
+          </div>
+          <div class="comments">
+            <div class="comment">
+              <span class="avatar c2">JL</span>
+              <div class="comment-body">
+                <div class="comment-head">
+                  <span class="author">@jenna_l</span>
+                  <span class="time">2d ago</span>
+                </div>
+                <p>
+                  This is why showing work matters &mdash; if you check the
+                  trace and determinant against the matrix, the error is
+                  immediate.
+                </p>
+                <div class="comment-foot">
+                  <button class="vote-mini">&#9650; 7</button>
+                  <button class="reply-mini">reply</button>
+                </div>
+              </div>
+            </div>
+            <div class="add-comment">
+              <input type="text" placeholder="add a comment&hellip;" />
+              <button type="button">post</button>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <footer class="bottom">
+        hug.claims forum &middot; <em>be kind, cite sources</em> &middot;
+        moderated by community &middot;
+        <a
+          href="/login.html"
+          style="
+            color: var(--ink-3);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition:
+              border-color 0.15s,
+              color 0.15s;
+          "
+          onmouseover="
+            this.style.color = 'var(--hug)';
+            this.style.borderBottomColor = 'var(--hug)';
+          "
+          onmouseout="
+            this.style.color = 'var(--ink-3)';
+            this.style.borderBottomColor = 'transparent';
+          "
+          >login</a
+        >
+        &middot;
+        <a
+          href="/disclaimer.html"
+          style="
+            color: var(--ink-3);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition:
+              border-color 0.15s,
+              color 0.15s;
+          "
+          onmouseover="
+            this.style.color = 'var(--hug)';
+            this.style.borderBottomColor = 'var(--hug)';
+          "
+          onmouseout="
+            this.style.color = 'var(--ink-3)';
+            this.style.borderBottomColor = 'transparent';
+          "
+          >Disclaimer</a
+        >
+        &middot;
+        <a
+          data-hug-export
+          style="
+            color: var(--ink-3);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition:
+              border-color 0.15s,
+              color 0.15s;
+          "
+          onmouseover="
+            this.style.color = 'var(--hug)';
+            this.style.borderBottomColor = 'var(--hug)';
+          "
+          onmouseout="
+            this.style.color = 'var(--ink-3)';
+            this.style.borderBottomColor = 'transparent';
+          "
+          >Export my session</a
+        >
+      </footer>
+    </div>
+
+    <div
+      class="pdf-modal"
+      id="pdfModal"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Expanded PDF evidence"
+    >
+      <div class="pdf-modal-shell">
+        <div class="pdf-modal-head">
+          <span class="doc-icon">PDF</span>
+          <span>
+            <strong>Sample_Housing_Contract.pdf</strong>
+            <span>lease excerpt for landlord-entry clause</span>
+          </span>
+          <button
+            class="pdf-close"
+            id="pdfModalClose"
+            type="button"
+            aria-label="Close PDF"
+          >
+            &times;
+          </button>
+        </div>
+        <object
+          class="pdf-frame"
+          id="pdfModalFrame"
+          data=""
+          type="application/pdf"
+        >
+          <a
+            class="pdf-fallback"
+            href="/data/Sample_Housing_Contract.pdf"
+            target="_blank"
+            rel="noopener"
+            >Open Sample_Housing_Contract.pdf</a
+          >
+        </object>
+      </div>
+    </div>
+
+    <script src="/assets/js/pages/core/forum.inline-1.js"></script>
+  </body>
 </html>

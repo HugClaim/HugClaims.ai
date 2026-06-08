@@ -1,8 +1,68 @@
 /* ---------- Live community stats ---------- */
+const SHARED_VERIFIED_TOTAL_KEY = "hugClaimsSharedVerifiedTotal";
+const SHARED_VERIFIED_HEARTBEAT_KEY = "hugClaimsSharedVerifiedHeartbeat";
+const SHARED_VERIFIED_MIN = 40745;
+function parsePositiveInt(value) {
+  const parsed = Number.parseInt(
+    String(value || "").replace(/[^\d]/g, ""),
+    10,
+  );
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : null;
+}
+function ensureSharedVerifiedTotal() {
+  let parsed = null;
+  try {
+    parsed = parsePositiveInt(
+      window.localStorage.getItem(SHARED_VERIFIED_TOTAL_KEY) || "",
+    );
+  } catch (_) {}
+  if (parsed !== null && parsed >= SHARED_VERIFIED_MIN) return parsed;
+  try {
+    window.localStorage.setItem(
+      SHARED_VERIFIED_TOTAL_KEY,
+      String(SHARED_VERIFIED_MIN),
+    );
+    window.localStorage.setItem(
+      SHARED_VERIFIED_HEARTBEAT_KEY,
+      String(Date.now()),
+    );
+  } catch (_) {}
+  return SHARED_VERIFIED_MIN;
+}
+function readSharedVerifiedTotal(fallback = SHARED_VERIFIED_MIN) {
+  const parsed = ensureSharedVerifiedTotal();
+  return parsed >= SHARED_VERIFIED_MIN
+    ? parsed
+    : Math.max(fallback, SHARED_VERIFIED_MIN);
+}
+function writeSharedVerifiedTotal(total) {
+  const parsed = parsePositiveInt(total);
+  if (parsed === null) return;
+  const normalized = Math.max(parsed, SHARED_VERIFIED_MIN);
+  try {
+    window.localStorage.setItem(SHARED_VERIFIED_TOTAL_KEY, String(normalized));
+    window.localStorage.setItem(
+      SHARED_VERIFIED_HEARTBEAT_KEY,
+      String(Date.now()),
+    );
+  } catch (_) {}
+}
+function readSharedVerifiedHeartbeat() {
+  try {
+    return (
+      parsePositiveInt(
+        window.localStorage.getItem(SHARED_VERIFIED_HEARTBEAT_KEY) || "",
+      ) || 0
+    );
+  } catch (_) {
+    return 0;
+  }
+}
+
 const liveStats = {
-  claims: 1284,
-  paid: 31470,
-  agreement: 68,
+  claims: readSharedVerifiedTotal(),
+  paid: 31558,
+  agreement: 69,
 };
 const statEls = {
   claims: document.getElementById("verifiedClaims"),
@@ -32,11 +92,22 @@ function renderLiveStats(changes) {
   }
 }
 function tickLiveStats() {
-  const claimDelta = Math.random() < 0.55 ? 1 : 2;
-  const changed = ["claims"];
-  liveStats.claims += claimDelta;
+  const changed = [];
+  const prevClaims = liveStats.claims;
+  const heartbeatAgeMs = Date.now() - readSharedVerifiedHeartbeat();
+  const shouldPublishFallbackTick =
+    document.visibilityState === "visible" && heartbeatAgeMs > 4500;
+  if (shouldPublishFallbackTick) {
+    writeSharedVerifiedTotal(prevClaims + 1);
+  }
+  const sharedClaims = readSharedVerifiedTotal(prevClaims);
+  if (sharedClaims !== prevClaims) {
+    liveStats.claims = sharedClaims;
+    changed.push("claims");
+  }
 
-  if (Math.random() < 0.65) {
+  const claimDelta = Math.max(0, liveStats.claims - prevClaims);
+  if (claimDelta > 0 && Math.random() < 0.65) {
     liveStats.paid += claimDelta * (8 + Math.floor(Math.random() * 18));
     changed.push("paid");
   }
@@ -56,7 +127,15 @@ function tickLiveStats() {
       agreement: liveStats.agreement,
     });
 }
-setInterval(tickLiveStats, 5000);
+renderLiveStats([]);
+setInterval(tickLiveStats, 2000);
+window.addEventListener("storage", (event) => {
+  if (event.key !== SHARED_VERIFIED_TOTAL_KEY) return;
+  const sharedClaims = readSharedVerifiedTotal(liveStats.claims);
+  if (sharedClaims === liveStats.claims) return;
+  liveStats.claims = sharedClaims;
+  renderLiveStats(["claims"]);
+});
 
 const FORUM_POSTS_KEY = "hug:forum:posts";
 function escapeHtml(s) {

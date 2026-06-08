@@ -6,8 +6,10 @@ Cash back when your AI gets it wrong. A prototype of an LLM-error claims platfor
 
 ```
 .
-├── index.html, chat.html, claim.html, ...   ← stable public route files
-│                                               (lightweight redirect wrappers)
+├── index.html, forum.html, chat.html, claim.html, ...
+│                                             ← stable public route files
+│                                                (`forum.html` is full page;
+│                                                 most others are wrappers)
 ├── pages/
 │   ├── core/       ← source HTML for landing/chat/claim/forum/enterprise pages
 │   ├── careers/    ← source HTML for careers hub + role pages
@@ -167,11 +169,17 @@ To dedupe existing historical duplicates in-place:
 
 ## Managing HTML files
 
-Public route files are lightweight redirect wrappers, with:
+Public route files are mostly lightweight redirect wrappers, with:
 
 - root-level routes for core/account pages (`/chat.html`, `/claim.html`, etc.)
 - `careers/` routes for career pages (`/careers/career.html`, etc.)
-  Source HTML now lives under:
+
+Special case:
+
+- `/forum.html` is canonical (full page content), and `/pages/core/forum.html`
+  is kept as a legacy redirect.
+
+Source HTML now lives under:
 
 - `pages/core/`
 - `pages/careers/`
