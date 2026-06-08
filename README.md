@@ -178,6 +178,8 @@ Special case:
 
 - `/forum.html` is canonical (full page content), and `/pages/core/forum.html`
   is kept as a legacy redirect.
+- `/enterprise.html` is canonical (full page content), and
+  `/pages/core/enterprise.html` is kept as a legacy redirect.
 
 Source HTML now lives under:
 

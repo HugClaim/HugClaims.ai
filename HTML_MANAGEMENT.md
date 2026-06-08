@@ -15,6 +15,8 @@ Exception:
 
 - `forum.html` is canonical at root (full page content)
 - `pages/core/forum.html` is a legacy redirect to `/forum.html`
+- `enterprise.html` is canonical at root (full page content)
+- `pages/core/enterprise.html` is a legacy redirect to `/enterprise.html`
 
 Use these scripts to keep changes manageable and safe:
 

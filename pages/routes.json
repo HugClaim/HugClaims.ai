@@ -1,7 +1,6 @@
 {
   "chat.html": "/pages/core/chat.html",
   "claim.html": "/pages/core/claim.html",
-  "enterprise.html": "/pages/core/enterprise.html",
   "enterprise-grant.html": "/pages/core/enterprise-grant.html",
   "careers/career.html": "/pages/careers/career.html",
   "careers/career-forward-deployed-engineer.html": "/pages/careers/career-forward-deployed-engineer.html",
